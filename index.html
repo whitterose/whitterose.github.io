@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Free tools by Zelda Rose: private, offline help for everyday problems</title>
+<meta name="description" content="Free, private, offline tools by Zelda Rose: Medical Bill Fighter, Scam Checker, Review Reply Helper, Tenant Letter Kit, and Benefits Finder. No tracking, no sign-up.">
+<meta name="author" content="Zelda Rose">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<style>
+:root{--ink:#1d2330;--muted:#5b6475;--bg:#f7f5f2;--card:#fff;--line:#e3dfd8;--ok:#1f7a4d;--warn:#a15c00;--bad:#b0263b;--radius:14px;--accent:#3b4a6b;--accent2:#2a3754;--focus:#c3cde3}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font:17px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg)}
+a{color:var(--accent2)}
+header.hero{background:linear-gradient(135deg,#1b2030,#2f3a57 60%,#5a6b94);color:#fff;padding:48px 20px 40px}
+.wrap{max-width:960px;margin:0 auto;padding:0 20px}
+.hero h1{font-size:clamp(28px,5vw,44px);line-height:1.15;margin:0 0 12px}
+.hero p{font-size:19px;max-width:720px;margin:0 0 18px;opacity:.95}
+.badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.badge{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:4px 12px;font-size:14px}
+.byline{font-size:14px;opacity:.85;margin-top:16px}
+.byline a{color:#fff}
+nav.toc{position:sticky;top:0;z-index:5;background:#fff;border-bottom:1px solid var(--line)}
+nav.toc .wrap{display:flex;gap:4px;overflow-x:auto;padding:8px 20px}
+nav.toc a{white-space:nowrap;text-decoration:none;color:var(--ink);padding:6px 12px;border-radius:8px;font-size:15px}
+nav.toc a:hover,nav.toc a:focus{background:#f1ece6}
+section{padding:36px 0;border-bottom:1px solid var(--line)}
+h2{font-size:28px;margin:0 0 8px}
+h3{font-size:20px;margin:22px 0 8px}
+.lead{color:var(--muted);margin-top:0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px;margin:16px 0;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+.grid{display:grid;gap:14px}
+@media(min-width:720px){.grid.two{grid-template-columns:1fr 1fr}.grid.three{grid-template-columns:1fr 1fr 1fr}}
+label{display:block;font-weight:600;font-size:15px;margin:10px 0 4px}
+input[type=text],input[type=date],input[type=number],input[type=email],input[type=tel],textarea,select{width:100%;font:inherit;font-size:16px;padding:10px 12px;border:1px solid #cfc8bd;border-radius:10px;background:#fff;color:var(--ink)}
+textarea{min-height:120px;resize:vertical}
+input:focus,textarea:focus,select:focus,button:focus,a:focus{outline:3px solid var(--focus);outline-offset:2px}
+.q{border-top:1px dashed var(--line);padding:12px 0}
+.q:first-child{border-top:0}
+.q .opts{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.q .opts label{font-weight:500;margin:0;display:flex;align-items:center;gap:6px;border:1px solid #cfc8bd;border-radius:999px;padding:6px 14px;cursor:pointer;background:#fff}
+.q .opts input{accent-color:var(--accent)}
+.checks label{font-weight:500;display:flex;align-items:flex-start;gap:8px;margin:6px 0;cursor:pointer}
+.checks input{accent-color:var(--accent);margin-top:5px}
+button,.btn{font:inherit;font-size:16px;font-weight:600;border:0;border-radius:10px;padding:10px 18px;background:var(--accent);color:#fff;cursor:pointer;text-decoration:none;display:inline-block}
+button.secondary,.btn.secondary{background:#efe9e2;color:var(--ink)}
+button:hover{filter:brightness(1.07)}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:12px}
+.plan ol{padding-left:22px}
+.plan li{margin:10px 0}
+.tag{display:inline-block;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:2px 8px;border-radius:6px;margin-right:6px;vertical-align:2px}
+.tag.urgent{background:#fde2e6;color:var(--bad)}
+.tag.money{background:#e1f3ea;color:var(--ok)}
+.tag.info{background:#eee8ff;color:#4b3aa6}
+.tag.maybe{background:#fff1d6;color:var(--warn)}
+table{width:100%;border-collapse:collapse;font-size:15px}
+th,td{border-bottom:1px solid var(--line);padding:8px 6px;text-align:left;vertical-align:top}
+th{background:#faf8f5}
+td.num{text-align:right;white-space:nowrap}
+.flag{display:inline-block;font-size:12px;font-weight:700;border-radius:6px;padding:1px 7px;margin:2px 4px 2px 0}
+.flag.bad{background:#fde2e6;color:var(--bad)}
+.flag.warn{background:#fff1d6;color:var(--warn)}
+.letter{white-space:pre-wrap;font-family:Georgia,"Times New Roman",serif;font-size:16px;line-height:1.55;background:#fffdf9;border:1px solid var(--line);border-radius:10px;padding:22px;min-height:200px}
+.small{font-size:14px;color:var(--muted)}
+.note{background:#fff8e6;border:1px solid #f1d9a0;border-radius:10px;padding:12px 14px;font-size:15px}
+.ok{color:var(--ok)}
+details{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:10px 0}
+details summary{cursor:pointer;font-weight:600}
+.script{background:#f4f8ff;border-left:4px solid #6b8bd6;padding:10px 14px;border-radius:6px;margin:8px 0;font-style:italic}
+.tip{background:linear-gradient(180deg,#fff,#fbf7f2)}
+.addr{display:grid;grid-template-columns:auto 1fr auto;gap:8px 12px;align-items:center;margin:10px 0}
+.addr code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:14px;background:#f3efe9;border-radius:8px;padding:8px 10px;word-break:break-all;user-select:all}
+.coin{font-weight:700;min-width:44px}
+.copybtn{padding:6px 12px;font-size:14px}
+footer{padding:30px 0 50px;color:var(--muted);font-size:14px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#1d2330;color:#fff;padding:10px 16px;border-radius:10px;font-size:15px;opacity:0;transition:opacity .2s;pointer-events:none}
+#toast.show{opacity:1}
+@media print{
+  header.hero,nav.toc,section:not(.print-me),footer,.no-print,#toast{display:none!important}
+  body{background:#fff}
+  .print-me{border:0;padding:0}
+  .letter{border:0;padding:0;background:#fff;font-size:12pt}
+}
+
+a.tool{display:block;text-decoration:none;color:var(--ink);transition:transform .1s,box-shadow .1s}
+a.tool:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.08)}
+a.tool h3{margin:8px 0 6px}
+a.tool .go{font-weight:700;color:var(--accent2)}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <h1>Free tools by Zelda Rose</h1>
+    <p>Simple, private tools for the paperwork and problems that cost people time, money, and sleep. Each one is a single page that runs in your browser.</p>
+    <div class="badges">
+      <span class="badge">Always free</span>
+      <span class="badge">No tracking, no ads</span>
+      <span class="badge">Nothing you type leaves your device</span>
+      <span class="badge">Works offline</span>
+    </div>
+    <div class="byline">Made by <strong>Zelda Rose</strong> · Last reviewed October 2026</div>
+  </div>
+</header>
+
+<nav class="toc" aria-label="Sections">
+  <div class="wrap">
+    <a href="#tools">Tools</a>
+    <a href="#privacy">Privacy</a>
+    <a href="#tip">Support this</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<section id="tools">
+  <h2>Tools</h2>
+  <p class="lead">Pick the one you need. No account, no email, no catch.</p>
+  <div class="grid two">
+    <a class="tool card" href="/medical-bill-fighter/">
+      <span class="tag info">For patients</span>
+      <h3>Medical Bill Fighter</h3>
+      <p>Check a US medical bill for common errors, get an action plan, and write itemized-bill, charity-care, dispute, debt-validation, surprise-billing, and appeal letters.</p>
+      <span class="go">Open tool →</span>
+    </a>
+    <a class="tool card" href="/scam-checker.html">
+      <span class="tag info">For everyone</span>
+      <h3>Scam Checker</h3>
+      <p>Paste a suspicious text, email, or call script to get a plain-English red-flag check, official reporting links, and a printable "protect your parents" card.</p>
+      <span class="go">Open tool →</span>
+    </a>
+    <a class="tool card" href="/review-reply-helper.html">
+      <span class="tag info">For small businesses</span>
+      <h3>Review Reply Helper</h3>
+      <p>Turn a negative review into calm, professional reply drafts. Check your reply for common mistakes, and learn Google's official process for reporting fake reviews.</p>
+      <span class="go">Open tool →</span>
+    </a>
+    <a class="tool card" href="/tenant-letter-kit.html">
+      <span class="tag info">For US renters</span>
+      <h3>Tenant Letter Kit</h3>
+      <p>Letters for a security deposit return, repairs, unsafe conditions, and records requests, plus links to official tenant-rights resources and free legal aid.</p>
+      <span class="go">Open tool →</span>
+    </a>
+    <a class="tool card" href="/benefits-finder.html">
+      <span class="tag info">For US households</span>
+      <h3>Benefits Finder</h3>
+      <p>A short, private questionnaire that points to programs worth checking (SNAP, Medicaid/CHIP, WIC, LIHEAP, Lifeline, SSI, and more), with official links for applying.</p>
+      <span class="go">Open tool →</span>
+    </a>
+  </div>
+</section>
+<section id="privacy">
+  <h2>Privacy, in plain words</h2>
+  <div class="card">
+    <ul>
+      <li>Every tool is one self-contained web page. There's no server behind it, no cookies, and no analytics.</li>
+      <li>What you type stays in your browser tab. Close the tab and it's gone.</li>
+      <li>Links to official websites (like FTC, HealthCare.gov, or Google Help) open those sites. Their own privacy policies apply there.</li>
+      <li>You can save any tool to your device (in your browser, choose <em>Save page as…</em>) and use it offline.</li>
+    </ul>
+  </div>
+  <div class="note"><strong>Important:</strong> These tools give general information and templates, with links to official sources. They are not legal, medical, tax, or financial advice, and they aren't affiliated with any government agency or company.</div>
+</section>
+
+
+<section id="tip" class="tip">
+  <h2>Support this project (optional)</h2>
+  <p class="lead">Every tool here is free and always will be, with no ads, no tracking, and no sign-up. If one of them helped you and you'd like to help keep them coming, a small crypto tip is welcome. It's completely optional.</p>
+  <div class="card">
+    <div class="addr">
+      <span class="coin">SOL</span><code id="addr-sol">FBL1ez549NQscEm2Ly67TBxesknPcHfmRddnyiBF1kiA</code><button type="button" class="secondary copybtn" data-copy="addr-sol">Copy</button>
+      <span class="coin">ETH</span><code id="addr-eth">0xb46A6182Bf50EfC4012603803dEFe1CADd4Da4De</code><button type="button" class="secondary copybtn" data-copy="addr-eth">Copy</button>
+      <span class="coin">XRP</span><code id="addr-xrp">rw2ciyaNshpHe7bCHo4bRWq6pqqynnWKQg</code><button type="button" class="secondary copybtn" data-copy="addr-xrp">Copy</button>
+      <span class="coin">XRP tag</span><code id="addr-xrptag">1476447851</code><button type="button" class="secondary copybtn" data-copy="addr-xrptag">Copy</button>
+    </div>
+    <p class="note"><strong>XRP: you must include the destination tag/memo <code>1476447851</code>.</strong> If you send XRP without it, the tip may be lost. ETH address: Ethereum mainnet only. Always check the address in your wallet before you send.</p>
+    <p class="small">Can't tip? Sharing a tool with someone who needs it helps just as much. Tips are gifts, not payment for advice.</p>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+<p>Free tools by Zelda Rose. No cookies, no analytics, no uploads.</p>
+    <p>General information only, not legal advice. Last reviewed: October 2026.</p>
+  </div>
+</footer>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+"use strict";
+
+var $ = function(id){return document.getElementById(id);};
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];});}
+function toast(msg){var t=$("toast");t.textContent=msg;t.classList.add("show");clearTimeout(toast._t);toast._t=setTimeout(function(){t.classList.remove("show");},1800);}
+function copyText(text){
+  if(navigator.clipboard && window.isSecureContext){navigator.clipboard.writeText(text).then(function(){toast("Copied");},function(){fallbackCopy(text);});}
+  else fallbackCopy(text);
+}
+function fallbackCopy(text){var ta=document.createElement("textarea");ta.value=text;ta.style.position="fixed";ta.style.opacity="0";document.body.appendChild(ta);ta.select();try{document.execCommand("copy");toast("Copied");}catch(e){toast("Select and copy manually");}document.body.removeChild(ta);}
+function download(name,text){var b=new Blob([text],{type:"text/plain"});var a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},500);}
+
+
+
+/* ---------- Tip copy ---------- */
+document.querySelectorAll("[data-copy]").forEach(function(b){b.addEventListener("click",function(){copyText($(b.getAttribute("data-copy")).textContent.trim());});});
+
+})();
+</script>
+</body>
+</html>

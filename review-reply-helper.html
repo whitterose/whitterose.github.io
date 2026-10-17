@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Review Reply Helper: free, private replies to negative reviews</title>
+<meta name="description" content="Free, private, works offline. Paste a negative review and get calm, professional reply drafts, a check for common mistakes, and Google's official process for reporting fake reviews. Nothing you type leaves your device.">
+<meta name="author" content="Zelda Rose">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<style>
+:root{--ink:#1d2330;--muted:#5b6475;--bg:#f7f5f2;--card:#fff;--line:#e3dfd8;--ok:#1f7a4d;--warn:#a15c00;--bad:#b0263b;--radius:14px;--accent:#1f5f8b;--accent2:#174a6d;--focus:#a9cdea}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font:17px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg)}
+a{color:var(--accent2)}
+header.hero{background:linear-gradient(135deg,#14263a,#1f4b6e 60%,#2c7bb0);color:#fff;padding:48px 20px 40px}
+.wrap{max-width:960px;margin:0 auto;padding:0 20px}
+.hero h1{font-size:clamp(28px,5vw,44px);line-height:1.15;margin:0 0 12px}
+.hero p{font-size:19px;max-width:720px;margin:0 0 18px;opacity:.95}
+.badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.badge{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:4px 12px;font-size:14px}
+.byline{font-size:14px;opacity:.85;margin-top:16px}
+.byline a{color:#fff}
+nav.toc{position:sticky;top:0;z-index:5;background:#fff;border-bottom:1px solid var(--line)}
+nav.toc .wrap{display:flex;gap:4px;overflow-x:auto;padding:8px 20px}
+nav.toc a{white-space:nowrap;text-decoration:none;color:var(--ink);padding:6px 12px;border-radius:8px;font-size:15px}
+nav.toc a:hover,nav.toc a:focus{background:#f1ece6}
+section{padding:36px 0;border-bottom:1px solid var(--line)}
+h2{font-size:28px;margin:0 0 8px}
+h3{font-size:20px;margin:22px 0 8px}
+.lead{color:var(--muted);margin-top:0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px;margin:16px 0;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+.grid{display:grid;gap:14px}
+@media(min-width:720px){.grid.two{grid-template-columns:1fr 1fr}.grid.three{grid-template-columns:1fr 1fr 1fr}}
+label{display:block;font-weight:600;font-size:15px;margin:10px 0 4px}
+input[type=text],input[type=date],input[type=number],input[type=email],input[type=tel],textarea,select{width:100%;font:inherit;font-size:16px;padding:10px 12px;border:1px solid #cfc8bd;border-radius:10px;background:#fff;color:var(--ink)}
+textarea{min-height:120px;resize:vertical}
+input:focus,textarea:focus,select:focus,button:focus,a:focus{outline:3px solid var(--focus);outline-offset:2px}
+.q{border-top:1px dashed var(--line);padding:12px 0}
+.q:first-child{border-top:0}
+.q .opts{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.q .opts label{font-weight:500;margin:0;display:flex;align-items:center;gap:6px;border:1px solid #cfc8bd;border-radius:999px;padding:6px 14px;cursor:pointer;background:#fff}
+.q .opts input{accent-color:var(--accent)}
+.checks label{font-weight:500;display:flex;align-items:flex-start;gap:8px;margin:6px 0;cursor:pointer}
+.checks input{accent-color:var(--accent);margin-top:5px}
+button,.btn{font:inherit;font-size:16px;font-weight:600;border:0;border-radius:10px;padding:10px 18px;background:var(--accent);color:#fff;cursor:pointer;text-decoration:none;display:inline-block}
+button.secondary,.btn.secondary{background:#efe9e2;color:var(--ink)}
+button:hover{filter:brightness(1.07)}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:12px}
+.plan ol{padding-left:22px}
+.plan li{margin:10px 0}
+.tag{display:inline-block;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:2px 8px;border-radius:6px;margin-right:6px;vertical-align:2px}
+.tag.urgent{background:#fde2e6;color:var(--bad)}
+.tag.money{background:#e1f3ea;color:var(--ok)}
+.tag.info{background:#eee8ff;color:#4b3aa6}
+.tag.maybe{background:#fff1d6;color:var(--warn)}
+table{width:100%;border-collapse:collapse;font-size:15px}
+th,td{border-bottom:1px solid var(--line);padding:8px 6px;text-align:left;vertical-align:top}
+th{background:#faf8f5}
+td.num{text-align:right;white-space:nowrap}
+.flag{display:inline-block;font-size:12px;font-weight:700;border-radius:6px;padding:1px 7px;margin:2px 4px 2px 0}
+.flag.bad{background:#fde2e6;color:var(--bad)}
+.flag.warn{background:#fff1d6;color:var(--warn)}
+.letter{white-space:pre-wrap;font-family:Georgia,"Times New Roman",serif;font-size:16px;line-height:1.55;background:#fffdf9;border:1px solid var(--line);border-radius:10px;padding:22px;min-height:200px}
+.small{font-size:14px;color:var(--muted)}
+.note{background:#fff8e6;border:1px solid #f1d9a0;border-radius:10px;padding:12px 14px;font-size:15px}
+.ok{color:var(--ok)}
+details{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:10px 0}
+details summary{cursor:pointer;font-weight:600}
+.script{background:#f4f8ff;border-left:4px solid #6b8bd6;padding:10px 14px;border-radius:6px;margin:8px 0;font-style:italic}
+.tip{background:linear-gradient(180deg,#fff,#fbf7f2)}
+.addr{display:grid;grid-template-columns:auto 1fr auto;gap:8px 12px;align-items:center;margin:10px 0}
+.addr code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:14px;background:#f3efe9;border-radius:8px;padding:8px 10px;word-break:break-all;user-select:all}
+.coin{font-weight:700;min-width:44px}
+.copybtn{padding:6px 12px;font-size:14px}
+footer{padding:30px 0 50px;color:var(--muted);font-size:14px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#1d2330;color:#fff;padding:10px 16px;border-radius:10px;font-size:15px;opacity:0;transition:opacity .2s;pointer-events:none}
+#toast.show{opacity:1}
+@media print{
+  header.hero,nav.toc,section:not(.print-me),footer,.no-print,#toast{display:none!important}
+  body{background:#fff}
+  .print-me{border:0;padding:0}
+  .letter{border:0;padding:0;background:#fff;font-size:12pt}
+}
+
+.draft{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;margin:14px 0}
+.draft h3{margin:0 0 8px;font-size:18px}
+.draft textarea{min-height:170px;font-family:Georgia,"Times New Roman",serif;line-height:1.55;background:#fffdf9}
+.count{font-size:13px;color:var(--muted)}
+.res li{margin:6px 0}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <h1>Got a bad review? Reply calmly, in two minutes.</h1>
+    <p>Paste the review, pick a tone, tick what's true, and get three calm, professional reply drafts you can edit. Plus a quick check that your reply doesn't argue, overshare, or break the platform's rules.</p>
+    <div class="badges">
+      <span class="badge">100% free</span>
+      <span class="badge">Nothing you type leaves your device</span>
+      <span class="badge">Works offline</span>
+      <span class="badge">No AI, no sign-up</span>
+    </div>
+    <div class="byline">Made by <strong>Zelda Rose</strong> · For small business owners · Last reviewed October 2026</div>
+  </div>
+</header>
+
+<nav class="toc" aria-label="Sections">
+  <div class="wrap">
+    <a href="#write">1. Write my reply</a>
+    <a href="#check">2. Check my reply</a>
+    <a href="#guide">3. How to respond</a>
+    <a href="#flag">4. Fake or abusive review?</a>
+    <a href="#tip">Support this</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<section id="write">
+  <h2>1. Write my reply</h2>
+  <p class="lead">Fill in what you can. Drafts update as you type. Nothing is sent anywhere; this page has no server.</p>
+  <div class="card" id="form">
+    <label for="rv_text">Paste the review</label>
+    <textarea id="rv_text" placeholder="e.g. Waited 40 minutes for a table even with a reservation, and the server was rude when we asked. Food was cold. Never coming back."></textarea>
+    <div class="grid two">
+      <div><label for="biz_type">Type of business</label>
+        <select id="biz_type">
+          <option value="restaurant">Restaurant, café, or bar</option>
+          <option value="retail">Shop or online store</option>
+          <option value="salon">Salon, spa, or fitness</option>
+          <option value="trades">Home services or trades</option>
+          <option value="auto">Auto repair</option>
+          <option value="lodging">Hotel or short-term rental</option>
+          <option value="pro">Professional services (legal, accounting, real estate…)</option>
+          <option value="health">Healthcare, dental, therapy, or vet</option>
+          <option value="other">Other</option>
+        </select></div>
+      <div><label for="tone">Tone</label>
+        <select id="tone">
+          <option value="warm">Warm and apologetic</option>
+          <option value="pro" selected>Professional and neutral</option>
+          <option value="brief">Brief and firm</option>
+        </select></div>
+      <div><label for="rv_name">Reviewer's first name or display name (optional)</label><input type="text" id="rv_name" placeholder="e.g. Sam"></div>
+      <div><label for="biz_name">Business name (optional)</label><input type="text" id="biz_name" placeholder="e.g. Corner Bistro"></div>
+      <div><label for="signer">Sign off as (optional)</label><input type="text" id="signer" placeholder="e.g. Maria, owner"></div>
+      <div><label for="contact">How they can reach you privately (optional)</label><input type="text" id="contact" placeholder="e.g. (555) 010-0000 or hello@yourbusiness.com"></div>
+    </div>
+    <p class="small" id="healthNote" hidden><strong>Healthcare mode:</strong> drafts won't use the reviewer's name or say anything about a visit, because even confirming that someone is a patient can be a privacy problem. See <a href="#guide">section 3</a>.</p>
+    <h3>What's true? <span class="small">(tick only what's accurate)</span></h3>
+    <div class="checks">
+      <label><input type="checkbox" id="f_makeright" checked> We'd like to talk to them and make it right</label>
+      <label><input type="checkbox" id="f_fixed"> We've already changed something because of this</label>
+      <div id="fixWrap" hidden><label for="fix_text">What did you change? (short, no customer details)</label><input type="text" id="fix_text" placeholder="e.g. added a second host on weekend evenings"></div>
+      <label><input type="checkbox" id="f_busy"> We were unusually busy or short-staffed that day</label>
+      <label><input type="checkbox" id="f_outside"> Part of the problem was outside our control (weather, supplier, etc.)</label>
+      <label><input type="checkbox" id="f_policy"> The complaint is about a policy we have (deposits, cancellations, returns…)</label>
+      <div id="policyWrap" hidden><label for="policy_text">Your policy, in plain words</label><input type="text" id="policy_text" placeholder="e.g. appointments cancelled with less than 24 hours' notice are charged a $25 fee"></div>
+      <label><input type="checkbox" id="f_norecord"> We can't find any record of this customer or visit</label>
+    </div>
+    <p class="small" id="topics" aria-live="polite"></p>
+  </div>
+  <div id="drafts" aria-live="polite"></div>
+  <p class="small">These are starting points. Read every word before you post, change anything that isn't true, and add a personal detail if you can. Replies on Google are public and the reviewer is notified (<a href="https://support.google.com/business/answer/3474050" rel="noopener">Google</a>).</p>
+</section>
+
+<section id="check">
+  <h2>2. Check my reply before posting</h2>
+  <p class="lead">Paste any reply (yours or an edited draft). This flags common mistakes. It looks for words and patterns, so it can miss things and can flag harmless phrases. Use your judgment.</p>
+  <div class="card">
+    <label for="my_reply">Your reply</label>
+    <textarea id="my_reply" placeholder="Paste your reply here"></textarea>
+    <div class="row"><button type="button" id="runCheck">Check it</button><button type="button" class="secondary" id="clearCheck">Clear</button></div>
+  </div>
+  <div class="card" id="checkOut" hidden aria-live="polite"></div>
+</section>
+
+<section id="guide">
+  <h2>3. How to respond to a negative review</h2>
+  <div class="grid two">
+    <div class="card"><h3>Respond soon, keep it short</h3>
+      <p>Google recommends replying in a timely way and keeping replies short, simple, polite and professional. Long replies often don't get read.</p>
+      <p class="small">Source: <a href="https://support.google.com/business/answer/3474122" rel="noopener">Google Business Profile Help: Tips to write better review replies</a>.</p></div>
+    <div class="card"><h3>Don't argue in public</h3>
+      <p>Your reply is for future customers as much as for the reviewer. Thank them, acknowledge the problem, apologize where it's fair, and explain limits honestly without taking blame for things outside your control. Wait an hour before posting if you're upset.</p>
+      <p class="small">Source: <a href="https://support.google.com/business/answer/3474122" rel="noopener">Google: Give helpful responses to negative reviews</a>.</p></div>
+    <div class="card"><h3>Take it offline</h3>
+      <p>If it's complicated, politely ask the reviewer to contact you by phone or email so you can sort it out privately. The FTC says its review rule doesn't stop a business from contacting customers who post negative reviews to resolve the issue.</p>
+      <p class="small">Sources: <a href="https://support.google.com/business/answer/3474122" rel="noopener">Google</a>; <a href="https://www.ftc.gov/business-guidance/resources/consumer-reviews-testimonials-rule-questions-answers" rel="noopener">FTC: Consumer Reviews and Testimonials Rule Q&amp;A</a>.</p></div>
+    <div class="card"><h3>Never reveal customer information</h3>
+      <p>Don't post order details, dates, what they bought, what they said on the phone, or anything else about them. Google's tips say never to share a reviewer's private information. Its content policy bans posting other people's personal information without consent.</p>
+      <p class="small">Sources: <a href="https://support.google.com/business/answer/3474122" rel="noopener">Google tips</a>; <a href="https://support.google.com/contributionpolicy/answer/7400114" rel="noopener">Google Maps content policy</a>.</p></div>
+    <div class="card"><h3>Healthcare, dental, therapy</h3>
+      <p>Be extra careful. The US Department of Health and Human Services' Office for Civil Rights has settled HIPAA cases against dental practices that disclosed patient information while replying to online reviews. Don't confirm that the person is a patient, and don't mention any care, visit, or bill.</p>
+      <p class="small">Source: <a href="https://www.hhs.gov/about/news/2022/12/14/hhs-civil-rights-office-enters-settlement-with-dental-practice-over-disclosures-of-patients-protected-health-information.html" rel="noopener">HHS press release (Dec. 2022)</a>. If you're a covered entity, ask your privacy officer or attorney before replying.</p></div>
+    <div class="card"><h3>No discounts for changing a review</h3>
+      <p>Google prohibits offering incentives like payment, discounts, or free goods or services in exchange for posting, changing, or removing a review. Fixing the actual problem is fine. Just don't tie anything to the review itself.</p>
+      <p class="small">Sources: <a href="https://support.google.com/contributionpolicy/answer/7400114" rel="noopener">Google Maps content policy</a>; <a href="https://support.google.com/business/answer/3474122" rel="noopener">Google tips</a>.</p></div>
+    <div class="card"><h3>No false accusations or empty threats</h3>
+      <p>The FTC says you can respond publicly but should "watch what you say." Its rule prohibits knowingly or recklessly false accusations about a reviewer, intimidation, and unfounded or groundless legal threats used to get a review removed.</p>
+      <p class="small">Source: <a href="https://www.ftc.gov/business-guidance/resources/consumer-reviews-testimonials-rule-questions-answers" rel="noopener">FTC Q&amp;A, section 465.7</a>.</p></div>
+    <div class="card"><h3>Learn from it</h3>
+      <p>Google notes that negative reviews aren't necessarily a sign of poor business practices, and that a mix of positive and negative feedback often feels more trustworthy. If several reviews mention the same thing, that's worth fixing. Fixing it gives you something real to say in replies.</p>
+      <p class="small">Source: <a href="https://support.google.com/business/answer/3474122" rel="noopener">Google tips</a>.</p></div>
+  </div>
+</section>
+
+<section id="flag">
+  <h2>4. Think a review is fake or breaks the rules?</h2>
+  <p class="lead">Google says you can report any review, but only reviews that violate its policies are removed. Don't report a review just because you disagree with it.</p>
+  <div class="card">
+    <h3>Reviews Google's policy says are not allowed (examples)</h3>
+    <ul>
+      <li><strong>Fake engagement:</strong> not based on a real experience, paid for, or posted from multiple accounts by one person.</li>
+      <li><strong>Conflict of interest:</strong> for example, a competitor or a current or former employee reviewing the business.</li>
+      <li><strong>Personal information</strong> posted without consent, <strong>harassment</strong>, <strong>hate speech</strong>, <strong>obscenity or profanity</strong>, or <strong>offensive content</strong> such as unsubstantiated allegations of criminal wrongdoing.</li>
+    </ul>
+    <p class="small">Source and full list: <a href="https://support.google.com/contributionpolicy/answer/7400114" rel="noopener">Google Maps User Generated Content Policy: Prohibited &amp; restricted content</a>.</p>
+    <h3>How to report it (Google's official process)</h3>
+    <ol>
+      <li>Go to your Business Profile and select <em>Read reviews</em>.</li>
+      <li>Next to the review, select <em>Report</em>, choose the reason (for example "Spam"), and send the report.</li>
+      <li>Check the status in the <a href="https://support.google.com/business/workflow/9945796" rel="noopener">Reviews Management Tool</a>. Google says evaluation typically takes several days.</li>
+      <li>If Google finds no violation and you disagree, you can submit a <strong>one-time appeal</strong> from the same tool.</li>
+    </ol>
+    <p class="small">Source: <a href="https://support.google.com/business/answer/4596773" rel="noopener">Google: Report inappropriate reviews on your Business Profile</a>.</p>
+    <div class="note"><strong>Getting a flood of 1–2 star reviews and a demand for money to remove them?</strong> Google calls this a review extortion scam. Don't engage or pay. Save screenshots of every message (with dates and sender details), and report it with Google's merchant extortion form. <a href="https://support.google.com/business/answer/16404809" rel="noopener">Google: Report negative review extortion scams</a>.</div>
+    <h3>Meanwhile, reply anyway</h3>
+    <p>A calm public reply helps while a report is pending. If you truly have no record of the person, tick "We can't find any record" in step 1. The drafts will say so politely and invite them to get in touch, without calling them a liar.</p>
+  </div>
+  <div class="note"><strong>Important:</strong> This tool gives general information and templates. It is not legal advice. Other review sites (Yelp, Facebook, Tripadvisor, etc.) have their own rules, so check their help pages. For threats, defamation, or anything involving health information, talk to a lawyer.</div>
+</section>
+
+
+<section id="tip" class="tip">
+  <h2>Support this project (optional)</h2>
+  <p class="lead">This tool is free and always will be. There are no ads and no tracking, and you'll never be asked to sign up. If it saved you a stressful evening and you'd like to help keep free tools like this coming, a small crypto tip is welcome. It's completely optional.</p>
+  <div class="card">
+    <div class="addr">
+      <span class="coin">SOL</span><code id="addr-sol">FBL1ez549NQscEm2Ly67TBxesknPcHfmRddnyiBF1kiA</code><button type="button" class="secondary copybtn" data-copy="addr-sol">Copy</button>
+      <span class="coin">ETH</span><code id="addr-eth">0xb46A6182Bf50EfC4012603803dEFe1CADd4Da4De</code><button type="button" class="secondary copybtn" data-copy="addr-eth">Copy</button>
+      <span class="coin">XRP</span><code id="addr-xrp">rw2ciyaNshpHe7bCHo4bRWq6pqqynnWKQg</code><button type="button" class="secondary copybtn" data-copy="addr-xrp">Copy</button>
+      <span class="coin">XRP tag</span><code id="addr-xrptag">1476447851</code><button type="button" class="secondary copybtn" data-copy="addr-xrptag">Copy</button>
+    </div>
+    <p class="note"><strong>XRP: you must include the destination tag/memo <code>1476447851</code>.</strong> If you send XRP without it, the tip may be lost. ETH address: Ethereum mainnet only. Always check the address in your wallet before you send.</p>
+    <p class="small">Can't tip? Sharing this page with another small business owner helps just as much. Tips are gifts, not payment for advice.</p>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+<p>Review Reply Helper, by Zelda Rose. This page uses no cookies and no analytics, and it never uploads anything. Drafts are built by simple rules in your browser, not AI. You can save this page to use it offline. <a href="/">More free tools</a>.</p>
+    <p>Not affiliated with Google, Yelp, or any review platform, or with any government agency. Platform policies change, so check the linked official pages. General information only, not legal advice. Last reviewed: October 2026.</p>
+  </div>
+</footer>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+"use strict";
+
+var $ = function(id){return document.getElementById(id);};
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];});}
+function toast(msg){var t=$("toast");t.textContent=msg;t.classList.add("show");clearTimeout(toast._t);toast._t=setTimeout(function(){t.classList.remove("show");},1800);}
+function copyText(text){
+  if(navigator.clipboard && window.isSecureContext){navigator.clipboard.writeText(text).then(function(){toast("Copied");},function(){fallbackCopy(text);});}
+  else fallbackCopy(text);
+}
+function fallbackCopy(text){var ta=document.createElement("textarea");ta.value=text;ta.style.position="fixed";ta.style.opacity="0";document.body.appendChild(ta);ta.select();try{document.execCommand("copy");toast("Copied");}catch(e){toast("Select and copy manually");}document.body.removeChild(ta);}
+function download(name,text){var b=new Blob([text],{type:"text/plain"});var a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},500);}
+
+
+var TOPICS=[
+  ["wait",/\b(wait(ed|ing)?|slow(ly)?|took forever|forever|hours?|late|delay(ed|s)?|no[- ]?show|never showed)\b/i,"the wait","how long things took"],
+  ["rude",/\b(rude|rudely|attitude|disrespect\w*|unprofessional|ignored|yell(ed|ing)?|condescending|dismissive|unfriendly|snapp?ed)\b/i,"how you were treated","how you were treated by our team"],
+  ["price",/\b(price[sd]?|pricey|expensive|overcharg\w*|charged|charges?|bill(ed|ing)?|fees?|cost|refund\w*|rip[- ]?off|scam)\b/i,"the charges","the charges"],
+  ["quality",/\b(cold|bland|stale|undercooked|overcooked|raw|broken|defective|poor quality|didn'?t work|stopped working|sloppy|bad job|mistakes?|wrong|damaged|leak\w*)\b/i,"the quality","the quality of what you received"],
+  ["clean",/\b(dirty|filthy|smell(y|ed)?|stink\w*|gross|unclean|hair in|bugs?|roach\w*|mold\w*|sticky)\b/i,"cleanliness","cleanliness"],
+  ["comm",/\b(never called( me)? back|no one called|didn'?t (call|return|respond|answer)|no response|unreachable|communication|voicemail|ghost(ed)?)\b/i,"communication","our communication"],
+  ["booking",/\b(appointment|reservation|booking|cancel+ed|rescheduled|double[- ]booked)\b/i,"the booking","what happened with your booking"]
+];
+function v(id){var el=$(id);return el?el.value.trim():"";}
+function c(id){var el=$(id);return !!(el&&el.checked);}
+function list(arr){if(arr.length<2)return arr.join("");return arr.slice(0,-1).join(", ")+" and "+arr[arr.length-1];}
+function detect(text){var hits=[];TOPICS.forEach(function(t){if(t[1].test(text))hits.push(t);});return hits;}
+function sentenceCase(s){return s.charAt(0).toUpperCase()+s.slice(1);}
+
+function build(){
+  var text=v("rv_text"),type=$("biz_type").value,tone=$("tone").value,health=(type==="health");
+  $("healthNote").hidden=!health;
+  $("fixWrap").hidden=!c("f_fixed");$("policyWrap").hidden=!c("f_policy");
+  var name=health?"":v("rv_name").replace(/[^\w .'\-]/g,"").slice(0,40);
+  var biz=v("biz_name"),signer=v("signer"),contact=v("contact");
+  var hits=health?[]:detect(text);
+  $("topics").textContent=text?(health?"Healthcare mode: topics in the review are not repeated back.":(hits.length?"Topics noticed in the review: "+hits.map(function(h){return h[2];}).join(", ")+".":"No specific topic recognized; drafts will stay general.")):"";
+  var hi=name?("Hi "+name+","):(tone==="brief"?"Hello,":"Hello, and thank you for your feedback.");
+  if(name)hi+=(tone==="brief"?"":" thank you for taking the time to share this.");
+  var place=biz?(" at "+biz):"";
+  var about=hits.length?list(hits.slice(0,2).map(function(h){return h[3];})):"";
+  var ack,apol;
+  if(health){
+    ack="We take all feedback seriously. Privacy rules prevent us from discussing anyone's care or confirming whether someone is a patient"+(biz?" of "+biz:"")+".";
+    apol=tone==="warm"?"We're sorry to hear that anyone left feeling this way, and we want to understand what happened.":"We want everyone who contacts us to feel heard.";
+  } else if(c("f_norecord")){
+    ack="We take every review seriously, but we weren't able to find a record that matches this description.";
+    apol=tone==="warm"?"We'd still really like to understand what happened.":"We'd like to look into it properly.";
+  } else {
+    if(tone==="warm"){ack=about?"I'm truly sorry about "+about+". That's not the experience we want anyone to have"+place+".":"I'm truly sorry your experience"+place+" fell short. That's not what we want for anyone.";apol="";}
+    else if(tone==="pro"){ack=about?"We're sorry to hear about "+about+". This isn't the standard we aim for"+place+".":"We're sorry your experience"+place+" didn't meet expectations. This isn't the standard we aim for.";apol="";}
+    else {ack=about?"We're sorry about "+about+".":"We're sorry this visit didn't go well.";apol="";}
+  }
+  var facts=[];
+  if(!health){
+    if(c("f_busy"))facts.push(tone==="brief"?"We were short-staffed that day, which is our responsibility to plan for.":"We were busier than usual that day, but that's on us to plan for, not on you.");
+    if(c("f_outside"))facts.push("Part of what happened was outside our control, but we understand that doesn't make it less frustrating.");
+    if(c("f_policy")){var p=v("policy_text");facts.push(p?("For clarity, our policy is that "+p.replace(/\.$/,"")+". We're looking at how to make that clearer up front."):"This relates to one of our policies, and we're looking at how to explain it more clearly up front.");}
+    if(hits.some(function(h){return h[0]==="rude";}))facts.push("We're sharing this feedback with our team.");
+  }
+  var fixLine="";
+  if(c("f_fixed")&&!health){var f=v("fix_text");fixLine=f?("Since then, we've "+f.replace(/^we('ve| have)\s+/i,"").replace(/\.$/,"")+"."):"We've already made changes because of feedback like this.";}
+  var offline;
+  if(c("f_makeright")||c("f_norecord")||health){
+    var who=signer?signer.replace(/,.*$/,""):"";
+    if(contact)offline=(tone==="brief"?"Please contact ":"We'd welcome the chance to talk. Please contact ")+(who?who+" directly at ":"us directly at ")+contact+(c("f_makeright")&&!health&&!c("f_norecord")?" so we can make this right.":" so we can look into it.");
+    else offline=(tone==="brief"?"Please contact us directly":"We'd welcome the chance to talk. Please contact us directly")+(c("f_makeright")&&!health&&!c("f_norecord")?" so we can make this right.":" so we can look into it.");
+  } else offline=tone==="brief"?"":"Thank you for helping us improve.";
+  var sign=signer?("\n\n"+(tone==="warm"?"Warmly,\n":"")+"– "+signer):(biz?"\n\n– The "+biz+" team":"");
+
+  var d1=[hi,[ack,apol].filter(Boolean).join(" "),facts.join(" "),fixLine,offline].filter(Boolean).join("\n\n")+sign;
+  var shortAck=health?"Thank you for your feedback. Privacy rules prevent us from discussing anyone's care here.":(c("f_norecord")?"We couldn't find a record matching this, but we'd like to understand what happened.":(about?"We're sorry about "+about+".":"We're sorry your experience fell short."));
+  var d2=[name?("Hi "+name+","):"",shortAck+" "+(offline||"Please contact us directly so we can follow up.")].filter(Boolean).join("\n\n")+sign;
+  var d3t,d3;
+  if(health){
+    d3t="Alternative: invite contact only";
+    d3=["Thank you for sharing your concerns.","We're committed to listening to everyone who reaches out to us. Because of privacy rules, we can't respond to specifics online. "+(contact?"Please contact our office at "+contact:"Please contact our office directly")+" and ask for "+(signer?signer.replace(/,.*$/,""):"the practice manager")+"."].join("\n\n")+sign;
+  } else if(c("f_norecord")){
+    d3t="Alternative: no record, invite details";
+    d3=[name?("Hi "+name+","):"Hello,","Thank you for the review. We've checked our records and can't find a visit that matches what's described here. It's possible we've missed something, so "+(contact?"please reach out at "+contact:"please contact us directly")+" with any details that would help us look into it."].join("\n\n")+sign;
+  } else {
+    d3t=c("f_fixed")?"Alternative: lead with what changed":"Alternative: focus on improving";
+    var lead=fixLine||"Feedback like yours is how we get better, and we've shared it with the team.";
+    d3=[hi,lead,(about?"We know that's not what you came to us for, and we're sorry we let you down.":"We're sorry we let you down."),offline].filter(Boolean).join("\n\n")+sign;
+  }
+  render([["Draft 1: full reply",d1],["Draft 2: short reply",d2],["Draft 3: "+d3t.replace(/^Alternative: /,""),d3]]);
+}
+function render(drafts){
+  var box=$("drafts");box.innerHTML="";
+  drafts.forEach(function(d,i){
+    var div=document.createElement("div");div.className="draft";
+    div.innerHTML='<h3>'+esc(d[0])+'</h3><label class="sr-only" for="draft'+i+'">'+esc(d[0])+'</label><textarea id="draft'+i+'"></textarea><div class="row"><button type="button" data-cp="'+i+'">Copy</button><button type="button" class="secondary" data-ck="'+i+'">Check this draft</button><span class="count" id="cnt'+i+'"></span></div>';
+    box.appendChild(div);
+    var ta=$("draft"+i);ta.value=d[1];cnt(i);ta.addEventListener("input",function(){cnt(i);});
+  });
+}
+function cnt(i){var t=$("draft"+i).value;$("cnt"+i).textContent=t.length+" characters · "+(t.trim()?t.trim().split(/\s+/).length:0)+" words";}
+$("drafts").addEventListener("click",function(e){
+  var b=e.target.closest("button");if(!b)return;
+  if(b.hasAttribute("data-cp"))copyText($("draft"+b.getAttribute("data-cp")).value);
+  if(b.hasAttribute("data-ck")){$("my_reply").value=$("draft"+b.getAttribute("data-ck")).value;runCheck();$("check").scrollIntoView({behavior:"smooth"});}
+});
+$("form").addEventListener("input",build);$("form").addEventListener("change",build);
+
+/* ---------- Reply checker ---------- */
+var RULES=[
+  ["bad",/\b(liar|lying|lied|you'?re lying|made (this|it) up|fake review|troll|fraud(ulent)?|scammer|clearly (a )?competitor)\b/i,"Accusation","Publicly calling a reviewer a liar or fake usually backfires. The FTC rule prohibits knowingly or recklessly false accusations about reviewers. If you think it's fake, report it to the platform and keep your reply neutral."],
+  ["bad",/\b(sue|suing|lawsuit|lawyer|attorney|legal action|defamation|defamatory|libel|slander|cease and desist)\b/i,"Legal threat","Public legal threats look aggressive, and the FTC rule bars unfounded or groundless legal threats used to get reviews removed. Talk to a lawyer privately instead."],
+  ["bad",/\b(discount|coupon|voucher|free (meal|item|service|visit|night|session|month)|gift card|comp(ed|limentary)|refund)\b[^.]*\b(review|update|remove|change|delete|take (it )?down)\b|\b(remove|change|update|delete|take down)\b[^.]*\breview\b[^.]*\b(discount|coupon|free|refund|gift)\b/i,"Incentive tied to the review","Google prohibits offering incentives in exchange for changing or removing a review. Offer to fix the problem, but don't link anything to the review."],
+  ["warn",/\b(if you (would|could|can) )?(please )?(remove|delete|take down|change|update|edit) (your|this|the) review\b/i,"Asking to change the review","It's generally allowed to ask, but it often reads as pushy in public. Fix the problem first; people often update reviews on their own."],
+  ["bad",/\b(order|invoice|ticket|receipt|account|confirmation|reservation)\s*(#|no\.?|number)\s*\w+|\b\d{5,}\b/i,"Possible order/account number","Don't post order, account, or reservation numbers. They identify the customer."],
+  ["warn",/[\w.+-]+@[\w-]+\.[\w.]+|\(?\b\d{3}\)?[ .-]?\d{3}[ .-]?\d{4}\b/,"Email or phone number","Fine if it's YOUR business contact info. Make sure it isn't the customer's."],
+  ["warn",/\b(on|at) (mon|tues|wednes|thurs|fri|satur|sun)day\b|\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.? \d{1,2}\b|\b\d{1,2}(:\d{2})? ?(am|pm)\b|\b\d{1,2}\/\d{1,2}(\/\d{2,4})?\b/i,"Specific date or time","Mentioning when they visited confirms details about the customer. Leave it out unless it's needed."],
+  ["warn",/\byou (ordered|bought|purchased|booked|asked for|told (us|me|our)|said|called|came in|were here|visited|brought)\b/i,"Details about what the customer did","Describing what the customer did or said can reveal private information and sounds argumentative. Keep it general."],
+  ["bad",/\b(patient|treatment|diagnos\w*|procedure|prescri\w*|your (visit|appointment|chart|records?|x-?rays?|cleaning|surgery|therapy|session|insurance|claim|bill)|you were seen|when you came in)\b/i,"Health or visit details","For healthcare businesses, mentioning a visit, treatment, or bill can confirm someone is a patient. HHS has settled HIPAA cases over review replies. Remove it."],
+  ["warn",/\byou (should have|should've|failed to|didn'?t bother|refused to|never (told|said|asked))\b|\bnot our fault\b|\bif you had\b|\bunfortunately for you\b/i,"Blaming the customer","Blaming language reads as defensive to future customers. Explain limits calmly instead."],
+  ["warn",/\b(obviously|clearly|frankly|ridiculous|absurd|nonsense|entitled|unreasonable|whatever)\b/i,"Heated wording","Words like this can make a reply sound annoyed. Consider softer wording."],
+  ["warn",/!{2,}|\b[A-Z]{5,}\b/,"Shouting","Multiple exclamation marks or ALL CAPS read as angry."],
+  ["warn",/\b(sale|special offer|promo(tion)?|% off|book now|limited time|check out our)\b/i,"Promotional content","Google suggests being conversational, not promotional, in replies."]
+];
+function runCheck(){
+  var t=$("my_reply").value,out=$("checkOut");out.hidden=false;
+  if(!t.trim()){out.innerHTML="<p>Paste a reply first.</p>";return;}
+  var own=v("contact"),tt=own?t.split(own).join(" "):t; /* your own contact info (from step 1) isn't flagged */
+  var found=[];RULES.forEach(function(r){var m=tt.match(r[1]);if(m)found.push([r[0],r[2],r[3],m[0]]);});
+  var words=t.trim().split(/\s+/).length;
+  if(words>150)found.push(["warn","Long reply ("+words+" words)","Google suggests keeping replies short and simple. Aim for roughly 40–120 words.",""]);
+  if(!/\b(sorry|apolog|thank)/i.test(t))found.push(["warn","No thanks or apology","A short thank-you or a fair apology usually helps the tone, even if you disagree.",""]);
+  if(!/\b(contact|call|email|reach|message|talk)\b/i.test(t))found.push(["warn","No offer to talk privately","Inviting the reviewer to contact you directly shows you want to resolve it and moves the conversation offline.",""]);
+  var html="<h3>"+(found.length?found.length+" thing"+(found.length>1?"s":"")+" to look at":"No common problems found")+"</h3>";
+  if(found.length){html+='<ul class="res">'+found.map(function(f){return '<li><span class="flag '+f[0]+'">'+esc(f[1])+'</span>'+(f[3]?' <span class="small">matched: “'+esc(f[3].slice(0,60))+'”</span>':'')+'<br>'+esc(f[2])+'</li>';}).join("")+"</ul>";}
+  else html+="<p class='ok'>It's polite, offers a private follow-up, and avoids the common pitfalls this checker looks for. Give it one last read for accuracy.</p>";
+  html+='<p class="small">This is a pattern check, not legal advice.</p>';
+  out.innerHTML=html;
+}
+$("runCheck").addEventListener("click",runCheck);
+$("clearCheck").addEventListener("click",function(){$("my_reply").value="";$("checkOut").hidden=true;});
+build();
+
+
+/* ---------- Tip copy ---------- */
+document.querySelectorAll("[data-copy]").forEach(function(b){b.addEventListener("click",function(){copyText($(b.getAttribute("data-copy")).textContent.trim());});});
+
+})();
+</script>
+</body>
+</html>

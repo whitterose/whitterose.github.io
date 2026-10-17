@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tenant Letter Kit: free, private letters for US renters</title>
+<meta name="description" content="Free, private, works offline. Write a security deposit demand, repair request, habitability notice, or records request in minutes, with links to official tenant-rights resources and free legal aid. Not legal advice. Nothing you type leaves your device.">
+<meta name="author" content="Zelda Rose">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<style>
+:root{--ink:#1d2330;--muted:#5b6475;--bg:#f7f5f2;--card:#fff;--line:#e3dfd8;--ok:#1f7a4d;--warn:#a15c00;--bad:#b0263b;--radius:14px;--accent:#2f6b3a;--accent2:#22502b;--focus:#b6dcbf}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font:17px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg)}
+a{color:var(--accent2)}
+header.hero{background:linear-gradient(135deg,#15261a,#24502f 60%,#3b8a4c);color:#fff;padding:48px 20px 40px}
+.wrap{max-width:960px;margin:0 auto;padding:0 20px}
+.hero h1{font-size:clamp(28px,5vw,44px);line-height:1.15;margin:0 0 12px}
+.hero p{font-size:19px;max-width:720px;margin:0 0 18px;opacity:.95}
+.badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.badge{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:4px 12px;font-size:14px}
+.byline{font-size:14px;opacity:.85;margin-top:16px}
+.byline a{color:#fff}
+nav.toc{position:sticky;top:0;z-index:5;background:#fff;border-bottom:1px solid var(--line)}
+nav.toc .wrap{display:flex;gap:4px;overflow-x:auto;padding:8px 20px}
+nav.toc a{white-space:nowrap;text-decoration:none;color:var(--ink);padding:6px 12px;border-radius:8px;font-size:15px}
+nav.toc a:hover,nav.toc a:focus{background:#f1ece6}
+section{padding:36px 0;border-bottom:1px solid var(--line)}
+h2{font-size:28px;margin:0 0 8px}
+h3{font-size:20px;margin:22px 0 8px}
+.lead{color:var(--muted);margin-top:0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px;margin:16px 0;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+.grid{display:grid;gap:14px}
+@media(min-width:720px){.grid.two{grid-template-columns:1fr 1fr}.grid.three{grid-template-columns:1fr 1fr 1fr}}
+label{display:block;font-weight:600;font-size:15px;margin:10px 0 4px}
+input[type=text],input[type=date],input[type=number],input[type=email],input[type=tel],textarea,select{width:100%;font:inherit;font-size:16px;padding:10px 12px;border:1px solid #cfc8bd;border-radius:10px;background:#fff;color:var(--ink)}
+textarea{min-height:120px;resize:vertical}
+input:focus,textarea:focus,select:focus,button:focus,a:focus{outline:3px solid var(--focus);outline-offset:2px}
+.q{border-top:1px dashed var(--line);padding:12px 0}
+.q:first-child{border-top:0}
+.q .opts{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.q .opts label{font-weight:500;margin:0;display:flex;align-items:center;gap:6px;border:1px solid #cfc8bd;border-radius:999px;padding:6px 14px;cursor:pointer;background:#fff}
+.q .opts input{accent-color:var(--accent)}
+.checks label{font-weight:500;display:flex;align-items:flex-start;gap:8px;margin:6px 0;cursor:pointer}
+.checks input{accent-color:var(--accent);margin-top:5px}
+button,.btn{font:inherit;font-size:16px;font-weight:600;border:0;border-radius:10px;padding:10px 18px;background:var(--accent);color:#fff;cursor:pointer;text-decoration:none;display:inline-block}
+button.secondary,.btn.secondary{background:#efe9e2;color:var(--ink)}
+button:hover{filter:brightness(1.07)}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:12px}
+.plan ol{padding-left:22px}
+.plan li{margin:10px 0}
+.tag{display:inline-block;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:2px 8px;border-radius:6px;margin-right:6px;vertical-align:2px}
+.tag.urgent{background:#fde2e6;color:var(--bad)}
+.tag.money{background:#e1f3ea;color:var(--ok)}
+.tag.info{background:#eee8ff;color:#4b3aa6}
+.tag.maybe{background:#fff1d6;color:var(--warn)}
+table{width:100%;border-collapse:collapse;font-size:15px}
+th,td{border-bottom:1px solid var(--line);padding:8px 6px;text-align:left;vertical-align:top}
+th{background:#faf8f5}
+td.num{text-align:right;white-space:nowrap}
+.flag{display:inline-block;font-size:12px;font-weight:700;border-radius:6px;padding:1px 7px;margin:2px 4px 2px 0}
+.flag.bad{background:#fde2e6;color:var(--bad)}
+.flag.warn{background:#fff1d6;color:var(--warn)}
+.letter{white-space:pre-wrap;font-family:Georgia,"Times New Roman",serif;font-size:16px;line-height:1.55;background:#fffdf9;border:1px solid var(--line);border-radius:10px;padding:22px;min-height:200px}
+.small{font-size:14px;color:var(--muted)}
+.note{background:#fff8e6;border:1px solid #f1d9a0;border-radius:10px;padding:12px 14px;font-size:15px}
+.ok{color:var(--ok)}
+details{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:10px 0}
+details summary{cursor:pointer;font-weight:600}
+.script{background:#f4f8ff;border-left:4px solid #6b8bd6;padding:10px 14px;border-radius:6px;margin:8px 0;font-style:italic}
+.tip{background:linear-gradient(180deg,#fff,#fbf7f2)}
+.addr{display:grid;grid-template-columns:auto 1fr auto;gap:8px 12px;align-items:center;margin:10px 0}
+.addr code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:14px;background:#f3efe9;border-radius:8px;padding:8px 10px;word-break:break-all;user-select:all}
+.coin{font-weight:700;min-width:44px}
+.copybtn{padding:6px 12px;font-size:14px}
+footer{padding:30px 0 50px;color:var(--muted);font-size:14px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#1d2330;color:#fff;padding:10px 16px;border-radius:10px;font-size:15px;opacity:0;transition:opacity .2s;pointer-events:none}
+#toast.show{opacity:1}
+@media print{
+  header.hero,nav.toc,section:not(.print-me),footer,.no-print,#toast{display:none!important}
+  body{background:#fff}
+  .print-me{border:0;padding:0}
+  .letter{border:0;padding:0;background:#fff;font-size:12pt}
+}
+
+.checks label{font-weight:500}
+.spaced{margin-top:6px}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <h1>Landlord problem? Put it in writing, the right way.</h1>
+    <p>Answer a few questions and get clear, polite, firm letters for a security deposit, repairs, unsafe conditions, or copies of your records. Plus links to official tenant-rights pages and free legal aid where you live.</p>
+    <div class="badges">
+      <span class="badge">100% free</span>
+      <span class="badge">Nothing you type leaves your device</span>
+      <span class="badge">Works offline</span>
+      <span class="badge">No sign-up</span>
+    </div>
+    <div class="byline">Made by <strong>Zelda Rose</strong> · For US renters · Not legal advice · Last reviewed October 2026</div>
+  </div>
+</header>
+
+<nav class="toc" aria-label="Sections">
+  <div class="wrap">
+    <a href="#plan">1. What's going on?</a>
+    <a href="#letters">2. Write my letter</a>
+    <a href="#tips">3. Before you send</a>
+    <a href="#rights">4. General principles</a>
+    <a href="#help">5. Free legal help</a>
+    <a href="#tip">Support this</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<section id="plan">
+  <h2>1. What's going on?</h2>
+  <p class="lead">Tick everything that applies. You'll get a short plan and the right letters.</p>
+  <div class="card" id="wizard">
+    <div class="q"><strong>Which state is the rental in?</strong>
+      <select id="state" aria-label="State" class="spaced">
+          <option value="">Choose a state (optional)</option>
+          <option>Alabama</option>
+          <option>Alaska</option>
+          <option>Arizona</option>
+          <option>Arkansas</option>
+          <option>California</option>
+          <option>Colorado</option>
+          <option>Connecticut</option>
+          <option>Delaware</option>
+          <option>District of Columbia</option>
+          <option>Florida</option>
+          <option>Georgia</option>
+          <option>Hawaii</option>
+          <option>Idaho</option>
+          <option>Illinois</option>
+          <option>Indiana</option>
+          <option>Iowa</option>
+          <option>Kansas</option>
+          <option>Kentucky</option>
+          <option>Louisiana</option>
+          <option>Maine</option>
+          <option>Maryland</option>
+          <option>Massachusetts</option>
+          <option>Michigan</option>
+          <option>Minnesota</option>
+          <option>Mississippi</option>
+          <option>Missouri</option>
+          <option>Montana</option>
+          <option>Nebraska</option>
+          <option>Nevada</option>
+          <option>New Hampshire</option>
+          <option>New Jersey</option>
+          <option>New Mexico</option>
+          <option>New York</option>
+          <option>North Carolina</option>
+          <option>North Dakota</option>
+          <option>Ohio</option>
+          <option>Oklahoma</option>
+          <option>Oregon</option>
+          <option>Pennsylvania</option>
+          <option>Rhode Island</option>
+          <option>South Carolina</option>
+          <option>South Dakota</option>
+          <option>Tennessee</option>
+          <option>Texas</option>
+          <option>Utah</option>
+          <option>Vermont</option>
+          <option>Virginia</option>
+          <option>Washington</option>
+          <option>West Virginia</option>
+          <option>Wisconsin</option>
+          <option>Wyoming</option>
+      </select>
+      <p class="small">Tenant law is mostly state and local law, so this matters a lot. This kit doesn't contain state-specific deadlines; it points you to where to look them up.</p></div>
+    <div class="q"><strong>What's happening?</strong>
+      <div class="checks">
+        <label><input type="checkbox" class="sit" value="deposit"> I moved out, and my security deposit wasn't returned, or the deductions look wrong</label>
+        <label><input type="checkbox" class="sit" value="repair"> Something in my home needs repair</label>
+        <label><input type="checkbox" class="sit" value="hab"> A condition affects health or safety (no heat or hot water, leaks, mold, pests, unsafe wiring, broken locks, sewage…)</label>
+        <label><input type="checkbox" class="sit" value="records"> I want copies of my lease, rent ledger, inspection reports, or other records</label>
+        <label><input type="checkbox" class="sit" value="evict"> I got an eviction notice or court papers</label>
+        <label><input type="checkbox" class="sit" value="retal"> I think my landlord is retaliating (rent hike, threats, or a notice after I complained)</label>
+        <label><input type="checkbox" class="sit" value="discrim"> I think I'm being treated differently because of race, disability, family status, religion, sex, national origin, or color</label>
+      </div></div>
+    <div class="q"><strong>Is your building public housing, or HUD-subsidized or -insured?</strong>
+      <div class="opts">
+        <label><input type="radio" name="hud" value="yes"> Yes</label>
+        <label><input type="radio" name="hud" value="no"> No</label>
+        <label><input type="radio" name="hud" value="unsure"> Not sure</label>
+      </div></div>
+    <div class="row"><button type="button" id="makePlan">Show my plan</button><button type="button" class="secondary" id="resetPlan">Start over</button></div>
+  </div>
+  <div class="card plan" id="planOut" hidden aria-live="polite"></div>
+</section>
+
+<section id="letters">
+  <h2>2. Write my letter</h2>
+  <p class="lead">Pick a letter and fill in the details. Everything stays on this page. Keep the tone factual: a judge, inspector, or mediator may read it later.</p>
+  <div class="card no-print">
+    <label for="ltype">Which letter?</label>
+    <select id="ltype">
+      <option value="deposit">Security deposit return demand</option>
+      <option value="repair">Repair request</option>
+      <option value="hab">Formal notice of a health or safety (habitability) problem</option>
+      <option value="records">Request for written records</option>
+    </select>
+    <div class="grid two">
+      <div><label for="f_name">Your full name(s)</label><input type="text" id="f_name" autocomplete="name"></div>
+      <div><label for="f_unit">Rental address (including unit #)</label><input type="text" id="f_unit"></div>
+      <div><label for="f_mail">Your current mailing address, if different</label><input type="text" id="f_mail" placeholder="e.g. your forwarding address"></div>
+      <div><label for="f_contact">Your phone or email (optional)</label><input type="text" id="f_contact"></div>
+      <div><label for="f_ll">Landlord or property manager</label><input type="text" id="f_ll"></div>
+      <div><label for="f_lladdr">Their address</label><input type="text" id="f_lladdr"></div>
+      <div><label for="f_lease">Lease start date (optional)</label><input type="text" id="f_lease" placeholder="e.g. June 1, 2025"></div>
+    </div>
+    <div id="extraFields"></div>
+    <div class="row">
+      <button type="button" id="copyLetter">Copy letter</button>
+      <button type="button" class="secondary" id="printLetter">Print / Save as PDF</button>
+      <button type="button" class="secondary" id="dlLetter">Download .txt</button>
+    </div>
+    <p class="small">Anything in [brackets] still needs your input. Delete any sentence that isn't true for you.</p>
+  </div>
+  <div class="card print-me"><div class="letter" id="letterOut" aria-live="polite"></div></div>
+</section>
+
+<section id="tips">
+  <h2>3. Before you send</h2>
+  <div class="grid two">
+    <div class="card"><h3>Send it so you can prove it</h3><p>Use a method that gives you proof: certified mail with a return receipt, or whatever delivery method your lease requires for notices. Email too if your landlord uses it. Keep a copy of every letter and every receipt.</p></div>
+    <div class="card"><h3>Document everything</h3><p>Take dated photos and videos of the problem, or of the unit at move-out. Keep texts, emails, and repair receipts. Write down the date and the name of everyone you talk to.</p></div>
+    <div class="card"><h3>Don't stop paying rent on your own</h3><p>Some states let tenants withhold rent, pay into court, or "repair and deduct," but only by following exact steps. Doing it wrong can lead to eviction. Check your state's rules, or ask legal aid, first.</p></div>
+    <div class="card"><h3>Call the local inspector for serious problems</h3><p>For serious health or safety problems, many cities and counties have a housing or code enforcement office that can inspect. Search your city or county website for "code enforcement" or "housing inspection." For mold, see the <a href="https://www.epa.gov/mold" rel="noopener">EPA's mold page</a>.</p></div>
+    <div class="card"><h3>Never ignore court papers</h3><p>If you get an eviction lawsuit or court summons, get legal help right away. Deadlines in eviction cases can be very short, and missing one can mean losing automatically.</p></div>
+    <div class="card"><h3>Keep it calm</h3><p>Facts, dates, and a clear request work better than anger. Assume the letter could become evidence.</p></div>
+  </div>
+</section>
+
+<section id="rights">
+  <h2>4. General principles (check your state)</h2>
+  <p class="lead">These are broad principles, not your state's exact rules. Look up your state through the official links below.</p>
+  <div class="grid two">
+    <div class="card"><h3>Security deposits</h3>
+      <p>The laws of most states limit the size of a deposit, say what it can be used for, and set specific rules for when and how landlords must return it. California is one example: there, the deadline to return a deposit is 21 days after the tenant moves out. Deadlines and rules differ from state to state.</p>
+      <p class="small">Source: <a href="https://www.law.cornell.edu/wex/security_deposit" rel="noopener">Cornell Law School LII: security deposit</a>.</p></div>
+    <div class="card"><h3>Habitability</h3>
+      <p>Most US jurisdictions recognize an "implied warranty of habitability": landlords must keep residential rentals safe and fit to live in, even if the lease doesn't mention repairs. Habitable generally means substantially complying with housing codes. Tenant remedies vary by state and can include repairs, court action, or (in some places) withholding rent.</p>
+      <p class="small">Source: <a href="https://www.law.cornell.edu/wex/implied_warranty_of_habitability" rel="noopener">Cornell Law School LII: implied warranty of habitability</a>.</p></div>
+    <div class="card"><h3>Retaliation</h3>
+      <p>The habitability doctrine is often linked to protections against retaliatory eviction, which bar landlords from evicting or punishing tenants for reporting housing code violations. Whether and how this applies depends on your state and city.</p>
+      <p class="small">Source: <a href="https://www.law.cornell.edu/wex/implied_warranty_of_habitability" rel="noopener">Cornell LII</a>.</p></div>
+    <div class="card"><h3>Discrimination</h3>
+      <p>If you believe you've experienced housing discrimination, you can file a complaint with HUD's Office of Fair Housing and Equal Opportunity.</p>
+      <p class="small">Source: <a href="https://www.hud.gov/fairhousing/fileacomplaint" rel="noopener">HUD: File a fair housing complaint</a>.</p></div>
+    <div class="card"><h3>HUD-insured or HUD-managed buildings</h3>
+      <p>If HUD insures or manages your property, you can report the landlord's negligence or fraud to HUD's Multifamily Housing Complaint Line.</p>
+      <p class="small">Sources: <a href="https://www.usa.gov/tenant-rights" rel="noopener">USA.gov: tenant rights</a>; <a href="https://www.hud.gov/program_offices/housing/mfh/hc/complaint" rel="noopener">HUD Multifamily Housing Complaint Line</a>.</p></div>
+    <div class="card"><h3>Find your state's rules</h3>
+      <p>USA.gov's tenant-rights page links to HUD's list of state tenant-rights resources, which can include your attorney general, housing agency, or state tenant handbook. Your state attorney general's consumer office is another good source.</p>
+      <p class="small"><a href="https://www.usa.gov/tenant-rights" rel="noopener">USA.gov: How to file a complaint against a landlord</a> · <a href="https://www.hud.gov/topics/rental_assistance/tenantrights" rel="noopener">HUD: tenant rights by state</a> · <a href="https://www.usa.gov/state-consumer" rel="noopener">USA.gov: state consumer protection offices</a></p></div>
+  </div>
+</section>
+
+<section id="help">
+  <h2>5. Free legal help</h2>
+  <div class="card">
+    <ul>
+      <li><strong>LawHelp.org:</strong> find nonprofit legal aid and self-help information for your state: <a href="https://www.lawhelp.org/" rel="noopener">lawhelp.org</a></li>
+      <li><strong>Legal Services Corporation:</strong> find an LSC-funded legal aid office near you: <a href="https://www.lsc.gov/about-lsc/what-legal-aid/get-legal-help" rel="noopener">lsc.gov</a></li>
+      <li><strong>LawHelp Interactive:</strong> free court forms and legal documents for housing and other issues: <a href="https://lawhelpinteractive.org/" rel="noopener">lawhelpinteractive.org</a></li>
+      <li><strong>ABA Free Legal Answers:</strong> ask a volunteer lawyer a civil legal question online, if you qualify: <a href="https://abafreelegalanswers.org/" rel="noopener">abafreelegalanswers.org</a></li>
+      <li><strong>USA.gov legal aid guide:</strong> <a href="https://www.usa.gov/legal-aid" rel="noopener">usa.gov/legal-aid</a></li>
+    </ul>
+  </div>
+  <div class="note"><strong>Important:</strong> This kit gives general information and letter templates. It is not legal advice, and using it doesn't create a lawyer-client relationship. Landlord-tenant law varies by state and city and changes over time. For an eviction, a lawsuit, a large deposit, or anything urgent, contact legal aid.</div>
+</section>
+
+
+<section id="tip" class="tip">
+  <h2>Support this project (optional)</h2>
+  <p class="lead">This kit is free and always will be. There are no ads and no tracking, and you'll never be asked to sign up. If it helped you get your deposit back or a repair done, and you'd like to help keep free tools like this coming, a small crypto tip is welcome. It's completely optional.</p>
+  <div class="card">
+    <div class="addr">
+      <span class="coin">SOL</span><code id="addr-sol">FBL1ez549NQscEm2Ly67TBxesknPcHfmRddnyiBF1kiA</code><button type="button" class="secondary copybtn" data-copy="addr-sol">Copy</button>
+      <span class="coin">ETH</span><code id="addr-eth">0xb46A6182Bf50EfC4012603803dEFe1CADd4Da4De</code><button type="button" class="secondary copybtn" data-copy="addr-eth">Copy</button>
+      <span class="coin">XRP</span><code id="addr-xrp">rw2ciyaNshpHe7bCHo4bRWq6pqqynnWKQg</code><button type="button" class="secondary copybtn" data-copy="addr-xrp">Copy</button>
+      <span class="coin">XRP tag</span><code id="addr-xrptag">1476447851</code><button type="button" class="secondary copybtn" data-copy="addr-xrptag">Copy</button>
+    </div>
+    <p class="note"><strong>XRP: you must include the destination tag/memo <code>1476447851</code>.</strong> If you send XRP without it, the tip may be lost. ETH address: Ethereum mainnet only. Always check the address in your wallet before you send.</p>
+    <p class="small">Can't tip? Sharing this page with a neighbor or a tenants' group helps just as much. Tips are gifts, not payment for advice.</p>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+<p>Tenant Letter Kit, by Zelda Rose. This page uses no cookies and no analytics, and it never uploads anything. Everything runs in your browser, and you can save this page to use it offline. <a href="/">More free tools</a>.</p>
+    <p>Not affiliated with HUD, USA.gov, any court, or any legal aid organization. General information only, not legal advice. Last reviewed: October 2026.</p>
+  </div>
+</footer>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+"use strict";
+
+var $ = function(id){return document.getElementById(id);};
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];});}
+function toast(msg){var t=$("toast");t.textContent=msg;t.classList.add("show");clearTimeout(toast._t);toast._t=setTimeout(function(){t.classList.remove("show");},1800);}
+function copyText(text){
+  if(navigator.clipboard && window.isSecureContext){navigator.clipboard.writeText(text).then(function(){toast("Copied");},function(){fallbackCopy(text);});}
+  else fallbackCopy(text);
+}
+function fallbackCopy(text){var ta=document.createElement("textarea");ta.value=text;ta.style.position="fixed";ta.style.opacity="0";document.body.appendChild(ta);ta.select();try{document.execCommand("copy");toast("Copied");}catch(e){toast("Select and copy manually");}document.body.removeChild(ta);}
+function download(name,text){var b=new Blob([text],{type:"text/plain"});var a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},500);}
+
+
+function val(name){var el=document.querySelector('input[name="'+name+'"]:checked');return el?el.value:"";}
+function sits(){return Array.prototype.map.call(document.querySelectorAll('input.sit:checked'),function(e){return e.value;});}
+var L={usagov:'<a href="https://www.usa.gov/tenant-rights" rel="noopener">USA.gov tenant rights</a>',lawhelp:'<a href="https://www.lawhelp.org/" rel="noopener">LawHelp.org</a>',lsc:'<a href="https://www.lsc.gov/about-lsc/what-legal-aid/get-legal-help" rel="noopener">LSC legal aid finder</a>',fh:'<a href="https://www.hud.gov/fairhousing/fileacomplaint" rel="noopener">HUD fair housing complaint</a>',mf:'<a href="https://www.hud.gov/program_offices/housing/mfh/hc/complaint" rel="noopener">HUD Multifamily Housing Complaint Line</a>',ag:'<a href="https://www.usa.gov/state-consumer" rel="noopener">your state consumer protection office</a>'};
+$("makePlan").addEventListener("click",function(){
+  var s=sits(),st=$("state").value,hud=val("hud"),steps=[];
+  var where=st?st:"your state";
+  if(s.indexOf("evict")>-1)steps.push(["urgent","Get legal help today. Don't wait.","Eviction cases can have very short deadlines. Contact legal aid through "+L.lawhelp+" or the "+L.lsc+". Never ignore court papers, and go to every hearing."]);
+  if(s.indexOf("hab")>-1)steps.push(["urgent","Send a formal written notice about the health or safety problem.","Describe the conditions, when they started, and ask for repairs by a specific date. Use the <a href=\"#letters\" data-letter=\"hab\">habitability notice</a>. For serious problems, contact your city or county code enforcement office for an inspection."]);
+  if(s.indexOf("repair")>-1)steps.push(["info","Ask for repairs in writing.","Even if you've already asked by phone or text, a dated letter creates a clear record. Use the <a href=\"#letters\" data-letter=\"repair\">repair request</a>."]);
+  if(s.indexOf("deposit")>-1)steps.push(["money","Demand your deposit (or an itemized list of deductions) in writing.","Look up "+where+"'s deposit deadline and rules through "+L.usagov+" or "+L.ag+", then add them to the <a href=\"#letters\" data-letter=\"deposit\">deposit letter</a>. Make sure the landlord has your forwarding address in writing. If they still don't pay, small claims court is a common next step. Legal aid can tell you how it works in "+where+"."]);
+  if(s.indexOf("records")>-1)steps.push(["info","Request your records in writing.","Ask for your lease, rent ledger, inspection reports, and deposit records. Use the <a href=\"#letters\" data-letter=\"records\">records request</a>."]);
+  if(s.indexOf("retal")>-1)steps.push(["urgent","Write down the timeline and talk to legal aid.","Note when you complained or requested repairs and when the landlord's action happened. Many places protect tenants against retaliation, but the rules vary, so ask legal aid through "+L.lawhelp+"."]);
+  if(s.indexOf("discrim")>-1)steps.push(["urgent","You can file a fair housing complaint.","Write down what happened, when, and who was involved. File with HUD: "+L.fh+"."]);
+  if(hud==="yes"||hud==="unsure")steps.push(["info","If HUD insures or manages your building, HUD can take complaints too.","Use the "+L.mf+". If you're not sure about your building's status, the property manager or your local housing authority can tell you."]);
+  steps.push(["info","Find "+where+"'s tenant rules.","Start at "+L.usagov+" (it links to HUD's state-by-state resources), then check "+L.ag+" and "+L.lawhelp+" for a state tenant handbook."]);
+  steps.push(["info","Keep a paper trail.","Keep copies of everything, dated photos, and notes from every call. Send letters in a way you can prove."]);
+  if(!s.length)steps.unshift(["info","Tick at least one situation above for a tailored plan.","Here are the general steps everyone should take:"]);
+  var html='<h3>Your plan</h3><ol>'+steps.map(function(x){return '<li><span class="tag '+x[0]+'">'+(x[0]==="urgent"?"Do first":x[0]==="money"?"Money back":"Good to know")+'</span><strong>'+x[1]+'</strong><br>'+x[2]+'</li>';}).join("")+'</ol><p class="small">General information, not legal advice.</p>';
+  var o=$("planOut");o.innerHTML=html;o.hidden=false;o.scrollIntoView({behavior:"smooth",block:"start"});
+  var first=["hab","repair","deposit","records"].filter(function(k){return s.indexOf(k)>-1;})[0];if(first){$("ltype").value=first;renderExtra();renderLetter();}
+});
+$("resetPlan").addEventListener("click",function(){document.querySelectorAll('#wizard input').forEach(function(i){i.checked=false;});$("state").value="";$("planOut").hidden=true;renderLetter();});
+document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[data-letter]");if(a){$("ltype").value=a.getAttribute("data-letter");renderExtra();renderLetter();}});
+
+var EXTRA={
+  deposit:[["x_moveout","Date you moved out and returned the keys","text"],["x_fwd","Date you gave your forwarding address (if you did)","text"],["x_dep","Deposit amount ($)","text"],["x_ret","Amount returned so far ($, if any)","text"],["x_ded","Deductions you dispute, and why (one per line; leave blank if you got nothing back)","textarea"],["x_law","Your state's deposit rule, if you looked it up (e.g. statute and deadline)","text"],["x_days","Days to respond before you take next steps","text","14"]],
+  repair:[["x_items","What needs repair (one item per line, with location)","textarea"],["x_noticed","When you first noticed it","text"],["x_prior","Earlier requests (dates and how: phone, text, portal)","text"],["x_access","When repair workers can come in (optional)","text"],["x_days","Ask for repairs within how many days?","text","14"]],
+  hab:[["x_items","Conditions (one per line; be specific: where, how bad)","textarea"],["x_noticed","When it started","text"],["x_prior","Earlier requests (dates and how)","text"],["x_impact","How it affects your health, safety, or use of the home","textarea"],["x_days","Ask for repairs within how many days?","text","7"],["x_code","Mention that you may contact local code enforcement? (type yes or no)","text","yes"]],
+  records:[["x_recs","Records you want (edit the list)","textarea","- A copy of my signed lease and any addendums or renewals\n- My rent ledger / payment history showing all charges, payments, and fees\n- The move-in inspection or condition report, and any photos\n- Records of my security deposit (amount, where it is held, and any interest)\n- My repair requests and the related work orders\n- Copies of any notices you have sent me"],["x_period","Time period (optional)","text"],["x_days","Ask for a reply within how many days?","text","14"]]
+};
+function renderExtra(){
+  var t=$("ltype").value,box=$("extraFields"),keep={};
+  box.querySelectorAll("input,textarea").forEach(function(el){keep[el.id]=el.value;});
+  box.innerHTML='<div class="grid two">'+EXTRA[t].map(function(f){return '<div'+(f[2]==="textarea"?' style="grid-column:1/-1"':'')+'><label for="'+f[0]+'">'+f[1]+'</label>'+(f[2]==="textarea"?'<textarea id="'+f[0]+'"></textarea>':'<input type="text" id="'+f[0]+'">')+'</div>';}).join("")+'</div>';
+  EXTRA[t].forEach(function(f){if(f[3]!==undefined)$(f[0]).value=f[3];});
+  Object.keys(keep).forEach(function(k){if($(k)&&keep[k]&&!(EXTRA[t].some(function(f){return f[0]===k&&k==="x_days";})))$(k).value=keep[k];});
+}
+function g(id,ph){var el=$(id);var v=el?el.value.trim():"";return v||("["+ph+"]");}
+function opt(id){var el=$(id);return el?el.value.trim():"";}
+function today(){return new Date().toLocaleDateString("en-US",{year:"numeric",month:"long",day:"numeric"});}
+function bullets(txt){return txt.split(/\n/).map(function(l){return l.trim();}).filter(Boolean).map(function(l){return "  - "+l.replace(/^\s*[-•*]\s*/,"");}).join("\n");}
+function money(s){return s?("$"+s.replace(/^\$/,"")):"";}
+function head(subject){
+  var st=$("state").value;
+  var lines=[g("f_name","Your name")];var m=opt("f_mail");lines.push(m||g("f_unit","Your address"));var c=opt("f_contact");if(c)lines.push(c);
+  lines.push("",today(),"",g("f_ll","Landlord / property manager"),g("f_lladdr","Their address"),"");
+  lines.push("RE: "+subject);lines.push("Rental property: "+g("f_unit","rental address and unit"));
+  var ls=opt("f_lease");if(ls)lines.push("Lease start date: "+ls);
+  return lines.join("\n")+"\n\nDear "+(opt("f_ll")||"[Landlord name]")+",\n\n";
+}
+function sign(){return "\n\nSincerely,\n\n\n"+g("f_name","Your name")+"\n\nI am keeping a copy of this letter for my records.";}
+function stateLaw(){var st=$("state").value;return st?(st+" law"):"applicable state and local law";}
+var BODY={
+  deposit:function(){
+    var dep=money(opt("x_dep")),ret=money(opt("x_ret")),ded=opt("x_ded"),law=opt("x_law"),days=opt("x_days")||"14",fwd=opt("x_fwd");
+    var s="I moved out of the rental property and returned the keys on "+g("x_moveout","move-out date")+". "+(fwd?"I gave you my forwarding address in writing on "+fwd+". ":"")+"My forwarding address is "+(opt("f_mail")||"[forwarding address]")+".\n\n";
+    s+="I paid a security deposit of "+(dep||"[amount]")+". ";
+    if(ret){s+="To date, I have received "+ret+".";}else{s+="To date, I have not received my deposit or an itemized statement of deductions.";}
+    s+="\n\n";
+    if(ded){s+="I dispute the following deductions:\n\n"+bullets(ded)+"\n\nI left the unit clean and in the same condition as when I moved in, except for normal wear and tear. I have dated photos documenting its condition.\n\n";}
+    s+=(law?"My understanding is that "+law+" governs the return of my deposit. ":"My understanding is that "+stateLaw()+" sets rules and deadlines for returning security deposits. ")+"Please send "+(ret?"the remaining balance":"my full deposit")+", or an itemized statement of deductions with receipts or estimates supporting each charge, to my forwarding address within "+days+" days of the date of this letter.\n\n";
+    s+="If I do not receive a response by then, I intend to pursue the remedies available to me, which may include filing a claim in small claims court. I would prefer to resolve this directly with you.";
+    return head("Return of security deposit")+s+sign();
+  },
+  repair:function(){
+    var s="I am writing to request the following repairs at the rental property:\n\n"+bullets(opt("x_items")||"[Describe each problem and where it is]")+"\n\n";
+    s+="I first noticed "+(opt("x_items").split(/\n/).filter(Boolean).length>1?"these problems":"this problem")+" on "+g("x_noticed","date")+". "+(opt("x_prior")?"I previously reported it on "+opt("x_prior")+". ":"")+"\n\n";
+    s+="Please make these repairs within "+(opt("x_days")||"14")+" days of the date of this letter, or contact me to schedule them. "+(opt("x_access")?"Workers can access the unit "+opt("x_access")+". ":"")+"Please give me advance notice before entering, as required by our lease and "+stateLaw()+".\n\n";
+    s+="Please confirm in writing when the repairs are scheduled. Thank you for your prompt attention.";
+    return head("Request for repairs")+s+sign();
+  },
+  hab:function(){
+    var days=opt("x_days")||"7",code=/^y/i.test(opt("x_code")||"yes");
+    var s="This letter is formal written notice of the following conditions at the rental property, which affect health and safety:\n\n"+bullets(opt("x_items")||"[Describe each condition, where it is, and how serious it is]")+"\n\n";
+    s+="These conditions began on or about "+g("x_noticed","date")+". "+(opt("x_prior")?"I previously reported them on "+opt("x_prior")+", but they have not been fixed. ":"")+"\n\n";
+    if(opt("x_impact"))s+="These conditions affect my household as follows: "+opt("x_impact")+"\n\n";
+    s+="I understand that landlords are generally required to keep rental homes safe and fit to live in, in compliance with applicable housing codes and "+stateLaw()+". I ask that you repair these conditions within "+days+" days of the date of this letter. If any condition is an emergency, I ask that you address it immediately.\n\n";
+    if(code)s+="If these conditions are not repaired, I may contact the local housing or code enforcement office to request an inspection.\n\n";
+    s+="I am documenting these conditions with dated photos. Please confirm in writing when repairs will be made, and give me advance notice before entering the unit. This notice does not waive any of my rights.";
+    return head("Notice of conditions affecting health and safety")+s+sign();
+  },
+  records:function(){
+    var s="I am requesting copies of the following records related to my tenancy"+(opt("x_period")?" for the period "+opt("x_period"):"")+":\n\n"+bullets(opt("x_recs")||"[List the records you want]")+"\n\n";
+    s+="Please send them to me by email or by mail at the address above within "+(opt("x_days")||"14")+" days of the date of this letter. If any record does not exist, please tell me so in writing. If you charge a copying fee, please tell me the amount before sending.\n\nThank you.";
+    return head("Request for copies of tenancy records")+s+sign();
+  }
+};
+function renderLetter(){$("letterOut").textContent=BODY[$("ltype").value]();}
+$("ltype").addEventListener("change",function(){renderExtra();renderLetter();});
+document.getElementById("letters").addEventListener("input",renderLetter);
+$("state").addEventListener("change",renderLetter);
+$("copyLetter").addEventListener("click",function(){copyText($("letterOut").textContent);});
+$("printLetter").addEventListener("click",function(){window.print();});
+$("dlLetter").addEventListener("click",function(){download("tenant-letter-"+$("ltype").value+".txt",$("letterOut").textContent);});
+renderExtra();renderLetter();
+
+
+/* ---------- Tip copy ---------- */
+document.querySelectorAll("[data-copy]").forEach(function(b){b.addEventListener("click",function(){copyText($(b.getAttribute("data-copy")).textContent.trim());});});
+
+})();
+</script>
+</body>
+</html>

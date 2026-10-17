@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Benefits Finder: free, private starting point for US benefits</title>
+<meta name="description" content="Free, private, works offline. Answer a few questions to see which US programs (SNAP, Medicaid/CHIP, WIC, LIHEAP, Lifeline, SSI, and more) may be worth checking, with links to official apply pages. A starting point only. Nothing you type leaves your device.">
+<meta name="author" content="Zelda Rose">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<style>
+:root{--ink:#1d2330;--muted:#5b6475;--bg:#f7f5f2;--card:#fff;--line:#e3dfd8;--ok:#1f7a4d;--warn:#a15c00;--bad:#b0263b;--radius:14px;--accent:#5a3d8f;--accent2:#43296f;--focus:#cdbdf0}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font:17px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg)}
+a{color:var(--accent2)}
+header.hero{background:linear-gradient(135deg,#1e1631,#3d2a66 60%,#6b4bb0);color:#fff;padding:48px 20px 40px}
+.wrap{max-width:960px;margin:0 auto;padding:0 20px}
+.hero h1{font-size:clamp(28px,5vw,44px);line-height:1.15;margin:0 0 12px}
+.hero p{font-size:19px;max-width:720px;margin:0 0 18px;opacity:.95}
+.badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.badge{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:4px 12px;font-size:14px}
+.byline{font-size:14px;opacity:.85;margin-top:16px}
+.byline a{color:#fff}
+nav.toc{position:sticky;top:0;z-index:5;background:#fff;border-bottom:1px solid var(--line)}
+nav.toc .wrap{display:flex;gap:4px;overflow-x:auto;padding:8px 20px}
+nav.toc a{white-space:nowrap;text-decoration:none;color:var(--ink);padding:6px 12px;border-radius:8px;font-size:15px}
+nav.toc a:hover,nav.toc a:focus{background:#f1ece6}
+section{padding:36px 0;border-bottom:1px solid var(--line)}
+h2{font-size:28px;margin:0 0 8px}
+h3{font-size:20px;margin:22px 0 8px}
+.lead{color:var(--muted);margin-top:0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px;margin:16px 0;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+.grid{display:grid;gap:14px}
+@media(min-width:720px){.grid.two{grid-template-columns:1fr 1fr}.grid.three{grid-template-columns:1fr 1fr 1fr}}
+label{display:block;font-weight:600;font-size:15px;margin:10px 0 4px}
+input[type=text],input[type=date],input[type=number],input[type=email],input[type=tel],textarea,select{width:100%;font:inherit;font-size:16px;padding:10px 12px;border:1px solid #cfc8bd;border-radius:10px;background:#fff;color:var(--ink)}
+textarea{min-height:120px;resize:vertical}
+input:focus,textarea:focus,select:focus,button:focus,a:focus{outline:3px solid var(--focus);outline-offset:2px}
+.q{border-top:1px dashed var(--line);padding:12px 0}
+.q:first-child{border-top:0}
+.q .opts{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.q .opts label{font-weight:500;margin:0;display:flex;align-items:center;gap:6px;border:1px solid #cfc8bd;border-radius:999px;padding:6px 14px;cursor:pointer;background:#fff}
+.q .opts input{accent-color:var(--accent)}
+.checks label{font-weight:500;display:flex;align-items:flex-start;gap:8px;margin:6px 0;cursor:pointer}
+.checks input{accent-color:var(--accent);margin-top:5px}
+button,.btn{font:inherit;font-size:16px;font-weight:600;border:0;border-radius:10px;padding:10px 18px;background:var(--accent);color:#fff;cursor:pointer;text-decoration:none;display:inline-block}
+button.secondary,.btn.secondary{background:#efe9e2;color:var(--ink)}
+button:hover{filter:brightness(1.07)}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:12px}
+.plan ol{padding-left:22px}
+.plan li{margin:10px 0}
+.tag{display:inline-block;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:2px 8px;border-radius:6px;margin-right:6px;vertical-align:2px}
+.tag.urgent{background:#fde2e6;color:var(--bad)}
+.tag.money{background:#e1f3ea;color:var(--ok)}
+.tag.info{background:#eee8ff;color:#4b3aa6}
+.tag.maybe{background:#fff1d6;color:var(--warn)}
+table{width:100%;border-collapse:collapse;font-size:15px}
+th,td{border-bottom:1px solid var(--line);padding:8px 6px;text-align:left;vertical-align:top}
+th{background:#faf8f5}
+td.num{text-align:right;white-space:nowrap}
+.flag{display:inline-block;font-size:12px;font-weight:700;border-radius:6px;padding:1px 7px;margin:2px 4px 2px 0}
+.flag.bad{background:#fde2e6;color:var(--bad)}
+.flag.warn{background:#fff1d6;color:var(--warn)}
+.letter{white-space:pre-wrap;font-family:Georgia,"Times New Roman",serif;font-size:16px;line-height:1.55;background:#fffdf9;border:1px solid var(--line);border-radius:10px;padding:22px;min-height:200px}
+.small{font-size:14px;color:var(--muted)}
+.note{background:#fff8e6;border:1px solid #f1d9a0;border-radius:10px;padding:12px 14px;font-size:15px}
+.ok{color:var(--ok)}
+details{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:10px 0}
+details summary{cursor:pointer;font-weight:600}
+.script{background:#f4f8ff;border-left:4px solid #6b8bd6;padding:10px 14px;border-radius:6px;margin:8px 0;font-style:italic}
+.tip{background:linear-gradient(180deg,#fff,#fbf7f2)}
+.addr{display:grid;grid-template-columns:auto 1fr auto;gap:8px 12px;align-items:center;margin:10px 0}
+.addr code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:14px;background:#f3efe9;border-radius:8px;padding:8px 10px;word-break:break-all;user-select:all}
+.coin{font-weight:700;min-width:44px}
+.copybtn{padding:6px 12px;font-size:14px}
+footer{padding:30px 0 50px;color:var(--muted);font-size:14px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#1d2330;color:#fff;padding:10px 16px;border-radius:10px;font-size:15px;opacity:0;transition:opacity .2s;pointer-events:none}
+#toast.show{opacity:1}
+@media print{
+  header.hero,nav.toc,section:not(.print-me),footer,.no-print,#toast{display:none!important}
+  body{background:#fff}
+  .print-me{border:0;padding:0}
+  .letter{border:0;padding:0;background:#fff;font-size:12pt}
+}
+
+.prog{background:#fff;border:1px solid var(--line);border-left:5px solid var(--accent);border-radius:var(--radius);padding:16px 18px;margin:14px 0}
+.prog.maybe{border-left-color:#d39b2a}
+.prog h3{margin:0 0 6px}
+.prog .row{margin-top:8px}
+.prog .btn{font-size:15px;padding:8px 14px}
+.topnote{margin-top:20px}
+.snapbox{background:#f3f7fb;border:1px solid #cfe0ee;border-radius:10px;padding:12px 14px;font-size:15px;margin:10px 0}
+@media print{#results{display:block!important}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <h1>Which benefits might help your household?</h1>
+    <p>Answer a few private questions and get a short list of programs worth checking: food, health coverage, energy bills, phone service, disability, and more. Each one links straight to the official place to apply.</p>
+    <div class="badges">
+      <span class="badge">100% free</span>
+      <span class="badge">Nothing you type leaves your device</span>
+      <span class="badge">Works offline</span>
+      <span class="badge">No sign-up</span>
+    </div>
+    <div class="byline">Made by <strong>Zelda Rose</strong> · For people in the US · Last reviewed October 2026</div>
+  </div>
+</header>
+
+<nav class="toc" aria-label="Sections">
+  <div class="wrap">
+    <a href="#quiz">1. Questions</a>
+    <a href="#results">2. My list</a>
+    <a href="#prep">3. Applying tips</a>
+    <a href="#more">4. More help</a>
+    <a href="#tip">Support this</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<div class="note topnote"><strong>Please read:</strong> This is a starting point, not an eligibility decision. Every program has its own rules, many are run differently in each state, and rules change. Only the agency that runs a program can tell you whether you qualify. If a program looks close, <strong>apply anyway</strong>. Applying is free.</div>
+
+<section id="quiz">
+  <h2>1. A few questions</h2>
+  <p class="lead">Skip anything you'd rather not answer. Nothing is saved or sent.</p>
+  <div class="card" id="wizard">
+    <div class="grid two">
+      <div><label for="state">State or territory</label><select id="state"><option value="">Choose (optional)</option>
+        <option>Alabama</option>
+        <option>Alaska</option>
+        <option>Arizona</option>
+        <option>Arkansas</option>
+        <option>California</option>
+        <option>Colorado</option>
+        <option>Connecticut</option>
+        <option>Delaware</option>
+        <option>District of Columbia</option>
+        <option>Florida</option>
+        <option>Georgia</option>
+        <option>Hawaii</option>
+        <option>Idaho</option>
+        <option>Illinois</option>
+        <option>Indiana</option>
+        <option>Iowa</option>
+        <option>Kansas</option>
+        <option>Kentucky</option>
+        <option>Louisiana</option>
+        <option>Maine</option>
+        <option>Maryland</option>
+        <option>Massachusetts</option>
+        <option>Michigan</option>
+        <option>Minnesota</option>
+        <option>Mississippi</option>
+        <option>Missouri</option>
+        <option>Montana</option>
+        <option>Nebraska</option>
+        <option>Nevada</option>
+        <option>New Hampshire</option>
+        <option>New Jersey</option>
+        <option>New Mexico</option>
+        <option>New York</option>
+        <option>North Carolina</option>
+        <option>North Dakota</option>
+        <option>Ohio</option>
+        <option>Oklahoma</option>
+        <option>Oregon</option>
+        <option>Pennsylvania</option>
+        <option>Rhode Island</option>
+        <option>South Carolina</option>
+        <option>South Dakota</option>
+        <option>Tennessee</option>
+        <option>Texas</option>
+        <option>Utah</option>
+        <option>Vermont</option>
+        <option>Virginia</option>
+        <option>Washington</option>
+        <option>West Virginia</option>
+        <option>Wisconsin</option>
+        <option>Wyoming</option>
+        <option>Guam</option>
+        <option>U.S. Virgin Islands</option>
+        <option>Puerto Rico</option>
+        <option>Other U.S. territory</option>
+      </select></div>
+      <div><label for="hh">How many people live in your household?</label><input type="number" id="hh" min="1" max="20" placeholder="e.g. 3"></div>
+    </div>
+    <div class="q"><strong>Which best describes your household's money right now?</strong>
+      <div class="opts">
+        <label><input type="radio" name="inc" value="vlow"> Little or no income</label>
+        <label><input type="radio" name="inc" value="low"> Low: hard to cover basics</label>
+        <label><input type="radio" name="inc" value="mid"> Moderate: getting by, but tight</label>
+        <label><input type="radio" name="inc" value="unsure"> Not sure</label>
+      </div></div>
+    <div><label for="gross">Optional: household's total monthly income <em>before</em> taxes ($)</label><input type="number" id="gross" min="0" step="1" placeholder="e.g. 2400">
+      <p class="small">Only used for a rough check against SNAP's published federal income limits (see the source in your results).</p></div>
+    <div class="q"><strong>Does anyone in your household…</strong>
+      <div class="checks">
+        <label><input type="checkbox" id="h_preg"> …be pregnant, or had a baby in the last 6 months, or breastfeeding?</label>
+        <label><input type="checkbox" id="h_u5"> …include a baby or child under 5?</label>
+        <label><input type="checkbox" id="h_kids"> …include children under 18?</label>
+        <label><input type="checkbox" id="h_school"> …include a child in school (K–12)?</label>
+        <label><input type="checkbox" id="h_65"> …be 65 or older?</label>
+        <label><input type="checkbox" id="h_60"> …be 60 or older?</label>
+        <label><input type="checkbox" id="h_dis"> …have a disability or blindness that limits work?</label>
+        <label><input type="checkbox" id="h_medicare"> …have Medicare?</label>
+        <label><input type="checkbox" id="h_vet"> …have served in the military?</label>
+      </div></div>
+    <div class="q"><strong>What's going on right now?</strong>
+      <div class="checks">
+        <label><input type="checkbox" id="s_noins"> Someone has no health insurance</label>
+        <label><input type="checkbox" id="s_job"> Someone recently lost a job or had hours cut</label>
+        <label><input type="checkbox" id="s_work"> Someone worked (for pay or self-employed) in the last year</label>
+        <label><input type="checkbox" id="s_energy"> Trouble paying heating, cooling, or electric bills</label>
+        <label><input type="checkbox" id="s_phone"> Trouble paying for phone or internet</label>
+        <label><input type="checkbox" id="s_rent"> Trouble paying rent, or worried about losing housing</label>
+        <label><input type="checkbox" id="s_food"> Not enough food, or worried about running out</label>
+        <label><input type="checkbox" id="s_gets"> Already getting SNAP, Medicaid, SSI, or federal public housing assistance</label>
+      </div></div>
+    <div class="row"><button type="button" id="go">Show my list</button><button type="button" class="secondary" id="reset">Start over</button></div>
+  </div>
+</section>
+
+<section id="results">
+  <h2>2. Programs worth checking</h2>
+  <div id="out"><p class="small">Answer the questions above and tap <em>Show my list</em>.</p></div>
+  <div class="row no-print" id="outBtns" hidden><button type="button" id="copyList">Copy my list</button><button type="button" class="secondary" id="printList">Print / Save as PDF</button></div>
+</section>
+
+<section id="prep">
+  <h2>3. Tips for applying</h2>
+  <div class="grid two">
+    <div class="card"><h3>Gather documents</h3>
+      <p>Offices tell you what they need, but it commonly includes: ID for each person applying, proof of address (like a recent bill), and proof of income (recent pay stubs, a benefits letter, or your latest tax return). If you're already enrolled in SNAP, Medicaid, or TANF, bring proof. For WIC, that may show you're already income-eligible.</p>
+      <p class="small">Source: <a href="https://www.fna.usda.gov/wic/apply" rel="noopener">USDA: How to apply for WIC</a>.</p></div>
+    <div class="card"><h3>SNAP timing and interviews</h3>
+      <p>You apply in the state where you live. In most cases the state decides within 30 days, after an interview (usually by phone or in person). Some very-low-income households can get benefits within 7 days. If you're approved, benefits count from the day you applied, so apply early, even if you're missing a document.</p>
+      <p class="small">Source: <a href="https://www.fna.usda.gov/snap/recipient/eligibility" rel="noopener">USDA SNAP eligibility</a>.</p></div>
+    <div class="card"><h3>Denied? You can appeal</h3>
+      <p>For SNAP, you can ask for a fair hearing within 90 days of a decision you disagree with, by phone, in writing, or in person. Other programs have their own appeal rights, explained in your notice. Read every letter you get, and note the deadlines.</p>
+      <p class="small">Source: <a href="https://www.fna.usda.gov/snap/recipient/eligibility" rel="noopener">USDA SNAP eligibility</a>.</p></div>
+    <div class="card"><h3>Rules changed in 2025–2026</h3>
+      <p>USDA says the One Big Beautiful Bill Act of 2025 changes certain SNAP eligibility factors, including work requirements and non-citizen eligibility. HealthCare.gov notes that a law change narrowed which immigration statuses qualify for full Medicaid and CHIP. Always check current rules with your state.</p>
+      <p class="small">Sources: <a href="https://www.fna.usda.gov/snap/recipient/eligibility" rel="noopener">USDA</a>; <a href="https://www.healthcare.gov/medicaid-chip/" rel="noopener">HealthCare.gov</a>.</p></div>
+    <div class="card"><h3>Never pay to apply</h3>
+      <p>Applying for these government programs is free. Be wary of anyone who charges a fee or "guarantees" approval. For example, HHS warns that LIHEAP doesn't charge a fee and doesn't give direct grants to individuals.</p>
+      <p class="small">Source: <a href="https://acf.gov/ocs/programs-services/liheap" rel="noopener">HHS/ACF LIHEAP</a>.</p></div>
+    <div class="card"><h3>Ask for help applying</h3>
+      <p>Call <strong>211</strong> or visit <a href="https://www.211.org/" rel="noopener">211.org</a> for local help. USDA says that if you can't get to a SNAP office, someone else can act as your authorized representative if you designate them in writing.</p>
+      <p class="small">Source: <a href="https://www.fna.usda.gov/snap/recipient/eligibility" rel="noopener">USDA SNAP eligibility</a>.</p></div>
+  </div>
+</section>
+
+<section id="more">
+  <h2>4. More places to look</h2>
+  <div class="card">
+    <ul>
+      <li><strong>USA.gov Benefit Finder</strong>, the federal government's benefit questionnaire (benefits.gov now redirects here): <a href="https://www.usa.gov/benefit-finder" rel="noopener">usa.gov/benefit-finder</a></li>
+      <li><strong>All federal benefit topics:</strong> <a href="https://www.usa.gov/benefits" rel="noopener">usa.gov/benefits</a> · USAGov phone line: <strong>1-844-USAGOV1 (1-844-872-4681)</strong></li>
+      <li><strong>Your state's social services agency:</strong> <a href="https://www.usa.gov/state-social-services" rel="noopener">usa.gov/state-social-services</a></li>
+      <li><strong>211:</strong> local help with food, rent, utilities, and more: <a href="https://www.211.org/" rel="noopener">211.org</a></li>
+    </ul>
+  </div>
+  <div class="note"><strong>Important:</strong> This tool doesn't determine eligibility and isn't legal or financial advice. Not affiliated with any government agency. Program details are summarized from the linked official pages as of October 2026.</div>
+</section>
+
+
+<section id="tip" class="tip">
+  <h2>Support this project (optional)</h2>
+  <p class="lead">This tool is free and always will be. There are no ads and no tracking, and you'll never be asked to sign up. If you're in a position to help keep free tools like this coming, a small crypto tip is welcome. If you're using this because money is tight, please don't tip. It's completely optional.</p>
+  <div class="card">
+    <div class="addr">
+      <span class="coin">SOL</span><code id="addr-sol">FBL1ez549NQscEm2Ly67TBxesknPcHfmRddnyiBF1kiA</code><button type="button" class="secondary copybtn" data-copy="addr-sol">Copy</button>
+      <span class="coin">ETH</span><code id="addr-eth">0xb46A6182Bf50EfC4012603803dEFe1CADd4Da4De</code><button type="button" class="secondary copybtn" data-copy="addr-eth">Copy</button>
+      <span class="coin">XRP</span><code id="addr-xrp">rw2ciyaNshpHe7bCHo4bRWq6pqqynnWKQg</code><button type="button" class="secondary copybtn" data-copy="addr-xrp">Copy</button>
+      <span class="coin">XRP tag</span><code id="addr-xrptag">1476447851</code><button type="button" class="secondary copybtn" data-copy="addr-xrptag">Copy</button>
+    </div>
+    <p class="note"><strong>XRP: you must include the destination tag/memo <code>1476447851</code>.</strong> If you send XRP without it, the tip may be lost. ETH address: Ethereum mainnet only. Always check the address in your wallet before you send.</p>
+    <p class="small">Sharing this page with someone who might need it helps just as much. Tips are gifts, not payment for advice.</p>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+<p>Benefits Finder, by Zelda Rose. This page uses no cookies and no analytics, and it never uploads anything. Everything runs in your browser, and you can save this page to use it offline. <a href="/">More free tools</a>.</p>
+    <p>Not affiliated with any government agency. It doesn't determine eligibility. Rules vary by state and change over time. Only the agency running a program can decide. Last reviewed: October 2026.</p>
+  </div>
+</footer>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+"use strict";
+
+var $ = function(id){return document.getElementById(id);};
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];});}
+function toast(msg){var t=$("toast");t.textContent=msg;t.classList.add("show");clearTimeout(toast._t);toast._t=setTimeout(function(){t.classList.remove("show");},1800);}
+function copyText(text){
+  if(navigator.clipboard && window.isSecureContext){navigator.clipboard.writeText(text).then(function(){toast("Copied");},function(){fallbackCopy(text);});}
+  else fallbackCopy(text);
+}
+function fallbackCopy(text){var ta=document.createElement("textarea");ta.value=text;ta.style.position="fixed";ta.style.opacity="0";document.body.appendChild(ta);ta.select();try{document.execCommand("copy");toast("Copied");}catch(e){toast("Select and copy manually");}document.body.removeChild(ta);}
+function download(name,text){var b=new Blob([text],{type:"text/plain"});var a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},500);}
+
+
+/* SNAP gross monthly income limits (130% of poverty), 48 contiguous states, DC, Guam, USVI, Oct 1 2026 - Sep 30 2027.
+   Source: USDA Food and Nutrition Administration, SNAP Eligibility, Table 1 (https://www.fna.usda.gov/snap/recipient/eligibility), page updated Oct 1 2026. */
+var SNAP_GROSS=[0,1729,2345,2960,3575,4191,4806,5421,6037],SNAP_ADD=616;
+function snapLimit(n){return n<=8?SNAP_GROSS[n]:SNAP_GROSS[8]+(n-8)*SNAP_ADD;}
+function c(id){return $(id).checked;}
+function val(name){var el=document.querySelector('input[name="'+name+'"]:checked');return el?el.value:"";}
+function fmt(n){return "$"+n.toLocaleString("en-US");}
+function btn(href,text,sec){return '<a class="btn'+(sec?' secondary':'')+'" href="'+href+'" rel="noopener">'+text+'</a>';}
+var lastList=[];
+$("go").addEventListener("click",function(){
+  var inc=val("inc"),hh=parseInt($("hh").value,10),gross=$("gross").value===""?null:parseFloat($("gross").value),st=$("state").value;
+  var low=(inc==="vlow"||inc==="low"),unsure=(inc===""||inc==="unsure"),mid=(inc==="mid");
+  var older=c("h_60")||c("h_65"),dis=c("h_dis");
+  var P=[];
+  function add(level,name,why,facts,links){P.push({level:level,name:name,why:why,facts:facts,links:links});}
+  /* SNAP */
+  var snapNote="";
+  if(gross!==null&&!isNaN(gross)&&hh>=1){
+    if(/Alaska|Hawaii|Puerto Rico|Other/.test(st)){snapNote=(/Alaska|Hawaii/.test(st)?"USDA says SNAP income limits are higher in Alaska and Hawaii, so no comparison is shown.":"USDA's published table covers the 48 contiguous states, DC, Guam, and the U.S. Virgin Islands, so no comparison is shown for "+st+". Check with your local agency.");}
+    else{var lim=snapLimit(hh);
+      if(gross<=lim)snapNote="Your monthly income ("+fmt(gross)+") is at or under SNAP's federal <strong>gross</strong> income limit for a household of "+hh+" ("+fmt(lim)+", Oct 2026–Sep 2027). There is also a net income test after deductions.";
+      else snapNote="Your monthly income ("+fmt(gross)+") is above SNAP's federal gross limit for a household of "+hh+" ("+fmt(lim)+"). <strong>You may still qualify:</strong> households with someone 60+ or disabled only have to meet the net income limit, and most states use \"broad-based categorical eligibility,\" which can allow higher limits.";}
+  }
+  var snapLikely=low||(gross!==null&&hh>=1&&gross<=snapLimit(hh)&&!/Alaska|Hawaii|Puerto Rico|Other/.test(st))||c("s_food");
+  if(snapLikely||unsure||older||dis||(mid&&c("h_kids")))add(snapLikely?"likely":"maybe","SNAP (food assistance)","Monthly money for groceries on an EBT card.",
+    ["You apply through your state's SNAP agency. Each state has its own form and process.","Countable resources limit: $3,000, or $4,750 if someone is 60+ or disabled (some states allow more).","Income limits are updated every year."+(snapNote?'<div class="snapbox">'+snapNote+' <span class="small">Source: <a href="https://www.fna.usda.gov/snap/recipient/eligibility" rel="noopener">USDA SNAP eligibility</a>.</span></div>':"")],
+    [btn("https://www.fna.usda.gov/snap/state-directory","Find my state's SNAP office"),btn("https://www.fna.usda.gov/snap/recipient/eligibility","SNAP rules (USDA)",1)]);
+  /* Medicaid / CHIP */
+  if(c("s_noins")||low||unsure||c("h_preg")||c("h_kids")||dis||(older&&low))add((c("s_noins")&&(low||unsure))||c("h_preg")||(c("h_kids")&&(low||unsure))?"likely":"maybe","Medicaid and CHIP (health coverage)","Free or low-cost health coverage for eligible low-income adults, children, pregnant women, older adults, and people with disabilities.",
+    ["You can apply any time of year. HealthCare.gov says to apply even if you don't think you'll qualify, especially if you have children, are pregnant, or have a disability.","In certain states, CHIP covers children and pregnant women in families that earn too much for Medicaid.","Medicaid may help pay medical bills from the last 3 months.","Income rules and coverage differ by state."],
+    [btn("https://www.healthcare.gov/medicaid-chip/","Apply / find my state agency"),btn("https://www.healthcare.gov/screener/","Quick income check (HealthCare.gov)",1)]);
+  if(c("s_noins")&&mid)add("maybe","Marketplace health insurance savings","If your income is too high for Medicaid, you may qualify for lower costs on a HealthCare.gov plan.",["Your application shows whether you qualify for savings."],[btn("https://www.healthcare.gov/lower-costs/","Check savings (HealthCare.gov)")]);
+  /* WIC */
+  if(c("h_preg")||c("h_u5"))add(mid?"maybe":"likely","WIC (nutrition for moms, babies, and young kids)","Healthy foods, nutrition education, breastfeeding support, and referrals.",
+    ["For women who are pregnant, up to 6 months postpartum, or breastfeeding (up to the baby's first birthday), plus infants and children up to their 5th birthday.","If you or your children get Medicaid, SNAP, or TANF, you may already meet WIC's income rules.","You apply through a local WIC agency."],
+    [btn("https://www.fna.usda.gov/wic/apply","How to apply for WIC"),btn("https://www.fna.usda.gov/wic/eligibility-tool","WIC eligibility tool",1)]);
+  /* LIHEAP */
+  if(c("s_energy"))add(mid?"maybe":"likely","LIHEAP (help with energy bills)","Help with heating and cooling bills, energy crises, weatherization, and some energy-related home repairs.",
+    ["Benefits target low-income households, especially those with high energy bills or with members who are elderly, disabled, or a young child.","National Energy Assistance Referral (NEAR) line: <strong>1-866-674-6327</strong>, weekdays 9 a.m.–7 p.m. Eastern.","LIHEAP never charges a fee. HHS says to report anyone who asks for one."],
+    [btn("https://acf.gov/ocs/programs-services/liheap","LIHEAP (HHS)"),btn("https://www.energyhelp.us/","Where to apply: EnergyHelp.us",1)]);
+  /* Lifeline */
+  if(c("s_phone")||c("s_gets"))add(c("s_gets")?"likely":"maybe","Lifeline (discount on phone or internet)","A monthly discount on phone, internet, or bundled service from participating providers.",
+    ["Up to $9.25/month off (up to $34.25 on Tribal lands). One per household.","You qualify if household income is at or below 135% of the Federal Poverty Guidelines, or if someone gets SNAP, Medicaid, Federal Public Housing Assistance, SSI, Veterans Pension, or certain Tribal programs.","Help line: <strong>1-800-234-9473</strong>. Texas and Oregon use their own state application process."],
+    [btn("https://www.lifelinesupport.org/","Apply: LifelineSupport.org"),btn("https://www.fcc.gov/lifeline-consumers","Lifeline rules (FCC)",1)]);
+  /* SSI / SSDI */
+  if((c("h_65")||dis)&&(low||unsure))add("likely","SSI (Supplemental Security Income)","Monthly payments for people with little or no income and resources who are 65+, blind, or disabled (adults and children).",
+    ["Payment amount depends on income, living situation, and resources."],[btn("https://www.ssa.gov/ssi","SSI (Social Security)")]);
+  else if(c("h_65")||dis)add("maybe","SSI (Supplemental Security Income)","For people 65+, blind, or disabled with little or no income and resources.",["Payment amount depends on income, living situation, and resources."],[btn("https://www.ssa.gov/ssi","SSI (Social Security)")]);
+  if(dis)add("maybe","Social Security Disability Insurance (SSDI)","Monthly payments for people whose disability stops or limits their ability to work and who have enough work history.",
+    ["Benefits can include Medicare. The amount is based on your work history."],[btn("https://www.ssa.gov/disability","SSDI (Social Security)")]);
+  /* Medicare help */
+  if(c("h_medicare")||c("h_65")){var lv=(low||unsure)?"likely":"maybe";
+    add(lv,"Medicare Savings Programs","Your state may help pay Medicare Part A and B premiums, and sometimes deductibles and copays.",
+      ["Run by your state, which decides which program you qualify for.","Medicare.gov says: even if you don't think you qualify, you should still apply. Some states allow higher income or resources than the federal limits."],[btn("https://www.medicare.gov/basics/costs/help/medicare-savings-programs","Medicare Savings Programs (Medicare.gov)")]);
+    add(lv,"Extra Help with Medicare drug costs","Helps people with limited income and resources lower or cut Part D prescription costs.",
+      ["Apply any time, before or after enrolling in Part D. Phone: <strong>1-800-772-1213</strong> (TTY 1-800-325-0778)."],[btn("https://www.ssa.gov/medicare/part-d-extra-help","Apply for Extra Help (SSA)")]);}
+  /* Kids */
+  if(c("h_school")&&!mid)add(low?"likely":"maybe","Free or reduced-price school meals","Meals at school for eligible children.",["USDA says to contact your local school district to see if your family is eligible."],[btn("https://www.fna.usda.gov/schoolmeals","School meals (USDA)")]);
+  else if(c("h_school"))add("maybe","Free or reduced-price school meals","Meals at school for eligible children.",["Contact your local school district to see if your family is eligible."],[btn("https://www.fna.usda.gov/schoolmeals","School meals (USDA)")]);
+  if(c("h_u5")&&(low||unsure))add("maybe","Head Start / Early Head Start","Early learning and family support programs. Search for centers by ZIP code, city, or state.",["Contact a local program about eligibility and openings."],[btn("https://www.headstart.gov/","Find Head Start (HeadStart.gov)")]);
+  if(c("h_kids")&&(inc==="vlow"||inc==="low"))add("maybe","TANF (cash assistance for families)","Federally funded, state-run help paying for food, housing, home energy, and child care. Each state runs it differently, and under a different name.",["You must apply in your state; requirements vary."],[btn("https://www.usa.gov/welfare-benefits","Find my TANF office (USA.gov)")]);
+  /* Work */
+  if(c("s_job"))add("likely","Unemployment insurance","Unemployment insurance pays you money if you lose your job through no fault of your own.",["There's no federal program: each state runs its own and sets eligibility rules. In most cases you file in the state where you worked."],[btn("https://www.careeronestop.org/LocalHelp/UnemploymentBenefits/find-unemployment-benefits.aspx","Find my state's unemployment office"),btn("https://www.usa.gov/unemployment-benefits","USA.gov: unemployment",1)]);
+  if(c("s_work"))add("maybe","Earned Income Tax Credit (EITC) + free tax filing","A tax break for low- to moderate-income workers and families. It can reduce the tax you owe, and maybe increase your refund. You claim it on your federal tax return.",["The IRS's VITA and TCE programs offer free basic tax return preparation to people who qualify. Locator: 800-906-9887."],[btn("https://www.irs.gov/credits-deductions/individuals/earned-income-tax-credit-eitc","EITC (IRS)"),btn("https://www.irs.gov/individuals/free-tax-return-preparation-for-qualifying-taxpayers","Free tax help (IRS)",1)]);
+  /* Housing */
+  if(c("s_rent"))add("maybe","Housing and rental help","Rental assistance, public housing, emergency housing, and help avoiding eviction.",["Waiting lists are common; apply early. For urgent help, call 211."],[btn("https://www.usa.gov/housing-help","Housing help (USA.gov)"),btn("https://www.hud.gov/topics/rental_assistance","HUD rental assistance",1)]);
+  if(c("h_vet"))add("maybe","VA benefits and health care","Health care, disability compensation, pension, and other benefits for veterans and families.",["Eligibility depends on service history and other factors."],[btn("https://www.va.gov/health-care/how-to-apply/","Apply for VA health care"),btn("https://www.benefits.va.gov/benefits/","VA benefits",1)]);
+  if(c("s_food"))add("likely","Emergency food (today)","If you need food right now, food banks and pantries can help while applications are processed.",["Call 211 or search 211.org for pantries near you."],[btn("https://www.211.org/","211.org")]);
+  add("maybe","Check everything else","The federal Benefit Finder asks a few questions and covers many more programs.",["Benefits.gov now redirects to the USA.gov Benefit Finder."],[btn("https://www.usa.gov/benefit-finder","USA.gov Benefit Finder"),btn("https://www.usa.gov/state-social-services","My state's social services",1)]);
+  var order={likely:0,maybe:1};P.sort(function(a,b){return order[a.level]-order[b.level];});
+  lastList=P;
+  var h='<p class="lead">'+(P.filter(function(p){return p.level==="likely";}).length)+' likely worth checking, '+(P.filter(function(p){return p.level==="maybe";}).length)+' worth a look'+(st?" · "+esc(st):"")+'. Remember: only the agency can decide eligibility.</p>';
+  h+=P.map(function(p){return '<div class="prog'+(p.level==="maybe"?" maybe":"")+'"><span class="tag '+(p.level==="likely"?"money":"maybe")+'">'+(p.level==="likely"?"Likely worth checking":"Worth a look")+'</span><h3>'+p.name+'</h3><p>'+p.why+'</p><ul class="small">'+p.facts.map(function(f){return "<li>"+f+"</li>";}).join("")+'</ul><div class="row">'+p.links.join("")+'</div></div>';}).join("");
+  h+='<p class="small">Program descriptions are summarized from the official pages linked on each card (USDA, HHS, HealthCare.gov, FCC, SSA, Medicare.gov, IRS, USA.gov, VA), as of October 2026.</p>';
+  $("out").innerHTML=h;$("outBtns").hidden=false;$("results").scrollIntoView({behavior:"smooth"});
+});
+$("reset").addEventListener("click",function(){document.querySelectorAll("#wizard input").forEach(function(i){if(i.type==="checkbox"||i.type==="radio")i.checked=false;else i.value="";});$("state").value="";$("out").innerHTML='<p class="small">Answer the questions above and tap <em>Show my list</em>.</p>';$("outBtns").hidden=true;});
+$("copyList").addEventListener("click",function(){
+  var tmp=document.createElement("div");
+  copyText("Benefits to check (starting point only; eligibility is decided by each agency):\n\n"+lastList.map(function(p){tmp.innerHTML=p.links.join(" ");var urls=Array.prototype.map.call(tmp.querySelectorAll("a"),function(a){return a.getAttribute("href");});return "- "+p.name+" ("+(p.level==="likely"?"likely worth checking":"worth a look")+"): "+urls.join(" , ");}).join("\n")+"\n\nFrom the free Benefits Finder by Zelda Rose.");
+});
+$("printList").addEventListener("click",function(){document.body.classList.add("printing-results");window.print();setTimeout(function(){document.body.classList.remove("printing-results");},500);});
+
+
+/* ---------- Tip copy ---------- */
+document.querySelectorAll("[data-copy]").forEach(function(b){b.addEventListener("click",function(){copyText($(b.getAttribute("data-copy")).textContent.trim());});});
+
+})();
+</script>
+</body>
+</html>

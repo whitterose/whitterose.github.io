@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scam Checker: free, private red-flag check and parent guide</title>
+<meta name="description" content="Free, private, works offline. Paste a suspicious text, email, or call script and get a plain-English red-flag check based on FTC, FBI, IRS, and SSA warning signs. Plus official reporting links and a printable guide for older parents. Nothing you paste leaves your device.">
+<meta name="author" content="Zelda Rose">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<style>
+:root{--ink:#1d2330;--muted:#5b6475;--bg:#f7f5f2;--card:#fff;--line:#e3dfd8;--ok:#1f7a4d;--warn:#a15c00;--bad:#b0263b;--radius:14px;--accent:#a3461a;--accent2:#7c3410;--focus:#f3c3a6}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font:17px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg)}
+a{color:var(--accent2)}
+header.hero{background:linear-gradient(135deg,#2b1a12,#6b2c12 60%,#c0561f);color:#fff;padding:48px 20px 40px}
+.wrap{max-width:960px;margin:0 auto;padding:0 20px}
+.hero h1{font-size:clamp(28px,5vw,44px);line-height:1.15;margin:0 0 12px}
+.hero p{font-size:19px;max-width:720px;margin:0 0 18px;opacity:.95}
+.badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.badge{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:4px 12px;font-size:14px}
+.byline{font-size:14px;opacity:.85;margin-top:16px}
+.byline a{color:#fff}
+nav.toc{position:sticky;top:0;z-index:5;background:#fff;border-bottom:1px solid var(--line)}
+nav.toc .wrap{display:flex;gap:4px;overflow-x:auto;padding:8px 20px}
+nav.toc a{white-space:nowrap;text-decoration:none;color:var(--ink);padding:6px 12px;border-radius:8px;font-size:15px}
+nav.toc a:hover,nav.toc a:focus{background:#f1ece6}
+section{padding:36px 0;border-bottom:1px solid var(--line)}
+h2{font-size:28px;margin:0 0 8px}
+h3{font-size:20px;margin:22px 0 8px}
+.lead{color:var(--muted);margin-top:0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px;margin:16px 0;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+.grid{display:grid;gap:14px}
+@media(min-width:720px){.grid.two{grid-template-columns:1fr 1fr}.grid.three{grid-template-columns:1fr 1fr 1fr}}
+label{display:block;font-weight:600;font-size:15px;margin:10px 0 4px}
+input[type=text],input[type=date],input[type=number],input[type=email],input[type=tel],textarea,select{width:100%;font:inherit;font-size:16px;padding:10px 12px;border:1px solid #cfc8bd;border-radius:10px;background:#fff;color:var(--ink)}
+textarea{min-height:120px;resize:vertical}
+input:focus,textarea:focus,select:focus,button:focus,a:focus{outline:3px solid var(--focus);outline-offset:2px}
+.q{border-top:1px dashed var(--line);padding:12px 0}
+.q:first-child{border-top:0}
+.q .opts{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.q .opts label{font-weight:500;margin:0;display:flex;align-items:center;gap:6px;border:1px solid #cfc8bd;border-radius:999px;padding:6px 14px;cursor:pointer;background:#fff}
+.q .opts input{accent-color:var(--accent)}
+.checks label{font-weight:500;display:flex;align-items:flex-start;gap:8px;margin:6px 0;cursor:pointer}
+.checks input{accent-color:var(--accent);margin-top:5px}
+button,.btn{font:inherit;font-size:16px;font-weight:600;border:0;border-radius:10px;padding:10px 18px;background:var(--accent);color:#fff;cursor:pointer;text-decoration:none;display:inline-block}
+button.secondary,.btn.secondary{background:#efe9e2;color:var(--ink)}
+button:hover{filter:brightness(1.07)}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:12px}
+.plan ol{padding-left:22px}
+.plan li{margin:10px 0}
+.tag{display:inline-block;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:2px 8px;border-radius:6px;margin-right:6px;vertical-align:2px}
+.tag.urgent{background:#fde2e6;color:var(--bad)}
+.tag.money{background:#e1f3ea;color:var(--ok)}
+.tag.info{background:#eee8ff;color:#4b3aa6}
+.tag.maybe{background:#fff1d6;color:var(--warn)}
+table{width:100%;border-collapse:collapse;font-size:15px}
+th,td{border-bottom:1px solid var(--line);padding:8px 6px;text-align:left;vertical-align:top}
+th{background:#faf8f5}
+td.num{text-align:right;white-space:nowrap}
+.flag{display:inline-block;font-size:12px;font-weight:700;border-radius:6px;padding:1px 7px;margin:2px 4px 2px 0}
+.flag.bad{background:#fde2e6;color:var(--bad)}
+.flag.warn{background:#fff1d6;color:var(--warn)}
+.letter{white-space:pre-wrap;font-family:Georgia,"Times New Roman",serif;font-size:16px;line-height:1.55;background:#fffdf9;border:1px solid var(--line);border-radius:10px;padding:22px;min-height:200px}
+.small{font-size:14px;color:var(--muted)}
+.note{background:#fff8e6;border:1px solid #f1d9a0;border-radius:10px;padding:12px 14px;font-size:15px}
+.ok{color:var(--ok)}
+details{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:10px 0}
+details summary{cursor:pointer;font-weight:600}
+.script{background:#f4f8ff;border-left:4px solid #6b8bd6;padding:10px 14px;border-radius:6px;margin:8px 0;font-style:italic}
+.tip{background:linear-gradient(180deg,#fff,#fbf7f2)}
+.addr{display:grid;grid-template-columns:auto 1fr auto;gap:8px 12px;align-items:center;margin:10px 0}
+.addr code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:14px;background:#f3efe9;border-radius:8px;padding:8px 10px;word-break:break-all;user-select:all}
+.coin{font-weight:700;min-width:44px}
+.copybtn{padding:6px 12px;font-size:14px}
+footer{padding:30px 0 50px;color:var(--muted);font-size:14px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#1d2330;color:#fff;padding:10px 16px;border-radius:10px;font-size:15px;opacity:0;transition:opacity .2s;pointer-events:none}
+#toast.show{opacity:1}
+@media print{
+  header.hero,nav.toc,section:not(.print-me),footer,.no-print,#toast{display:none!important}
+  body{background:#fff}
+  .print-me{border:0;padding:0}
+  .letter{border:0;padding:0;background:#fff;font-size:12pt}
+}
+
+.tall{min-height:170px}
+.spaced{margin-top:8px}
+.cardtitle{font-size:26px;margin-top:0}
+.verdict{border-radius:12px;padding:14px 16px;margin:0 0 12px;font-size:18px}
+.verdict.v4{background:#fde2e6;border:1px solid #f3b3bf}
+.verdict.v3{background:#ffe9d6;border:1px solid #f5c79b}
+.verdict.v2{background:#fff6dc;border:1px solid #f1d9a0}
+.verdict.v1{background:#eef6f1;border:1px solid #bfe0cc}
+.flags li{margin:10px 0}
+mark{background:#ffe08a;padding:0 2px;border-radius:3px}
+.quote{white-space:pre-wrap;background:#faf8f5;border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:15px;max-height:300px;overflow:auto}
+#fridge ol.big li{font-size:18px;margin:10px 0}
+.callbox{display:grid;gap:6px;border-top:2px dashed var(--line);padding-top:12px;margin-top:10px;font-size:17px}
+@media print{#fridge{border:3px solid #000;border-radius:0;box-shadow:none;padding:18px}#fridge ol.big li{font-size:15pt}.callbox{font-size:14pt}#parents h2{display:none}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <h1>Is this a scam? Check it privately, before you click, call, or pay.</h1>
+    <p>Paste a suspicious text, email, or what a caller said. You'll get a plain-English list of red flags, based on warning signs published by the FTC, FBI, IRS, and Social Security. Plus a printable guide to help protect your parents.</p>
+    <div class="badges">
+      <span class="badge">100% free</span>
+      <span class="badge">Nothing you paste leaves your device</span>
+      <span class="badge">Works offline</span>
+      <span class="badge">No sign-up</span>
+    </div>
+    <div class="byline">Made by <strong>Zelda Rose</strong> · For people in the US · Last reviewed October 2026</div>
+  </div>
+</header>
+
+<nav class="toc" aria-label="Sections">
+  <div class="wrap">
+    <a href="#check">1. Check a message</a>
+    <a href="#now">2. Already responded?</a>
+    <a href="#report">3. Report it</a>
+    <a href="#parents">4. Protect your parents</a>
+    <a href="#tip">Support this</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<section id="check">
+  <h2>1. Check a message</h2>
+  <p class="lead">Paste the message, or type what the caller said as closely as you can remember. Removing your own name, account numbers, and other personal details first is fine; they aren't needed.</p>
+  <div class="card">
+    <label for="channel">How did it reach you?</label>
+    <select id="channel">
+      <option value="text">Text message</option>
+      <option value="email">Email</option>
+      <option value="call">Phone call or voicemail</option>
+      <option value="social">Social media, dating app, or messaging app</option>
+      <option value="popup">Pop-up or warning on my computer or phone</option>
+      <option value="mail">Letter in the mail</option>
+      <option value="person">In person / at the door</option>
+    </select>
+    <label for="msg">The message</label>
+    <textarea id="msg" class="tall" placeholder="Paste the text, email, or what the caller said…"></textarea>
+    <div class="checks spaced">
+      <strong class="small">Also tick anything that's true (it may not show up in the words):</strong>
+      <label><input type="checkbox" id="x_unexpected"> It was unexpected. I didn't contact them first.</label>
+      <label><input type="checkbox" id="x_stay"> They told me to stay on the line, or to not hang up.</label>
+      <label><input type="checkbox" id="x_secret"> They told me not to tell anyone (family, bank, store staff).</label>
+      <label><input type="checkbox" id="x_voice"> It sounded like a family member or friend in trouble.</label>
+      <label><input type="checkbox" id="x_met"> It's someone I've only met online.</label>
+    </div>
+    <div class="row">
+      <button type="button" id="analyze">Check for red flags</button>
+      <button type="button" class="secondary" id="sample">Try an example</button>
+      <button type="button" class="secondary" id="clear">Clear</button>
+    </div>
+  </div>
+  <div class="card" id="out" hidden aria-live="polite"></div>
+  <p class="small">How this works: the page looks for words and patterns linked to common scams. It can't know who really sent a message, and scammers change their wording all the time. <strong>A message can be a scam even if nothing is flagged.</strong> When in doubt, contact the company or agency yourself, using a phone number or website you already know is real (not one from the message). That advice comes from the <a href="https://consumer.ftc.gov/articles/how-recognize-avoid-phishing-scams" rel="noopener">FTC</a>.</p>
+</section>
+
+<section id="now">
+  <h2>2. Already paid or shared something? Act fast.</h2>
+  <p class="lead">It's not your fault. Scammers are professionals. The sooner you act, the better your chances. These steps come from the FTC's <a href="https://consumer.ftc.gov/articles/what-do-if-you-were-scammed" rel="noopener">What To Do if You Were Scammed</a>.</p>
+  <div class="grid two">
+    <div class="card"><h3>Paid with a gift card</h3><p>Contact the gift card company right away, using the number on the back of the card. Tell them it was a scam and ask for a refund. Keep the card and receipt.</p></div>
+    <div class="card"><h3>Wire transfer (Western Union, MoneyGram)</h3><p>Contact the wire transfer company immediately. Tell them a scammer tricked you, and ask them to reverse the transfer and refund your money.</p></div>
+    <div class="card"><h3>Zelle, bank transfer, or a payment app</h3><p>Report it to your bank or the app (Venmo, Cash App, PayPal…) immediately, and ask them to reverse the payment.</p></div>
+    <div class="card"><h3>Credit or debit card</h3><p>Call the number on the back of your card. Ask them to reverse the charge. Federal law gives card users some protection against unauthorized charges.</p></div>
+    <div class="card"><h3>Cryptocurrency or a crypto ATM</h3><p>Contact the exchange or ATM operator immediately and ask them to reverse the transaction. Then report it at ReportFraud.ftc.gov and to the FBI at ic3.gov. Crypto payments are usually hard to get back (<a href="https://consumer.ftc.gov/articles/what-know-about-cryptocurrency-and-scams" rel="noopener">FTC</a>).</p></div>
+    <div class="card"><h3>Mailed cash</h3><p>Call the U.S. Postal Inspection Service at <strong>1-877-876-2455</strong> right away. For a fee, they may be able to intercept a package that hasn't been delivered yet.</p></div>
+    <div class="card"><h3>Gave your Social Security number</h3><p>Go to <a href="https://www.identitytheft.gov/" rel="noopener">IdentityTheft.gov</a> to report it and get a personal recovery plan. Social Security also suggests placing a fraud alert with the credit bureaus (<a href="https://www.ssa.gov/scam/" rel="noopener">SSA</a>).</p></div>
+    <div class="card"><h3>Gave a password or a code</h3><p>Change that password right away (and anywhere else you used it) and turn on two-step verification. If you're locked out, use the company's official account recovery page.</p></div>
+    <div class="card"><h3>Let someone into your computer</h3><p>Update your security software, run a scan, and delete anything it flags. Then change your passwords and turn on two-step verification.</p></div>
+    <div class="card"><h3>Someone offers to "recover" your money</h3><p>Be very careful. Recovery offers that charge a fee are a common second scam. The FBI says IC3 never contacts victims directly and doesn't work with law firms or crypto services to recover funds (<a href="https://www.ic3.gov/" rel="noopener">IC3</a>; <a href="https://consumer.ftc.gov/articles/refund-and-recovery-scams" rel="noopener">FTC</a>).</p></div>
+  </div>
+</section>
+
+<section id="report">
+  <h2>3. Report it (official places)</h2>
+  <p class="lead">Reporting helps stop scammers, even if you didn't lose money. Not sure where? <a href="https://www.usa.gov/where-report-scams" rel="noopener">USA.gov's "Where to report a scam" tool</a> asks a few questions and points you to the right agency.</p>
+  <div class="card">
+    <ul>
+      <li><strong>Federal Trade Commission:</strong> <a href="https://reportfraud.ftc.gov/" rel="noopener">ReportFraud.ftc.gov</a>, the main place to report scams. Phone: <strong>1-877-382-4357</strong> (press 3 for an interpreter, per <a href="https://www.ssa.gov/scam/" rel="noopener">SSA</a>).</li>
+      <li><strong>FBI Internet Crime Complaint Center:</strong> <a href="https://www.ic3.gov/" rel="noopener">ic3.gov</a>, for online and cyber-enabled fraud, including crypto, romance, and investment scams.</li>
+      <li><strong>Scam texts:</strong> forward them to <strong>7726</strong> (SPAM). <strong>Phishing emails:</strong> forward them to <strong>reportphishing@apwg.org</strong> (<a href="https://consumer.ftc.gov/articles/how-recognize-avoid-phishing-scams" rel="noopener">FTC</a>).</li>
+      <li><strong>Someone pretending to be Social Security:</strong> <a href="https://oig.ssa.gov/" rel="noopener">oig.ssa.gov</a>. <strong>Pretending to be the IRS:</strong> <a href="https://www.irs.gov/help/report-fraud/report-fake-irs-treasury-or-tax-related-emails-and-messages" rel="noopener">IRS reporting page</a>.</li>
+      <li><strong>Age 60 or older?</strong> The U.S. Justice Department's <strong>National Elder Fraud Hotline: 1-833-FRAUD-11 (1-833-372-8311)</strong>, Mon–Fri, 10 a.m.–6 p.m. Eastern. English, Spanish, and other languages. A case manager can help you report (<a href="https://ovc.ojp.gov/program/elder-fraud-abuse/national-elder-fraud-hotline" rel="noopener">OVC</a>).</li>
+      <li><strong>Identity theft:</strong> <a href="https://www.identitytheft.gov/" rel="noopener">IdentityTheft.gov</a>.</li>
+      <li><strong>Unwanted sales calls:</strong> register and report at <a href="https://www.donotcall.gov/" rel="noopener">DoNotCall.gov</a>.</li>
+      <li><strong>Your local police</strong>, especially if you lost money or someone came to your home. Social Security's scam page also suggests this (<a href="https://www.ssa.gov/scam/" rel="noopener">SSA</a>).</li>
+      <li><strong>Free, non-government help talking it through:</strong> AARP Fraud Watch Network Helpline, <strong>877-908-3360</strong>, Mon–Fri, 8 a.m.–8 p.m. Eastern. Open to anyone (<a href="https://www.aarp.org/money/scams-fraud/helpline/" rel="noopener">AARP</a>).</li>
+    </ul>
+    <p class="small">If someone is in immediate danger, call 911. For abuse or neglect of an older adult, contact Adult Protective Services or the Eldercare Locator at 1-800-677-1116 (<a href="https://www.justice.gov/elderjustice/find-help-or-report-abuse" rel="noopener">DOJ Elder Justice</a>).</p>
+  </div>
+</section>
+
+<section id="parents" class="print-me">
+  <h2>4. Protect your parents (or anyone you love)</h2>
+  <div class="no-print">
+    <p class="lead">Scammers often target older adults. The FBI runs a dedicated elder fraud page (<a href="https://www.ic3.gov/Crimeinfo/ElderFraud" rel="noopener">IC3</a>). A calm 20-minute conversation and a card by the phone can make a real difference.</p>
+    <div class="grid two">
+      <div class="card"><h3>How to bring it up</h3>
+        <ul>
+          <li>Make it about scammers, not about them: "These people are professionals, and they fool everyone. I want us both to be ready."</li>
+          <li>Share a scam that almost fooled <em>you</em>. People rarely talk about scams because they're embarrassed.</li>
+          <li>Agree that they can call you anytime, about anything, with no judgment. Shame is what keeps people quiet.</li>
+          <li>Practice: "If someone calls saying they're from Medicare, what will you do?" → "Hang up and call the number on my card." The FTC notes that no government agency will ask you to pay over the phone (<a href="https://consumer.ftc.gov/consumer-alerts/2025/03/call-or-email-saying-you-missed-jury-duty-need-pay-its-scam" rel="noopener">FTC</a>).</li>
+        </ul></div>
+      <div class="card"><h3>Set things up together</h3>
+        <ul>
+          <li>Pick a <strong>family safe word</strong> that only you know. The FCC suggests this for "grandparent" scams that may use AI-cloned voices (<a href="https://www.fcc.gov/consumers/scam-alert/grandparent-scams-get-more-sophisticated" rel="noopener">FCC</a>). Don't write it on the fridge card.</li>
+          <li>Save real numbers in their phone: family, the bank (from the back of the card), and their doctor.</li>
+          <li>Turn on call and text filtering through their phone settings or carrier (<a href="https://consumer.ftc.gov/articles/how-avoid-scam" rel="noopener">FTC</a>).</li>
+          <li>Ask if they'd like a <em>my Social Security</em> account. SSA says having one can help block identity thieves from opening one in their name (<a href="https://www.ssa.gov/scam/" rel="noopener">SSA</a>).</li>
+        </ul></div>
+    </div>
+    <div class="card">
+      <h3>Personalize the printable card</h3>
+      <div class="grid two">
+        <div><label for="p_name">Name on card (optional)</label><input type="text" id="p_name" placeholder="e.g. Mom & Dad"></div>
+        <div><label for="p_c1">Call first (name and number)</label><input type="text" id="p_c1" placeholder="e.g. Anna (daughter) 555-010-0101"></div>
+        <div><label for="p_c2">Second person to call</label><input type="text" id="p_c2" placeholder="e.g. Ben (son) 555-010-0102"></div>
+        <div><label for="p_bank">Bank's real number (from the back of the card)</label><input type="text" id="p_bank" placeholder="e.g. 1-800-…"></div>
+      </div>
+      <div class="row"><button type="button" id="printCard">Print the card</button><span class="small">Prints only the card below. Large type, one page.</span></div>
+    </div>
+  </div>
+  <div class="card" id="fridge">
+    <h3 class="cardtitle">STOP. It might be a scam. <span id="cardFor"></span></h3>
+    <ol class="big">
+      <li><strong>Hang up. Don't click. Don't call back the number they gave you.</strong> Call using a number you already know is real.</li>
+      <li><strong>Nobody real asks for payment in gift cards, wire transfers, cryptocurrency, payment apps, gold, or cash.</strong> If they do, it's a scam. (FTC, SSA)</li>
+      <li><strong>Government agencies (IRS, Social Security, Medicare, courts) won't call to threaten arrest or demand payment over the phone.</strong> (FTC, IRS, SSA)</li>
+      <li><strong>Never share a code sent to your phone, a password, or your Social Security or bank numbers</strong> with anyone who contacted you.</li>
+      <li><strong>Pop-up says "virus, call this number"? It's fake.</strong> Real security warnings never ask you to call. (FTC)</li>
+      <li><strong>"Grandma, I'm in trouble, don't tell Mom"?</strong> Hang up, call them at their usual number, and ask for our safe word. (FTC, FCC)</li>
+      <li><strong>Told to keep it secret or to hurry? That's the scam talking.</strong> Stop and call someone you trust.</li>
+    </ol>
+    <div class="callbox">
+      <div><strong>Call first:</strong> <span id="o_c1">______________________</span></div>
+      <div><strong>Or call:</strong> <span id="o_c2">______________________</span></div>
+      <div><strong>My bank:</strong> <span id="o_bank">______________________</span></div>
+      <div><strong>Elder Fraud Hotline:</strong> 1-833-372-8311 (Mon–Fri, 10 a.m.–6 p.m. ET)</div>
+      <div><strong>Report a scam:</strong> ReportFraud.ftc.gov · 1-877-382-4357</div>
+    </div>
+    <p class="small">From the free Scam Checker by Zelda Rose. Sources: FTC, IRS, Social Security Administration, FCC, U.S. Department of Justice.</p>
+  </div>
+  <div class="note no-print"><strong>Important:</strong> This page gives general safety information, not legal or financial advice. It can't verify who sent a message. If money is at risk, call your bank right away.</div>
+</section>
+
+
+<section id="tip" class="tip">
+  <h2>Support this project (optional)</h2>
+  <p class="lead">This tool is free and always will be. There are no ads and no tracking, and you'll never be asked to sign up. If it helped you or someone you love avoid a scam, and you'd like to help keep free tools like this coming, a small crypto tip is welcome. It's completely optional, and no one from this project will ever contact you to ask for one.</p>
+  <div class="card">
+    <div class="addr">
+      <span class="coin">SOL</span><code id="addr-sol">FBL1ez549NQscEm2Ly67TBxesknPcHfmRddnyiBF1kiA</code><button type="button" class="secondary copybtn" data-copy="addr-sol">Copy</button>
+      <span class="coin">ETH</span><code id="addr-eth">0xb46A6182Bf50EfC4012603803dEFe1CADd4Da4De</code><button type="button" class="secondary copybtn" data-copy="addr-eth">Copy</button>
+      <span class="coin">XRP</span><code id="addr-xrp">rw2ciyaNshpHe7bCHo4bRWq6pqqynnWKQg</code><button type="button" class="secondary copybtn" data-copy="addr-xrp">Copy</button>
+      <span class="coin">XRP tag</span><code id="addr-xrptag">1476447851</code><button type="button" class="secondary copybtn" data-copy="addr-xrptag">Copy</button>
+    </div>
+    <p class="note"><strong>XRP: you must include the destination tag/memo <code>1476447851</code>.</strong> If you send XRP without it, the tip may be lost. ETH address: Ethereum mainnet only. Always check the address in your wallet before you send.</p>
+    <p class="small">Can't tip? Printing the card for someone you love helps just as much. Tips are gifts, not payment for advice.</p>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+<p>Scam Checker, by Zelda Rose. This page uses no cookies and no analytics, and it never uploads anything. Checks run by simple rules in your browser. You can save this page to use it offline. <a href="/">More free tools</a>.</p>
+    <p>Not affiliated with the FTC, FBI, IRS, SSA, FCC, AARP, or any company named here. Warning signs are paraphrased from the linked official sources. General information only, not legal advice. Last reviewed: October 2026.</p>
+  </div>
+</footer>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+"use strict";
+
+var $ = function(id){return document.getElementById(id);};
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];});}
+function toast(msg){var t=$("toast");t.textContent=msg;t.classList.add("show");clearTimeout(toast._t);toast._t=setTimeout(function(){t.classList.remove("show");},1800);}
+function copyText(text){
+  if(navigator.clipboard && window.isSecureContext){navigator.clipboard.writeText(text).then(function(){toast("Copied");},function(){fallbackCopy(text);});}
+  else fallbackCopy(text);
+}
+function fallbackCopy(text){var ta=document.createElement("textarea");ta.value=text;ta.style.position="fixed";ta.style.opacity="0";document.body.appendChild(ta);ta.select();try{document.execCommand("copy");toast("Copied");}catch(e){toast("Select and copy manually");}document.body.removeChild(ta);}
+function download(name,text){var b=new Blob([text],{type:"text/plain"});var a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},500);}
+
+
+/* Each rule: [id, weight (1-3), severe?, regex, plain-English title, explanation, source label, source url] */
+var SRC={ftc:["FTC","https://consumer.ftc.gov/articles/how-avoid-scam"],phish:["FTC","https://consumer.ftc.gov/articles/how-recognize-avoid-phishing-scams"],gift:["FTC","https://consumer.ftc.gov/consumer-alerts/2024/10/only-scammers-tell-you-buy-gift-card-pay-them"],fam:["FTC","https://consumer.ftc.gov/articles/scammers-use-fake-emergencies-steal-your-money"],tech:["FTC","https://consumer.ftc.gov/articles/how-spot-avoid-and-report-tech-support-scams"],crypto:["FTC","https://consumer.ftc.gov/articles/what-know-about-cryptocurrency-and-scams"],wire:["FTC","https://consumer.ftc.gov/consumer-alerts/2023/08/asked-wire-money-cut-cord"],irs:["IRS","https://www.irs.gov/help/how-to-know-its-the-irs"],ssa:["SSA","https://www.ssa.gov/scam/"],rec:["FTC","https://consumer.ftc.gov/articles/refund-and-recovery-scams"],ic3:["FBI IC3","https://www.ic3.gov/"],fcc:["FCC","https://www.fcc.gov/consumers/scam-alert/grandparent-scams-get-more-sophisticated"]};
+var RULES=[
+ ["giftcard",3,true,/\b(gift ?cards?|itunes card|apple card|google play card|steam card|target card|ebay card|prepaid (debit )?cards?|(the )?numbers? (on|from) the back|scratch (off )?the (back|pin))\b/i,"Asks for payment by gift card","Only scammers ask you to pay with gift cards. No real business or government agency will tell you to buy a gift card to pay them.","gift"],
+ ["wire",3,true,/\b(western union|moneygram|wire (the )?(money|funds|transfer)|money transfer|ria money)\b/i,"Asks you to wire money","Wiring money is like sending cash. Once it's gone, you probably won't get it back. That's why scammers ask for it.","wire"],
+ ["crypto",3,true,/\b(bitcoin|btc|crypto(currency)?|usdt|tether|ethereum|crypto ?atm|bitcoin atm|coinbase|wallet address|qr code to (pay|send))\b/i,"Mentions paying with cryptocurrency","Only scammers demand payment in cryptocurrency. No legitimate business will demand you send crypto in advance, not to buy something and not to protect your money.","crypto"],
+ ["app",2,false,/\b(zelle|venmo|cash ?app|paypal|apple pay|payment app)\b/i,"Mentions a payment app","The FTC warns: never pay someone who insists you can only pay with a payment app. Payments to strangers through apps can be hard to reverse.","ftc"],
+ ["cash",3,true,/\b(courier|someone will (come|pick)|pick up the (cash|money)|withdraw (the )?(cash|money)|gold bars?|buy gold|precious metals?|mail (the )?cash|cash in (a|an) (envelope|box))\b/i,"Wants cash or gold picked up or mailed","Social Security's Inspector General lists sending a courier to pick up cash or gold bars, and mailing cash, as scam red flags.","ssa"],
+ ["protect",3,true,/\b(protect your (money|funds|savings|assets)|safe (account|wallet)|secure (account|wallet)|move your (money|funds|savings)|transfer (your|the) (money|funds|savings) to)\b/i,"Tells you to move money to keep it \"safe\"","The FTC says it will never tell you to transfer money to \"protect it.\" Social Security also lists \"move your money to a protected account\" as a scam tactic. Real agencies don't do this.","ssa"],
+ ["secret",3,true,/\b(don'?t tell (anyone|anybody|your|mom|dad|the bank|the (store|bank) (staff|teller|employee))|keep (this|it) (a )?(secret|between us|confidential|private)|do not (discuss|tell)|don'?t (mention|say) (anything|this) to)\b/i,"Asks you to keep it secret","Scammers demand secrecy so no one can warn you. Social Security lists it as a red flag, and the FTC says to call someone you trust even if you were told to keep it secret.","ssa"],
+ ["stayon",2,true,/\b(don'?t hang up|stay on the (line|phone)|do not hang up|keep (me|us) on the (line|phone))\b/i,"Tells you not to hang up","Scammers may tell you not to hang up so you can't check out their story.","ftc"],
+ ["threat",3,true,/\b(arrest(ed)?|warrant|police (will|are)|jail|deport(ed|ation)?|lawsuit|legal action|sue you|suspend(ed)? your (social security|ssn|license|account|benefits)|social security number (has been |is )?(suspended|blocked|compromised)|seize|freeze your (account|assets)|criminal (charges|case))\b/i,"Threatens arrest, legal trouble, or a suspended account","Scammers may threaten arrest, lawsuits, deportation, or a suspended license or Social Security number. The IRS says a call or message that threatens you isn't from the IRS. Social Security says the same about threats.","ssa"],
+ ["urgent",1,false,/\b(urgent(ly)?|immediately|right away|act now|within (24|48|12|2) ?(hours|hrs)|today only|final (notice|warning|reminder)|last (chance|warning)|expires? (today|soon|in)|as soon as possible|asap|time[- ]sensitive)\b/i,"Pressures you to act fast","Scammers want you to act before you have time to think. Real organizations give you time to decide.","ftc"],
+ ["gov",1,false,/\b(irs|internal revenue|social security|ssa|medicare|medicaid|fbi|ftc|federal trade|u\.?s\.? marshal|sheriff|police department|department of (justice|treasury)|homeland security|dmv|customs|border patrol|court|jury duty)\b/i,"Claims to be from the government or police","Scammers often pretend to be the IRS, Social Security, Medicare, the FTC, or police, and can fake caller ID. The IRS normally contacts people first by mail, and its warning signs say a call or text that's unexpected, rushes you, or demands payment now isn't from the IRS.","irs"],
+ ["brand",1,false,/\b(amazon|apple|icloud|microsoft|windows|geek squad|norton|mcafee|paypal|netflix|bank of america|chase|wells fargo|citi(bank)?|usps|ups|fedex|dhl|e-?z ?pass|toll(way)?|walmart|costco|best buy|coinbase|verizon|at&t|t-mobile)\b/i,"Uses a well-known company name","Phishing messages often look like they come from a company you know or trust. If you think it might be real, go to the company's website or app yourself, not through the link.","phish"],
+ ["account",2,false,/\b(suspicious (activity|login|log-in|sign[- ]in)|unusual (activity|sign[- ]in)|account (has been |is |was )?(locked|suspended|on hold|compromised|disabled|restricted)|verify your (account|identity|information|payment)|confirm your (account|identity|details|information)|update your (payment|billing|card) (info|information|details|method)|payment (failed|declined)|billing problem)\b/i,"Says there's a problem with your account","The FTC says phishing messages often claim suspicious activity or a problem with your account or payment. Legitimate companies won't email or text you a link to update your payment information.","phish"],
+ ["creds",3,true,/\b(verification code|one[- ]time (code|pass(code|word))|security code|otp|passcode|password|pin( number)?|log ?in details|username and password|social security number|ssn|full card number|bank (account|routing) number|mother'?s maiden)\b/i,"Asks for codes, passwords, or personal numbers","Honest organizations won't call, email, or text you to ask for your Social Security, bank account, or credit card numbers. Never share a one-time code sent to your phone. Scammers use it to get into your accounts.","ftc"],
+ ["remote",3,true,/\b(anydesk|teamviewer|ultraviewer|logmein|remote (access|desktop|support|control)|screen ?shar(e|ing)|download (this|the|our) (app|software|program)|let me (access|connect to|into) your (computer|phone|device)|install (this|the) (app|software))\b/i,"Wants access to your computer or phone","Never give control of your computer to anyone who contacts you out of the blue. Tech support scammers ask for remote access, then charge you to \"fix\" problems that don't exist.","tech"],
+ ["virus",2,false,/\b(virus|malware|infected|hacked|security (alert|warning|breach)|your (computer|device|phone) (is|has been) (infected|compromised|locked|hacked)|call (microsoft|apple|support|this number|the number below)|windows defender|firewall)\b/i,"Warns of a virus or hacked device","Legitimate tech companies won't contact you to say there's a problem with your computer. Real security pop-ups never ask you to call a phone number.","tech"],
+ ["prize",2,false,/\b(you('ve| have)? won|winner|lottery|sweepstakes|jackpot|prize|claim your (reward|prize|gift|refund|money)|inheritance|unclaimed (funds|money)|government grant|free (money|gift|iphone)|selected to receive|congratulations)\b/i,"Says you've won something or are owed money","Scammers say there's a prize, then ask for a fee to collect it. The FTC also lists \"you're eligible for a government refund\" and \"a coupon for free stuff\" as common phishing lures.","ftc"],
+ ["fee",2,false,/\b(processing fee|small fee|release fee|delivery fee|redelivery fee|customs fee|clearance fee|tax(es)? (first|before)|pay (a|the) fee|unpaid toll|outstanding (toll|balance|fine)|toll (balance|violation)|pay (it )?now to avoid)\b/i,"Asks for a small fee, toll, or fine","The FTC says phishing messages often want you to click a link to make a payment, and that link can lead to malware or a fake site. Check by going to the official site or app yourself.","phish"],
+ ["link",1,false,/\b(https?:\/\/|www\.)\S+|\b[a-z0-9-]+\.(com|net|org|info|top|xyz|click|link|live|site|online|app|vip|cc|io|us|co)\b(\/\S*)?/i,"Contains a link","Don't click links in unexpected messages, even if they seem to come from a company you know. Go to the company's website or app yourself.","phish"],
+ ["shortlink",2,false,/\b(bit\.ly|tinyurl|t\.co|goo\.gl|ow\.ly|is\.gd|rb\.gy|cutt\.ly|shorturl|tiny\.cc)\b/i,"Uses a shortened link","Short links hide where they really go. Treat them like any unexpected link: don't tap it.","phish"],
+ ["family",3,true,/\b(grandma,? it'?s me|grandpa,? it'?s me|it'?s me,? (grandma|grandpa|nana|mom|dad)|in jail|bail (money)?|public defender|this is my new (phone|number)|lost my phone|don'?t tell (mom|dad|my parents))\b/i,"Sounds like a family emergency","Scammers pretend to be a grandchild or friend in trouble, sometimes with an AI-cloned voice, and may hand the phone to a fake lawyer or officer. Hang up and call your family member at a number you know.","fam"],
+ ["romance",2,false,/\b(my (love|darling|dear|sweetheart|babe)|soul ?mate|deployed|oil rig|overseas|peacekeeping|military doctor|stuck (abroad|overseas)|customs (is )?holding|plane ticket|visa fee|we'?ve never met|can'?t video( chat| call)?)\b/i,"Romance or long-distance-relationship signs","As soon as someone you met online asks for money or offers investment advice, the FTC says, that's a scammer. Never send money to someone you haven't met in person.","crypto"],
+ ["invest",3,true,/\b(guaranteed (returns?|profits?|income)|risk[- ]free|zero risk|double your (money|investment)|(\d+)% (daily|weekly|monthly|return)|passive income|trading (platform|account|signals|mentor)|investment (opportunity|manager|advisor|platform)|withdraw(al)? fee|mining pool|forex)\b/i,"Promises guaranteed or easy investment profits","Only scammers guarantee profits or big returns. If someone promises you'll make a profit, the FTC says, that's a scam, even with celebrity endorsements or testimonials.","crypto"],
+ ["check",3,true,/\b(overpa(id|yment)|send (back|the rest|the difference|the extra)|refund the (difference|extra)|deposit (this|the) check|mobile deposit|cashier'?s check|money order)\b/i,"Overpayment or \"deposit this check\"","Some scammers send you a check that later turns out to be fake, then ask you to send money back. The FTC says never deposit a check and send money back to someone.","ftc"],
+ ["job",2,false,/\b(work from home|easy money|personal assistant|mystery shopper|reshipp?ing|package (forwarding|inspector)|pay for (training|equipment|starter kit|the kit)|upfront (fee|payment)|task(s)? (job|platform)|like (videos|posts) (for|and earn))\b/i,"Job offer with red flags","Never pay a fee to get a job. Fake jobs often involve paying upfront, buying crypto, or depositing a check and sending part back.","crypto"],
+ ["recovery",3,true,/\b(recover (your|the) (lost )?(funds|money|crypto)|fund recovery|asset recovery|get your money back for (a )?fee|we (can|will) (recover|retrieve)|refund (department|team)|reclaim (your )?(funds|losses))\b/i,"Offers to recover lost money","Refund and recovery scams target people who already lost money. The FBI says IC3 never contacts you directly and doesn't work with law firms or crypto services to recover funds.","ic3"],
+ ["transfer",2,true,/\b(transfer (you|your call) to (an? )?(agent|officer|investigator|the fbi|the ftc|social security|law enforcement)|connect you (with|to) (an? )?(agent|officer|investigator)|badge number|case (id|number) is)\b/i,"Says they'll transfer you to an officer or agent","Social Security warns that scammers say they're transferring your call to law enforcement or a government official, and may send pictures of badges. Legitimate companies can't transfer your call directly to SSA.","ssa"],
+ ["generic",1,false,/\b(dear (customer|user|client|member|sir|madam|valued)|hello dear|attention:? (customer|user))\b/i,"Generic greeting","A generic greeting like \"Dear customer\" is one of the signs the FTC points out in a real phishing example.","phish"],
+ ["blackmail",3,true,/\b(compromising (photos?|videos?)|i (have|recorded) (a )?video of you|webcam|embarrassing (photos?|videos?)|share (it|them) with your contacts|sextortion)\b/i,"Blackmail threat","The FTC calls this blackmail and a criminal extortion attempt. Don't pay. Report it to the FBI.","crypto"]
+];
+var CHANNEL_TIPS={
+ text:"For texts: don't reply or tap links. Forward the text to 7726 (SPAM), then delete it.",
+ email:"For email: check the sender's real address, not just the display name, and don't open attachments. Forward phishing to reportphishing@apwg.org.",
+ call:"For calls: caller ID can be faked. Hang up and call back using a number you look up yourself, such as the number on your card or bill, or the agency's .gov website.",
+ social:"For social media and dating apps: don't move to a private chat app at their request. The FTC says never send money or crypto to someone you've only met online.",
+ popup:"For pop-ups: don't call the number or click. Close the browser (on Windows, Ctrl+Alt+Del → Task Manager if it won't close), update your security software, and run a scan.",
+ mail:"For letters: real IRS letters can be checked on irs.gov (search \"IRS notices and letters\"). Contact any company using a number you find yourself.",
+ person:"At the door: you don't have to let anyone in. Ask for ID, then close the door and call the agency or company yourself to confirm."
+};
+var EXTRA={x_unexpected:["Unexpected contact",1,false,"Scams usually start with contact you didn't expect. The IRS lists \"unexpected\" first among its warning signs.","irs"],
+ x_stay:["Told to stay on the line",2,true,"Scammers may tell you not to hang up so you can't check out their story.","ftc"],
+ x_secret:["Told to keep it secret",3,true,"Demanding secrecy is a classic scam tactic. Tell someone you trust.","ssa"],
+ x_voice:["Sounded like a loved one in trouble",3,true,"Don't trust the voice, even if it sounds just like them. Scammers can clone voices with AI. Hang up and call them at a number you know is theirs.","fam"],
+ x_met:["Someone you've only met online",2,false,"If someone you met online asks for money or gives investment advice, the FTC says it's a scammer.","crypto"]};
+var lastHits=[];
+function analyze(){
+  var t=$("msg").value,ch=$("channel").value,out=$("out");
+  if(!t.trim() && !Object.keys(EXTRA).some(function(k){return $(k).checked;})){out.hidden=false;out.innerHTML="<p>Paste a message (or tick a box) first.</p>";return;}
+  var hits=[],score=0,severe=0,ranges=[];
+  RULES.forEach(function(r){
+    var re=new RegExp(r[3].source,"gi"),m,found=[];
+    while((m=re.exec(t))!==null){if(m[0].length===0){re.lastIndex++;continue;}found.push(m[0]);ranges.push([m.index,m.index+m[0].length]);if(found.length>20)break;}
+    if(found.length){hits.push({title:r[4],why:r[5],src:SRC[r[6]],w:r[1],sev:r[2],ex:found.slice(0,3)});score+=r[1];if(r[2])severe++;}
+  });
+  Object.keys(EXTRA).forEach(function(k){if($(k).checked){var e=EXTRA[k];hits.push({title:e[0],why:e[3],src:SRC[e[4]],w:e[1],sev:e[2],ex:[]});score+=e[1];if(e[2])severe++;}});
+  /* combinations that matter */
+  var ids=hits.map(function(h){return h.title;});
+  var has=function(id){return RULES.some(function(r){return r[0]===id && ids.indexOf(r[4])>-1;});};
+  if((has("gov")||has("brand"))&&(has("giftcard")||has("wire")||has("crypto")||has("cash")||has("app")||has("creds")))score+=2;
+  if(has("urgent")&&(has("link")||has("account")||has("fee")))score+=1;
+  hits.sort(function(a,b){return b.w-a.w;});
+  var level,label,sum;
+  if(severe>=2||score>=8){level=4;label="Very likely a scam";sum="This has several of the strongest warning signs agencies describe. Don't pay, click, call back, or share anything. If you're worried it might be real, contact the organization yourself, using a number or website you already trust.";}
+  else if(severe===1||score>=5){level=3;label="Strong warning signs";sum="At least one serious red flag. Treat this as a scam unless you can confirm otherwise by contacting the organization directly through a number or website you look up yourself.";}
+  else if(score>=2){level=2;label="Some warning signs: verify before you act";sum="Nothing here proves it's a scam, but there are signs worth taking seriously. Don't use any links or numbers in the message. Check with the company or person directly.";}
+  else {level=1;label="No common red flags found";sum="That does <strong>not</strong> mean it's safe. Scammers change their wording, and this checker only knows common patterns. If it asks for money, personal information, or quick action, verify independently first.";}
+  lastHits=hits;
+  var html='<div class="verdict v'+level+'"><strong>'+label+'.</strong> '+sum+'</div>';
+  if(hits.length){
+    html+='<h3>Red flags found ('+hits.length+')</h3><ul class="flags">'+hits.map(function(h){
+      return '<li><span class="flag '+(h.sev?"bad":"warn")+'">'+esc(h.title)+'</span>'+(h.ex.length?' <span class="small">matched: '+h.ex.map(function(x){return "“"+esc(x)+"”";}).join(", ")+'</span>':'')+'<br>'+esc(h.why)+' <span class="small">(Source: <a href="'+h.src[1]+'" rel="noopener">'+h.src[0]+'</a>)</span></li>';}).join("")+'</ul>';
+  }
+  if(t.trim()&&ranges.length){html+='<h3>Where the flags are</h3><div class="quote">'+highlight(t,ranges)+'</div>';}
+  html+='<h3>What to do now</h3><ul><li>'+esc(CHANNEL_TIPS[ch])+'</li><li>Don\'t pay, and don\'t share codes, passwords, or account numbers.</li><li>Talk to someone you trust before doing anything. The FTC says talking about it can help you realize it\'s a scam.</li><li>Report it: <a href="https://reportfraud.ftc.gov/" rel="noopener">ReportFraud.ftc.gov</a>. Already paid or shared something? See <a href="#now">step 2</a>.</li></ul>';
+  html+='<div class="row"><button type="button" class="secondary" id="copySummary">Copy a summary to send to family</button></div><p class="small">Pattern check only. It can\'t verify who sent this.</p>';
+  out.innerHTML=html;out.hidden=false;
+  $("copySummary").addEventListener("click",function(){
+    copyText("Scam check ("+label+"):\n"+hits.map(function(h){return "- "+h.title;}).join("\n")+"\n\nPlease don't pay, click, or call back. Let's look at it together.\n(Checked with the free Scam Checker by Zelda Rose. Nothing was uploaded.)");
+  });
+}
+function highlight(t,ranges){
+  ranges.sort(function(a,b){return a[0]-b[0];});
+  var merged=[];ranges.forEach(function(r){var l=merged[merged.length-1];if(l&&r[0]<=l[1])l[1]=Math.max(l[1],r[1]);else merged.push([r[0],r[1]]);});
+  var out="",pos=0;merged.forEach(function(r){out+=esc(t.slice(pos,r[0]))+"<mark>"+esc(t.slice(r[0],r[1]))+"</mark>";pos=r[1];});
+  return out+esc(t.slice(pos));
+}
+var SAMPLES=[
+ ["text","USPS: Your package could not be delivered due to an incomplete address. Pay the $1.99 redelivery fee within 24 hours to avoid return: https://usps-redelivery-help.top/track"],
+ ["call","This is Officer Daniels with the Social Security Administration. Your Social Security number has been suspended due to suspicious activity and there is a warrant for your arrest. To protect your money you must move your savings to a secure account today. Do not hang up and don't tell the bank teller why. I will transfer you to an agent. You can resolve this with Target gift cards."],
+ ["call","Grandma, it's me. I was in a car accident and I'm in jail. Please don't tell Mom. My lawyer will call you about bail. Someone will pick up the cash at your house."],
+ ["popup","WARNING! Your computer is infected with a virus. Do not shut down. Call Microsoft Support at 1-888-555-0199 immediately. Our technician will connect using AnyDesk to remove the malware."],
+ ["social","Hello dear, I am a military doctor deployed overseas. I can show you a trading platform with guaranteed returns of 30% weekly. Just send USDT to my wallet address and I will double your money."]
+];
+var si=0;
+$("analyze").addEventListener("click",analyze);
+$("sample").addEventListener("click",function(){var s=SAMPLES[si++%SAMPLES.length];$("channel").value=s[0];$("msg").value=s[1];analyze();});
+$("clear").addEventListener("click",function(){$("msg").value="";Object.keys(EXTRA).forEach(function(k){$(k).checked=false;});$("out").hidden=true;});
+
+/* ---------- Fridge card ---------- */
+function syncCard(){
+  var n=$("p_name").value.trim();$("cardFor").textContent=n?("("+n+")"):"";
+  [["p_c1","o_c1"],["p_c2","o_c2"],["p_bank","o_bank"]].forEach(function(p){var v=$(p[0]).value.trim();$(p[1]).textContent=v||"______________________";});
+}
+["p_name","p_c1","p_c2","p_bank"].forEach(function(id){$(id).addEventListener("input",syncCard);});
+$("printCard").addEventListener("click",function(){window.print();});
+
+
+/* ---------- Tip copy ---------- */
+document.querySelectorAll("[data-copy]").forEach(function(b){b.addEventListener("click",function(){copyText($(b.getAttribute("data-copy")).textContent.trim());});});
+
+})();
+</script>
+</body>
+</html>
