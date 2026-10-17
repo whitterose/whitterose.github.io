@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Crypto Scam Checker: free, private check for crypto scams</title>
+<meta name="description" content="Free, private, works offline. Paste a crypto DM, link, airdrop, or token pitch, or answer a short checklist, to get a plain-language risk read: drainers, seed-phrase theft, fake support, pig butchering, recovery scams, honeypots, and lookalike domains. Nothing leaves your device.">
+<meta name="author" content="Zelda Rose">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<style>
+:root{--ink:#1d2330;--muted:#5b6475;--bg:#f7f5f2;--card:#fff;--line:#e3dfd8;--ok:#1f7a4d;--warn:#a15c00;--bad:#b0263b;--radius:14px;--accent:#1f6f6b;--accent2:#15524f;--focus:#a8dcd8}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font:17px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg)}
+a{color:var(--accent2)}
+header.hero{background:linear-gradient(135deg,#0f1f24,#164a4c 60%,#2b8a83);color:#fff;padding:48px 20px 40px}
+.wrap{max-width:960px;margin:0 auto;padding:0 20px}
+.hero h1{font-size:clamp(28px,5vw,44px);line-height:1.15;margin:0 0 12px}
+.hero p{font-size:19px;max-width:720px;margin:0 0 18px;opacity:.95}
+.badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.badge{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:4px 12px;font-size:14px}
+.byline{font-size:14px;opacity:.85;margin-top:16px}
+.byline a{color:#fff}
+nav.toc{position:sticky;top:0;z-index:5;background:#fff;border-bottom:1px solid var(--line)}
+nav.toc .wrap{display:flex;gap:4px;overflow-x:auto;padding:8px 20px}
+nav.toc a{white-space:nowrap;text-decoration:none;color:var(--ink);padding:6px 12px;border-radius:8px;font-size:15px}
+nav.toc a:hover,nav.toc a:focus{background:#f1ece6}
+section{padding:36px 0;border-bottom:1px solid var(--line)}
+h2{font-size:28px;margin:0 0 8px}
+h3{font-size:20px;margin:22px 0 8px}
+.lead{color:var(--muted);margin-top:0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px;margin:16px 0;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+.grid{display:grid;gap:14px}
+@media(min-width:720px){.grid.two{grid-template-columns:1fr 1fr}.grid.three{grid-template-columns:1fr 1fr 1fr}}
+label{display:block;font-weight:600;font-size:15px;margin:10px 0 4px}
+input[type=text],input[type=date],input[type=number],input[type=email],input[type=tel],textarea,select{width:100%;font:inherit;font-size:16px;padding:10px 12px;border:1px solid #cfc8bd;border-radius:10px;background:#fff;color:var(--ink)}
+textarea{min-height:120px;resize:vertical}
+input:focus,textarea:focus,select:focus,button:focus,a:focus{outline:3px solid var(--focus);outline-offset:2px}
+.q{border-top:1px dashed var(--line);padding:12px 0}
+.q:first-child{border-top:0}
+.q .opts{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.q .opts label{font-weight:500;margin:0;display:flex;align-items:center;gap:6px;border:1px solid #cfc8bd;border-radius:999px;padding:6px 14px;cursor:pointer;background:#fff}
+.q .opts input{accent-color:var(--accent)}
+.checks label{font-weight:500;display:flex;align-items:flex-start;gap:8px;margin:6px 0;cursor:pointer}
+.checks input{accent-color:var(--accent);margin-top:5px}
+button,.btn{font:inherit;font-size:16px;font-weight:600;border:0;border-radius:10px;padding:10px 18px;background:var(--accent);color:#fff;cursor:pointer;text-decoration:none;display:inline-block}
+button.secondary,.btn.secondary{background:#efe9e2;color:var(--ink)}
+button:hover{filter:brightness(1.07)}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:12px}
+.plan ol{padding-left:22px}
+.plan li{margin:10px 0}
+.tag{display:inline-block;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:2px 8px;border-radius:6px;margin-right:6px;vertical-align:2px}
+.tag.urgent{background:#fde2e6;color:var(--bad)}
+.tag.money{background:#e1f3ea;color:var(--ok)}
+.tag.info{background:#eee8ff;color:#4b3aa6}
+.tag.maybe{background:#fff1d6;color:var(--warn)}
+table{width:100%;border-collapse:collapse;font-size:15px}
+th,td{border-bottom:1px solid var(--line);padding:8px 6px;text-align:left;vertical-align:top}
+th{background:#faf8f5}
+td.num{text-align:right;white-space:nowrap}
+.flag{display:inline-block;font-size:12px;font-weight:700;border-radius:6px;padding:1px 7px;margin:2px 4px 2px 0}
+.flag.bad{background:#fde2e6;color:var(--bad)}
+.flag.warn{background:#fff1d6;color:var(--warn)}
+.letter{white-space:pre-wrap;font-family:Georgia,"Times New Roman",serif;font-size:16px;line-height:1.55;background:#fffdf9;border:1px solid var(--line);border-radius:10px;padding:22px;min-height:200px}
+.small{font-size:14px;color:var(--muted)}
+.note{background:#fff8e6;border:1px solid #f1d9a0;border-radius:10px;padding:12px 14px;font-size:15px}
+.ok{color:var(--ok)}
+details{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:10px 0}
+details summary{cursor:pointer;font-weight:600}
+.script{background:#f4f8ff;border-left:4px solid #6b8bd6;padding:10px 14px;border-radius:6px;margin:8px 0;font-style:italic}
+.tip{background:linear-gradient(180deg,#fff,#fbf7f2)}
+.addr{display:grid;grid-template-columns:auto 1fr auto;gap:8px 12px;align-items:center;margin:10px 0}
+.addr code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:14px;background:#f3efe9;border-radius:8px;padding:8px 10px;word-break:break-all;user-select:all}
+.coin{font-weight:700;min-width:44px}
+.copybtn{padding:6px 12px;font-size:14px}
+footer{padding:30px 0 50px;color:var(--muted);font-size:14px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#1d2330;color:#fff;padding:10px 16px;border-radius:10px;font-size:15px;opacity:0;transition:opacity .2s;pointer-events:none}
+#toast.show{opacity:1}
+@media print{
+  header.hero,nav.toc,section:not(.print-me),footer,.no-print,#toast{display:none!important}
+  body{background:#fff}
+  .print-me{border:0;padding:0}
+  .letter{border:0;padding:0;background:#fff;font-size:12pt}
+}
+
+.tall{min-height:170px}
+.verdict{border-radius:12px;padding:14px 16px;margin:0 0 12px;font-size:18px}
+.verdict.v4{background:#fde2e6;border:1px solid #f3b3bf}
+.verdict.v3{background:#ffe9d6;border:1px solid #f5c79b}
+.verdict.v2{background:#fff6dc;border:1px solid #f1d9a0}
+.verdict.v1{background:#eef6f1;border:1px solid #bfe0cc}
+.flags li{margin:10px 0}
+mark{background:#ffe08a;padding:0 2px;border-radius:3px}
+.quote{white-space:pre-wrap;word-break:break-word;background:#faf8f5;border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:15px;max-height:300px;overflow:auto}
+.types{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 4px}
+.urlbox code{word-break:break-all}
+.care{background:#f3f7ff;border-color:#c9d6f2}
+section.tip.subtle{border-bottom:0;padding:18px 0;opacity:.92}
+section.tip.subtle h2{font-size:18px}
+section.tip.subtle .lead{font-size:15px}
+section.tip.subtle .card{padding:14px}
+.flag.okf{background:#e1f3ea;color:var(--ok)}</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <h1>Is this crypto thing a scam? Check it privately before you connect, sign, or send.</h1>
+    <p>Paste a DM, message, link, or token pitch, or answer a short checklist. You'll get a plain-language risk read, the specific red flags, and why each one matters. Includes lookalike-link checks for wallet and exchange names.</p>
+    <div class="badges">
+      <span class="badge">100% free</span>
+      <span class="badge">Nothing you paste leaves your device</span>
+      <span class="badge">No wallet connection, ever</span>
+      <span class="badge">Works offline</span>
+    </div>
+    <div class="byline">Made by <strong>Zelda Rose</strong> · Last reviewed October 2026</div>
+  </div>
+</header>
+
+<nav class="toc" aria-label="Sections">
+  <div class="wrap">
+    <a href="#check">1. Check it</a>
+    <a href="#list">2. Quick checklist</a>
+    <a href="#now">3. What to do now</a>
+    <a href="#learn">4. Common crypto scams</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<section id="check">
+  <h2>1. Check a message, link, or token pitch</h2>
+  <p class="lead">Paste the whole thing. <strong>Never paste your seed phrase or private key here, or anywhere else.</strong> This page doesn't need it, and no real tool ever does.</p>
+  <div class="card">
+    <label for="channel">Where did it come from?</label>
+    <select id="channel">
+      <option value="x">X (Twitter) DM, reply, or post</option>
+      <option value="discord">Discord</option>
+      <option value="telegram">Telegram</option>
+      <option value="dating">Dating app, WhatsApp, or a "wrong number" text</option>
+      <option value="site">A website, ad, or search result</option>
+      <option value="email">Email or SMS</option>
+      <option value="token">A token or coin pitch</option>
+      <option value="other">Somewhere else</option>
+    </select>
+    <label for="msg">The message, link, or pitch</label>
+    <textarea id="msg" class="tall" placeholder="Paste the DM, post, link, or pitch here…"></textarea>
+    <div class="row">
+      <button type="button" id="analyze">Check for red flags</button>
+      <button type="button" class="secondary" id="sample">Try an example</button>
+      <button type="button" class="secondary" id="clear">Clear</button>
+    </div>
+    <p class="small">Your answers in the checklist below are counted too.</p>
+  </div>
+  <div class="card" id="out" hidden aria-live="polite"></div>
+</section>
+
+<section id="list">
+  <h2>2. Quick checklist</h2>
+  <p class="lead">No message to paste, or it came by voice or video? Tick anything that's true, then press <em>Check for red flags</em>.</p>
+  <div class="card checks">
+    <label><input type="checkbox" id="c_seed"> Someone asked for my seed phrase, recovery phrase, or private key, or a site asked me to type it in to "validate", "sync", or "fix" my wallet.</label>
+    <label><input type="checkbox" id="c_connect"> A link asked me to connect my wallet to claim an airdrop, a reward, or a refund, or to "verify" my wallet.</label>
+    <label><input type="checkbox" id="c_sign"> I was asked to sign or approve something I didn't fully understand (an approval, a permit, "set approval for all", or a "free" or "gasless" signature).</label>
+    <label><input type="checkbox" id="c_dm"> "Support", an "admin", or a "moderator" messaged me first on X, Discord, or Telegram.</label>
+    <label><input type="checkbox" id="c_recovery"> Someone offered to get back crypto I lost or had stolen.</label>
+    <label><input type="checkbox" id="c_online"> Someone I met online (a dating app, a "wrong number" text, a group chat) is teaching me to trade or invest.</label>
+    <label><input type="checkbox" id="c_withdraw"> A platform or app says I must pay a fee, tax, or deposit before I can withdraw.</label>
+    <label><input type="checkbox" id="c_cantsell"> I bought a token and can't sell it, or its pitch mentions mint authority, freeze authority, or unlocked liquidity.</label>
+    <label><input type="checkbox" id="c_double"> It's a giveaway where I send crypto and get double back.</label>
+    <label><input type="checkbox" id="c_celeb"> A famous person or company seems to be promoting it in a DM, a reply, or a livestream.</label>
+    <label><input type="checkbox" id="c_address"> I'm about to send to an address I copied from my transaction history, or I only checked the first and last few characters.</label>
+    <label><input type="checkbox" id="c_task"> A job pays in USDT for simple online tasks, and I had to deposit my own money to keep going.</label>
+    <label><input type="checkbox" id="c_guar"> They promise guaranteed, risk-free, or very high returns.</label>
+    <label><input type="checkbox" id="c_rush"> They're rushing me, or told me to keep it secret.</label>
+  </div>
+  <div class="row"><button type="button" id="analyze2">Check for red flags</button></div>
+</section>
+
+<section id="now">
+  <h2>3. What to do now</h2>
+  <p class="lead">First: <strong>being scammed is not your fault.</strong> These are organized, professional operations that fool smart, careful people every day. Acting quickly matters more than how it happened.</p>
+  <div class="grid two">
+    <div class="card"><h3>Never share your seed phrase</h3><p>Your seed phrase (recovery phrase) or private key <em>is</em> your wallet. Anyone who has it can take everything. No support team, exchange, airdrop, app, or "validator" will ever need it. Anyone asking for it is stealing.</p></div>
+    <div class="card"><h3>Seed phrase exposed? Move funds now</h3><p>If you typed it into a website or shared it with anyone, treat the wallet as lost. Create a <strong>brand-new wallet with a new seed phrase</strong> (on a device you trust), and move whatever is left to it right away. Revoking approvals won't help here: they have your keys. Stop using the old wallet.</p></div>
+    <div class="card"><h3>Signed an approval? Revoke it</h3><p>On Ethereum and other EVM chains, look up your address in <strong>revoke.cash</strong> or Etherscan's Token Approval Checker and revoke anything you don't recognize. On Solana, use your wallet's own tools: Solflare lists token delegations and can revoke them, and Phantom's help center describes revoking token allowances. Advanced users can use <code>spl-token revoke</code>. Type these names into your browser yourself. Don't click links someone sent you. Revoking costs a small network fee.</p></div>
+    <div class="card"><h3>Lost money on a "platform" or app?</h3><p>Stop sending money. Paying a "withdrawal fee", "tax", or "unlock deposit" never gets your funds out. It's how the scam takes more. Save screenshots, wallet addresses, transaction IDs (hashes), usernames, and website addresses.</p></div>
+    <div class="card"><h3>Report it</h3><ul>
+      <li>FBI Internet Crime Complaint Center: <a href="https://www.ic3.gov/" rel="noopener">ic3.gov</a></li>
+      <li>FTC: <a href="https://reportfraud.ftc.gov/" rel="noopener">ReportFraud.ftc.gov</a></li>
+      <li>The platform: use the report button on X, Discord, or Telegram, and tell the exchange you sent from (through its app or website).</li>
+      <li>Outside the US? Report to your national police or fraud agency too.</li>
+    </ul><p class="small">Reports to IC3 and the FTC help investigators link cases, even when they can't get your money back.</p></div>
+    <div class="card"><h3>Beware of "recovery" offers</h3><p>After a loss, you'll likely be contacted by "hackers", "blockchain investigators", "law firms", or even fake government agents who promise to get your crypto back for a fee. That's a second scam. The FBI says IC3 doesn't contact victims to offer recovery services (<a href="https://www.ic3.gov/" rel="noopener">IC3</a>; <a href="https://consumer.ftc.gov/articles/refund-and-recovery-scams" rel="noopener">FTC</a>).</p></div>
+  </div>
+  <div class="card care">
+    <h3>If this loss is weighing on you</h3>
+    <p>Losing money, especially savings, can feel crushing, and shame makes it worse. You're not stupid and you're not alone. Talk to someone you trust. If you're in emotional crisis or thinking about hurting yourself, in the US you can call or text <strong>988</strong> (Suicide &amp; Crisis Lifeline, <a href="https://988lifeline.org/" rel="noopener">988lifeline.org</a>), any time. If you're in immediate danger, call 911 or your local emergency number.</p>
+  </div>
+</section>
+
+<section id="learn">
+  <h2>4. Common crypto scams, in plain words</h2>
+  <div class="grid two">
+    <details><summary>Wallet drainers and "connect wallet to claim"</summary><p>A fake site (often promoted as an airdrop, a mint, or a refund) asks you to connect, then pushes a signature that hands over your tokens or NFTs. One click can empty a wallet.</p></details>
+    <details><summary>Approval and permit phishing</summary><p>"Approve", "permit", "set approval for all", and gasless signatures can let someone else move your tokens later, even after you close the site. Read every wallet pop-up. If you don't understand it, reject it.</p></details>
+    <details><summary>Seed phrase requests ("validate your wallet")</summary><p>"Your wallet needs to be synced, validated, rectified, or migrated. Enter your phrase." It's always theft.</p></details>
+    <details><summary>Fake support on X, Discord, and Telegram</summary><p>You post a question and "support" or an "admin" DMs you first, or sends you to a "ticket" site. Real teams don't DM first and never ask for your phrase or to connect your wallet to fix something.</p></details>
+    <details><summary>Recovery scams</summary><p>People who already lost money are targeted again by fake recovery services that charge upfront fees.</p></details>
+    <details><summary>Pig butchering and romance investing</summary><p>A friendly stranger (often from a "wrong number" text or a dating app) builds trust over weeks, then shows you a "trading platform" with amazing gains. Withdrawals get blocked with fees and "taxes". See the SEC on <a href="https://www.investor.gov/protect-your-investments/fraud/types-fraud/relationship-investment-scams" rel="noopener">relationship investment scams</a>.</p></details>
+    <details><summary>Fake exchanges and apps with withdrawal fees</summary><p>Your balance looks great, but to withdraw you must pay a "tax", an "AML fee", or a "deposit to unlock". It's never released.</p></details>
+    <details><summary>Pump and dump, honeypot, and rug-pull tokens</summary><p>Hype ("next 100x", "get in early") pushes the price up while insiders sell. Honeypots are coded so you can buy but not sell. If mint authority is active, more tokens can be printed. If liquidity isn't locked or burned, it can be pulled. See the SEC on <a href="https://www.investor.gov/introduction-investing/investing-basics/glossary/pump-and-dump-schemes" rel="noopener">pump-and-dump schemes</a>.</p></details>
+    <details><summary>Giveaway doubling ("send 1, get 2")</summary><p>No one sends double back. Often uses deepfake livestreams of famous people.</p></details>
+    <details><summary>Impersonated celebrities and companies</summary><p>The FTC says celebrities aren't contacting you on social media to multiply your crypto (<a href="https://consumer.ftc.gov/articles/what-know-about-cryptocurrency-and-scams" rel="noopener">FTC</a>).</p></details>
+    <details><summary>Address poisoning</summary><p>Scammers send tiny or zero-value transfers from an address that looks like one you use (same first and last characters), hoping you'll copy it from your history next time. Always check the full address, or use your wallet's address book.</p></details>
+    <details><summary>Fake job and task scams paid in USDT</summary><p>"Rate apps or products, earn commission in USDT." Soon you must "recharge" or top up your own money to unlock "combo tasks". The FTC says never pay to get a job.</p></details>
+  </div>
+  <p class="small">Using XRP? The <a href="/xrpl-safety-check.html">XRPL Safety Check</a> verifies addresses and destination tags offline and explains XRPL transactions before you sign.</p>
+  <div class="note"><strong>Honest limits:</strong> this checker uses simple pattern rules in your browser. It can't see the blockchain, check a contract, or know who really sent a message. Scammers change their wording constantly. <strong>A scam can show zero flags, and a real message can trip a few.</strong> Treat the result as a second opinion, not a guarantee. This is general safety information, not financial or legal advice.</div>
+</section>
+
+
+<section id="tip" class="tip subtle" hidden>
+  <h2>Optional: support this free tool</h2>
+  <p class="lead">This checker is free and always will be. If it helped and you'd like to chip in, here are tip addresses. They're one-way gifts: nothing is sent back, Zelda Rose will never DM you, and this page never asks you to connect a wallet. Anyone who says otherwise is a scammer.</p>
+  <div class="card">
+    <div class="addr">
+      <span class="coin">SOL</span><code id="addr-sol">FBL1ez549NQscEm2Ly67TBxesknPcHfmRddnyiBF1kiA</code><button type="button" class="secondary copybtn" data-copy="addr-sol">Copy</button>
+      <span class="coin">ETH</span><code id="addr-eth">0xb46A6182Bf50EfC4012603803dEFe1CADd4Da4De</code><button type="button" class="secondary copybtn" data-copy="addr-eth">Copy</button>
+      <span class="coin">XRP</span><code id="addr-xrp">rw2ciyaNshpHe7bCHo4bRWq6pqqynnWKQg</code><button type="button" class="secondary copybtn" data-copy="addr-xrp">Copy</button>
+      <span class="coin">XRP tag</span><code id="addr-xrptag">1476447851</code><button type="button" class="secondary copybtn" data-copy="addr-xrptag">Copy</button>
+    </div>
+    <p class="note"><strong>XRP: you must include the destination tag/memo <code>1476447851</code>.</strong> If you send XRP without it, the tip may be lost. ETH address: Ethereum mainnet only. Always check the address in your wallet before you send.</p>
+    <p class="small">Can't tip? Sharing this page with someone who's new to crypto helps just as much. Tips are gifts, not payment for advice.</p>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+<p>Crypto Scam Checker, by Zelda Rose. This page uses no cookies and no analytics, never connects to a wallet, and never uploads anything. Checks run by simple rules in your browser. You can save this page to use it offline. <a href="/scam-checker.html">General Scam Checker</a> · <a href="/xrpl-safety-check.html">XRPL Safety Check</a> · <a href="/">More free tools</a>.</p>
+    <p>Not affiliated with the FTC, FBI, SEC, or any wallet, exchange, or company named here. Brand names are used only to spot lookalike links. General information only, not financial or legal advice. Last reviewed: October 2026.</p>
+  </div>
+</footer>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+"use strict";
+
+var $ = function(id){return document.getElementById(id);};
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];});}
+function toast(msg){var t=$("toast");t.textContent=msg;t.classList.add("show");clearTimeout(toast._t);toast._t=setTimeout(function(){t.classList.remove("show");},1800);}
+function copyText(text){
+  if(navigator.clipboard && window.isSecureContext){navigator.clipboard.writeText(text).then(function(){toast("Copied");},function(){fallbackCopy(text);});}
+  else fallbackCopy(text);
+}
+function fallbackCopy(text){var ta=document.createElement("textarea");ta.value=text;ta.style.position="fixed";ta.style.opacity="0";document.body.appendChild(ta);ta.select();try{document.execCommand("copy");toast("Copied");}catch(e){toast("Select and copy manually");}document.body.removeChild(ta);}
+function download(name,text){var b=new Blob([text],{type:"text/plain"});var a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},500);}
+
+
+/* Rules: [id, weight 1-3, severe?, regex, title, why it matters, scam type, source key, negatable?] */
+var SRC={ftc:["FTC","https://consumer.ftc.gov/articles/what-know-about-cryptocurrency-and-scams"],rec:["FTC","https://consumer.ftc.gov/articles/refund-and-recovery-scams"],sec:["SEC","https://www.investor.gov/introduction-investing/investing-basics/glossary/pump-and-dump-schemes"],rel:["SEC","https://www.investor.gov/protect-your-investments/fraud/types-fraud/relationship-investment-scams"],ic3:["FBI IC3","https://www.ic3.gov/"],phish:["FTC","https://consumer.ftc.gov/articles/how-recognize-avoid-phishing-scams"]};
+var T={drain:"Wallet drainer / fake claim",seed:"Seed-phrase theft",approve:"Approval or permit phishing",support:"Fake support",recovery:"Recovery scam",pig:"Pig butchering / romance investing",exch:"Fake exchange or app",token:"Pump-and-dump or honeypot token",double:"Giveaway doubling",celeb:"Impersonated celebrity or company",poison:"Address poisoning",job:"Fake job or task scam",invest:"Guaranteed-profit investment",generic:"General pressure tactics",link:"Suspicious link"};
+var RULES=[
+ ["seed",3,true,/\b((seed|secret|recovery|mnemonic|backup|wallet) ?(phrase|words?)|(12|24)[- ]words?|private ?keys?|keystore( file)?|validate your wallet|(sync|synchroni[sz]e|rectify|validate|restore|migrate|import) (your )?wallet|wallet (validation|synchroni[sz]ation|sync|rectification|migration)|enter your (phrase|keys?|words))\b/i,"Asks for your seed phrase or private key","Your seed phrase or private key is the wallet itself. Anyone who gets it can take everything, and no legitimate support team, airdrop, or app ever needs it.","seed","ftc",true],
+ ["connect",2,false,/\b(connect (your )?wallet|wallet ?connect|connect to (claim|verify|receive|check)|claim (your|the|my)? ?(free )?(airdrop|tokens?|rewards?|allocation|nfts?|refund|rebate|compensation|bonus|sol|eth|xrp|usdt|usdc|btc)|(eligible|qualified) for (an |the |a )?(airdrop|reward|allocation)|airdrop (is )?(live|now|claim)|check (your )?eligibility|claim (now|here|before))\b/i,"Wants you to connect a wallet to claim or verify","Fake airdrop and claim sites are the main way wallet drainers work: you connect, sign one pop-up, and your tokens are gone.","drain","phish",true],
+ ["approve",3,true,/\b((sign|approve|confirm) (this|the|a) (transaction|message|signature|permit|approval|request)|set ?approval ?for ?all|setapprovalforall|increase ?allowance|unlimited (approval|allowance|spend)|permit2?|(gasless|free|off-chain) signature|sign to (verify|claim|activate))\b/i,"Asks you to sign or approve something","Approvals, permits, and \"gasless\" signatures can give someone permission to move your tokens later, even after you leave the site. Approval phishing drains wallets without ever needing your seed phrase.","approve","phish",true],
+ ["support",2,false,/\b((i am|i'm|this is|we are|from) (the |an? )?(official )?([a-z]+ )?(support|admin|moderator|mod|help ?desk|customer (care|service)|tech(nical)? (team|support)|wallet team)|support (agent|team) (here|will)|(dm|message|contact|text) (me|us|our (support|team|admin))|open a (support )?ticket|raise a ticket|live (chat )?support|resolve (your|the) (issue|problem)|saw your (post|tweet|complaint|issue))\b/i,"Unsolicited \"support\" contact","Real support teams on X, Discord, and Telegram don't DM you first. Fake support accounts watch for people asking for help, then send them to drainer sites or ask for their phrase.","support","phish",true],
+ ["recovery",3,true,/\b(recover (your |the |all )?(lost |stolen )?(funds|money|crypto|coins|assets|bitcoin|usdt)|(funds?|asset|crypto|bitcoin|wallet) recovery|(get|got) (your|their|my) (crypto|money|funds) back|ethical hackers?|recovery (expert|specialist|agent|team|service)|trace (and recover )?(your |the )?(stolen )?funds|blockchain (forensic|investigator)s?|we (can|will) (recover|retrieve|trace)|reclaim (your )?(funds|losses))\b/i,"Offers to recover lost or stolen crypto","Recovery scams target people who already lost money and charge \"fees\" to get it back. No one can reverse a blockchain transaction for a fee, and the FBI says IC3 doesn't contact victims to offer recovery.","recovery","rec",false],
+ ["pig",2,false,/\b(my (love|dear|darling|babe|sweetheart|honey)|sorry,? (wrong number|who is this)|wrong number|my (uncle|aunt|mentor|cousin|friend) (is|works|taught|showed)|insider (info|information|tip)|trading (platform|app|signals?|mentor|teacher|group)|teach you (to|how to) (trade|invest)|(invest|grow|build) (it )?together|our future together|analyst (group|team)|vip (group|channel))\b/i,"Friendly stranger steering you toward investing","Pig-butchering scams build trust, sometimes as romance or a \"wrong number\" friendship, then steer you to a fake trading platform. Mixing a new online friend with investment advice is a hallmark.","pig","rel",false],
+ ["withdraw",3,true,/\b(withdraw(al|ing)? (fee|tax|charge|deposit)|pay (the |a )?(tax|taxes|fee|deposit|margin|commission) (first |before |to )(you can )?(withdraw|unlock|release|receive)|(unlock|release) (your )?(funds|account|withdrawal|profits)|account (is |has been )?(frozen|locked|suspended)[^.]{0,40}(deposit|pay|fee)|(tax|taxes|fee|fees|deposit) (first )?(before|to) (you can |i can |we can )?(withdraw|unlock|release)|anti[- ]money[- ]laundering (fee|deposit)|aml (fee|deposit|verification fee)|(security|verification|insurance|activation) (deposit|fee)|credit score (is )?(too low|insufficient)|capital gains tax before)\b/i,"Demands a fee or deposit before you can withdraw","Fake exchanges and apps show a growing balance, then invent fees, \"taxes\", or deposits to release it. Paying never unlocks anything. It's how they take more.","exch","ftc",false],
+ ["guarantee",3,true,/\b(guaranteed? (returns?|profits?|income|gains?|payouts?)|risk[- ]free|zero risk|no risk|can'?t lose|\d+(\.\d+)? ?% (daily|weekly|per day|a day|every day|monthly|per week)|(10|20|50|100|1000)x (gains?|returns?|guaranteed)|double your (money|investment|crypto|portfolio)|passive income (of|guaranteed))\b/i,"Promises guaranteed or very high returns","Only scammers guarantee profits. Real crypto investments can lose value fast, and nobody can promise returns, especially daily ones.","invest","ftc",false],
+ ["double",3,true,/\b(send (\d+(\.\d+)?|any amount of|up to \d+) ?(eth|btc|sol|xrp|usdt|usdc|bnb|doge|ada)?,? ?(and|&|to) (get|receive) (\d+|double|2x|twice)|(double|2x|triple) (back|your (crypto|eth|btc|sol|xrp|coins?|deposit))|(giveaway|give away)[^.]{0,80}(send|participate|deposit)|send (any amount|crypto) to (participate|join|the address))\b/i,"\"Send crypto, get double back\"","Giveaway doubling is always a scam. Nobody sends double back. These often use fake or deepfake videos of famous people.","double","ftc",false],
+ ["celeb",2,false,/\b(elon( musk)?|musk|vitalik|buterin|changpeng|\bcz\b|saylor|garlinghouse|mr ?beast|anatoly|yakovenko|tesla (giveaway|event)|spacex (giveaway|event)|ripple ceo|binance ceo|official giveaway)\b/i,"Uses a famous name","Scammers impersonate celebrities and company founders. The FTC says celebrities aren't contacting people on social media to multiply their crypto.","celeb","ftc",false],
+ ["honeypot",3,true,/\b(can'?t sell|cannot sell|unable to sell|not able to sell|honey ?pot|mint authority (is )?(enabled|active|not (revoked|renounced|disabled))|freeze authority (is )?(enabled|active|on)|liquidity (is )?(not |un)locked|unlocked liquidity|lp (is )?not (burned|burnt|locked)|(sell|exit) tax (of )?\d{2}|high sell tax|blacklist(ed)? (function|wallet|from selling)|only (the )?dev can sell)\b/i,"Token warning signs (can't sell, mint or freeze authority, unlocked liquidity)","If you can't sell, it's a honeypot. Active mint authority lets the creator print more tokens. Active freeze authority can lock your tokens. Unlocked liquidity can be pulled (a rug pull).","token","sec",false],
+ ["pump",2,false,/\b(next (\d+x|gem|bitcoin|shib|pepe)|\d{2,5}x (gem|potential|soon|incoming)|to the moon|moon(ing|shot)|ape in|low ?cap gem|hidden gem|get in (now|early|before)|before (it|the) (pumps?|moons?|lists?)|pump (signal|group|soon)|presale (is )?(live|ends)|stealth launch|whitelist spots?|last chance to buy|buy before)\b/i,"Hype and FOMO about a token","Pump-and-dump schemes use hype to drive the price up while insiders sell. FOMO language is a signal to slow down, not to buy.","token","sec",false],
+ ["poison",2,false,/\b(address poisoning|copy (the |my )?address from (your |my )?(history|recent|transactions?|activity)|(first|last) (4|5|6|four|five|six|few) (characters|digits)|zero[- ]value (transfer|transaction)|0x[0-9a-f]{3,6}(\.{2,3}|…)[0-9a-f]{3,6}|tiny (amount|deposit|transfer) from (an? )?unknown)\b/i,"Address-poisoning signs","Scammers seed your history with lookalike addresses that match the first and last characters of one you use. Always check the full address, or use your wallet's address book.","poison","ftc",false],
+ ["job",2,false,/\b(tasks? (platform|job|order|commission)|(optimi[sz]e|rate|review|boost) (apps|products|orders|hotels|data)|combo (task|order)|commission per (task|order)|recharge (your )?(account|balance)|top ?up (your )?(account|balance)|negative balance|(earn|paid|salary|pay) (\d+ )?(in |daily )?(usdt|tether)|(usdt|tether) (daily|salary|commission)|like (videos|posts) (and|to) earn|work from home[^.]{0,40}(usdt|crypto))\b/i,"Online \"task\" job paid in crypto","Task scams pay small amounts at first, then require you to deposit your own money (\"recharge\") to unlock more tasks. The FTC says never pay to get a job.","job","ftc",false],
+ ["safewallet",3,true,/\b((move|transfer|send) (your |all )?(funds|crypto|assets|coins|tokens|balance) (to|into) (a |this |our |the )?(safe|secure|protected|new|backup|cold) (wallet|address|vault)|(safe|secure|protected) (wallet|address) (we|i) (will )?(provide|give|created|set up))\b/i,"Tells you to move funds to a \"safe\" wallet they provide","If someone else gives you the \"safe\" address, they control it. Only move funds to a wallet you created yourself.","seed","ftc",true],
+ ["account",2,false,/\b(account (will be |has been |is |was )?(suspended|restricted|frozen|locked|flagged|compromised|disabled)|unauthori[sz]ed (login|withdrawal|access|transaction)|suspicious (activity|login|withdrawal)|verify (your )?(wallet|account|kyc)|kyc (update|verification) (required|needed|pending)|(compliance|security) (check|review) required)\b/i,"Says there's a problem with your account or wallet","Fake exchange and wallet alerts create panic so you'll click a link or \"verify\" right away. Open the official app yourself instead.","support","phish",false],
+ ["remote",3,true,/\b(anydesk|teamviewer|ultraviewer|rustdesk|remote (access|desktop|control)|screen ?shar(e|ing)|share your screen)\b/i,"Wants remote access or screen sharing","With your screen visible, they can read your seed phrase or watch you approve transactions. Real support never needs it.","support","phish",false],
+ ["urgent",1,false,/\b(urgent(ly)?|immediately|right away|act (now|fast)|within (24|48|12|2|1) ?(hours?|hrs|minutes|mins)|last chance|ends (today|soon|in)|expires? (today|soon|in)|limited (time|spots|slots)|only \d+ (spots|slots) left|asap|hurry)\b/i,"Pressure to act fast","Scams rush you so you don't stop to check. Real projects and real support give you time.","generic","ftc",false],
+ ["secret",2,false,/\b(don'?t tell (anyone|anybody|your (family|bank|friends))|keep (this|it) (a )?(secret|between us|private|confidential)|do not (share|discuss) this with)\b/i,"Asks you to keep it secret","Secrecy cuts you off from people who could warn you. Talk to someone you trust.","generic","ftc",false],
+ ["free",1,false,/\b(free (crypto|tokens?|airdrop|nfts?|mint|money|usdt|sol|eth|xrp|btc|bitcoin)|you('ve| have) (won|been selected)|congratulations)\b/i,"Promises free crypto","The FTC says promises of free money or crypto are always fake.","drain","ftc",false],
+ ["offplatform",1,false,/\b(whatsapp|wa\.me|t\.me\/|telegram me|add me on telegram|signal app|discord\.gg\/)\b/i,"Moves you to a private chat","Scammers often push conversations to WhatsApp, Telegram, or a new server where platforms can't warn you and reports are slower.","generic","ftc",false]
+];
+var NEG=/\b(never|don'?t|do not|won'?t|will not|no one|nobody|not)\b[^.!?\n]{0,50}$/i;
+var EXTRA={
+ c_seed:["Asked for your seed phrase or private key",3,true,"Anyone with your seed phrase controls your wallet. This is always theft.","seed"],
+ c_connect:["Connect your wallet to claim or verify",3,true,"Connect-to-claim sites are how wallet drainers steal tokens and NFTs.","drain"],
+ c_sign:["Asked to sign or approve something unclear",2,true,"Approvals and permits can let someone else move your tokens later.","approve"],
+ c_dm:["\"Support\" messaged you first",3,true,"Real support doesn't DM first on X, Discord, or Telegram. It's one of the most common crypto scams.","support"],
+ c_recovery:["Offer to recover lost crypto",3,true,"Recovery offers after a loss are almost always a second scam.","recovery"],
+ c_online:["Online friend teaching you to invest",3,true,"Online relationships plus investment advice is the pig-butchering pattern, and the FTC says it's always a scam.","pig"],
+ c_withdraw:["Must pay to withdraw",3,true,"Fees, taxes, or deposits to unlock a withdrawal are the classic fake-exchange trap. Paying never releases funds.","exch"],
+ c_cantsell:["Token you can't sell, or risky token permissions",3,true,"Can't sell means honeypot. Active mint or freeze authority and unlocked liquidity let creators print, freeze, or pull the money.","token"],
+ c_double:["\"Send crypto, get double back\"",3,true,"Giveaway doubling is always a scam.","double"],
+ c_celeb:["Famous person promoting it",2,false,"Celebrities and founders are routinely impersonated, including with deepfake livestreams.","celeb"],
+ c_address:["Address copied from history or only partly checked",2,false,"Address poisoning relies on you matching only the first and last characters. Check the full address.","poison"],
+ c_task:["Task job that needs your deposit",3,true,"Task scams make you \"recharge\" with your own money. Never pay to get a job.","job"],
+ c_guar:["Guaranteed or very high returns",3,true,"Only scammers guarantee profits.","invest"],
+ c_rush:["Rushed or told to keep it secret",1,false,"Pressure and secrecy are tactics, not features.","generic"]
+};
+
+/* ---------- Lookalike-domain heuristics (no network) ---------- */
+var BRANDS=[
+ ["MetaMask","metamask",["metamask.io"]],["Phantom","phantom",["phantom.app","phantom.com"]],["Coinbase","coinbase",["coinbase.com"]],
+ ["Binance","binance",["binance.com","binance.us"]],["Uniswap","uniswap",["uniswap.org"]],["Jupiter","jupag",["jup.ag"]],["Jupiter","jupiter",["jup.ag"]],
+ ["Raydium","raydium",["raydium.io"]],["OpenSea","opensea",["opensea.io"]],["Solflare","solflare",["solflare.com"]],["Trust Wallet","trustwallet",["trustwallet.com"]],
+ ["Ledger","ledger",["ledger.com"]],["Trezor","trezor",["trezor.io"]],["Kraken","kraken",["kraken.com"]],["Magic Eden","magiceden",["magiceden.io"]],
+ ["PancakeSwap","pancakeswap",["pancakeswap.finance"]],["Etherscan","etherscan",["etherscan.io"]],["Solscan","solscan",["solscan.io"]],["Revoke.cash","revokecash",["revoke.cash"]],
+ ["KuCoin","kucoin",["kucoin.com"]],["Bybit","bybit",["bybit.com"]],["Robinhood","robinhood",["robinhood.com"]],["Xaman","xaman",["xaman.app"]],
+ ["Rabby","rabby",["rabby.io"]],["OKX","okx",["okx.com"]],["Crypto.com","cryptocom",["crypto.com"]],["Ripple","ripple",["ripple.com"]],
+ ["Blockchain.com","blockchaincom",["blockchain.com"]],["Orca","orcaso",["orca.so"]],["Discord","discord",["discord.com","discord.gg","discordapp.com"]],
+ ["Telegram","telegram",["telegram.org","t.me"]],["X / Twitter","twitter",["twitter.com","x.com"]]
+];
+var COMMON={finance:1,balance:1,radium:1,leader:1,ledgers:1,phantoms:1,trader:1,kracken:0,ripples:1,riddle:1,rapple:0,telegraph:1,discount:1};
+var RISKY_TLD={top:1,xyz:1,click:1,link:1,live:1,site:1,online:1,vip:1,icu:1,buzz:1,shop:1,cfd:1,sbs:1,rest:1,support:1,claims:1,gift:1,bond:1,cyou:1,monster:1,lol:1,pw:1,tk:1,ml:1,ga:1,cf:1,gq:1,ru:1,network:1,today:1,win:1,quest:1,best:1,fun:1};
+var SHORT={"bit.ly":1,"tinyurl.com":1,"t.co":1,"goo.gl":1,"ow.ly":1,"is.gd":1,"rb.gy":1,"cutt.ly":1,"tiny.cc":1,"shorturl.at":1,"linktr.ee":1};
+var BAITWORDS=/(claim|airdrop|connect|wallet|verify|validate|validation|sync|rectif|restore|recover|migrat|bonus|giveaway|reward|drop|mint|support|dapp|fix|unlock|secure|refund|eligib|reclaim|snapshot)/i;
+function lev(a,b){if(a===b)return 0;var m=a.length,n=b.length;if(Math.abs(m-n)>2)return 9;var d=[];for(var i=0;i<=m;i++){d[i]=[i];}for(var j=0;j<=n;j++)d[0][j]=j;
+ for(i=1;i<=m;i++)for(j=1;j<=n;j++){var c=a[i-1]===b[j-1]?0:1;d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+c);
+  if(i>1&&j>1&&a[i-1]===b[j-2]&&a[i-2]===b[j-1])d[i][j]=Math.min(d[i][j],d[i-2][j-2]+1);}return d[m][n];}
+function deconfuse(s){return s.replace(/rn/g,"m").replace(/vv/g,"w").replace(/0/g,"o").replace(/1/g,"l").replace(/3/g,"e").replace(/4/g,"a").replace(/5/g,"s").replace(/7/g,"t").replace(/\$/g,"s");}
+var URLRE=/\b((?:h[tx]{2}ps?:\/\/|www\.)[^\s<>"'()]+|(?:[a-z0-9\u00a1-\uffff](?:[a-z0-9\u00a1-\uffff-]{0,62}[a-z0-9\u00a1-\uffff])?\.)+(?:[a-z]{2,24}|xn--[a-z0-9-]{2,30})(?::\d+)?(?:\/[^\s<>"'()]*)?)/gi;
+function extractUrls(t){
+  var s=t.replace(/\[\.\]|\(\.\)|\{\.\}/g,"."),m,out=[],seen={};URLRE.lastIndex=0;
+  while((m=URLRE.exec(s))!==null){
+    var raw=m[1].replace(/[.,;:!?]+$/,"");var u=raw.replace(/^hxxp/i,"http");
+    var rest=u.replace(/^https?:\/\//i,"");var auth=rest.split(/[\/?#]/)[0];var at=auth.lastIndexOf("@");var host=(at>-1?auth.slice(at+1):auth).replace(/:\d+$/,"").toLowerCase().replace(/\.$/,"");
+    var path=rest.slice(auth.length);
+    if(!/\./.test(host))continue;
+    var tld=host.split(".").pop();
+    if(!/^https?:|^www\./i.test(u) && !/^[0-9.]+$/.test(host)){ /* bare domain: avoid matching things like "e.g" or "i.e" or file names */
+      if(/^(e\.g|i\.e|a\.m|p\.m|u\.s|etc)$/i.test(host))continue;
+      if(/^(js|json|txt|png|jpg|pdf|html?|md|exe|zip|py)$/i.test(tld))continue;
+      if(host.length<4)continue;}
+    if(seen[host+path])continue;seen[host+path]=1;
+    out.push({raw:raw,host:host,path:path,userinfo:at>-1,index:m.index});
+  }
+  return out;
+}
+function checkHost(u){
+  var h=u.host,f=[],labels=h.split("."),tld=labels[labels.length-1];
+  var official=null;BRANDS.forEach(function(b){b[2].forEach(function(d){if(h===d||h.slice(-d.length-1)==="."+d)official=b[0]+" ("+d+")";});});
+  if(/^[0-9.]+$/.test(h))f.push([3,true,"The link is a raw IP address","Real wallets, exchanges, and apps use named domains. A bare IP address is a common way to hide a phishing site."]);
+  if(u.userinfo)f.push([3,true,"The link hides its real destination with an \"@\"","Everything before the @ is ignored by the browser. The real site is "+h+"."]);
+  if(/(^|\.)xn--/.test(h))f.push([3,true,"Punycode domain (xn--)","Punycode can make a domain look like a familiar name using letters from other alphabets. Treat it as a lookalike."]);
+  if(/[^\x00-\x7f]/.test(h))f.push([3,true,"Non-English letters in the domain","Letters from other alphabets (like Cyrillic \u0430 instead of a) can make a fake domain look identical to the real one."]);
+  if(official){f.push([0,false,"Matches the official "+official+" domain","That's a good sign, but it doesn't make the request safe. Scam messages sometimes link to real sites while asking for things those sites never ask (like your seed phrase). It's safest to type the address yourself or use a bookmark."]);return {official:official,flags:f};}
+  var reg=labels.slice(-2).join("."),name=labels.slice(0,-1).join("."),flat=deconfuse(name.replace(/[-.]/g,"")),done={};
+  var tokens=deconfuse(name).split(/[-.]/).filter(Boolean);
+  BRANDS.forEach(function(b){
+    var key=b[1];if(done[b[0]])return;
+    if(key.length>=5 && flat.indexOf(key)>-1){done[b[0]]=1;f.push([3,true,"Uses the name \""+b[0]+"\" but isn't "+b[0]+"'s official site","The official domain is "+b[2].join(" or ")+". Putting a brand name in a different domain (like "+key+"-claim or "+key+"support) is a classic phishing trick."]);return;}
+    var cands=tokens.concat([flat]);
+    for(var i=0;i<cands.length;i++){var c=cands[i];if(COMMON[c]||c===key)continue;
+      var lim=key.length>=7?2:(key.length>=5?1:0);if(!lim)continue;var d=lev(c,key);
+      if(d>0&&d<=lim){done[b[0]]=1;f.push([3,true,"Looks like a misspelling of \""+b[0]+"\"","\""+c+"\" is "+d+" letter"+(d>1?"s":"")+" away from \""+key+"\". Typo domains are made to catch people who don't look closely. The official site is "+b[2].join(" or ")+"."]);return;}}
+  });
+  if(SHORT[h])f.push([2,false,"Shortened link","Short links hide where they really go. Don't open them in a wallet browser."]);
+  if(RISKY_TLD[tld])f.push([1,false,"Unusual domain ending (."+tld+")","Cheap domain endings are popular for throwaway phishing sites. Not proof, but a reason for caution."]);
+  var bw=(name+" "+u.path).match(BAITWORDS);if(bw)f.push([1,false,"Bait word in the link (\""+bw[0]+"\")","Words like claim, airdrop, connect, verify, or sync in a link are typical of drainer pages."]);
+  if(labels.length>=5)f.push([1,false,"Many subdomains","Long chains of subdomains can bury the real domain at the end ("+reg+")."]);
+  if((name.match(/-/g)||[]).length>=2)f.push([1,false,"Lots of hyphens","Domains like brand-claim-portal are a common phishing style."]);
+  return {official:null,flags:f};
+}
+
+var lastLabel="",lastHits=[];
+function analyze(){
+  var t=$("msg").value,ch=$("channel").value,out=$("out");
+  var anyBox=Object.keys(EXTRA).some(function(k){return $(k).checked;});
+  if(!t.trim()&&!anyBox){out.hidden=false;out.innerHTML="<p>Paste something, or tick a box in the checklist, first.</p>";return;}
+  var hits=[],score=0,severe=0,ranges=[],types={},ids={};
+  RULES.forEach(function(r){
+    var re=new RegExp(r[3].source,"gi"),m,found=[];
+    while((m=re.exec(t))!==null){if(!m[0].length){re.lastIndex++;continue;}
+      if(r[8]){var before=t.slice(Math.max(0,m.index-60),m.index);if(NEG.test(before))continue;}
+      found.push(m[0]);ranges.push([m.index,m.index+m[0].length]);if(found.length>20)break;}
+    if(found.length){hits.push({id:r[0],title:r[4],why:r[5],type:r[6],src:SRC[r[7]],w:r[1],sev:r[2],ex:found.slice(0,3)});ids[r[0]]=1;score+=r[1];if(r[2])severe++;types[r[6]]=1;}
+  });
+  Object.keys(EXTRA).forEach(function(k){if($(k).checked){var e=EXTRA[k];hits.push({id:k,title:e[0],why:e[3],type:e[4],src:null,w:e[1],sev:e[2],ex:[]});score+=e[1];if(e[2])severe++;types[e[4]]=1;ids[k]=1;}});
+  /* links */
+  var urls=extractUrls(t),urlRows=[],linkSevere=0,linkScore=0;
+  urls.forEach(function(u){var r=checkHost(u);r.u=u;urlRows.push(r);r.flags.forEach(function(f){linkScore+=f[0];if(f[1])linkSevere++;});});
+  if(urls.length){score+=Math.min(linkScore,6);severe+=Math.min(linkSevere,2);if(linkScore>0)types.link=1;}
+  var dm=(ch==="x"||ch==="discord"||ch==="telegram");
+  /* combinations that matter */
+  if(ids.support&&dm){score+=2;severe++;}
+  if(ids.connect&&urls.length){score+=2;severe++;}
+  if(ids.connect&&ids.free)score+=1;
+  if(ids.celeb&&(ids["double"]||ids.free||ids.connect))score+=2;
+  if(ids.pig&&(ids.guarantee||ids.withdraw||/\b(usdt|crypto|bitcoin|platform|invest)\b/i.test(t))){score+=2;severe++;}
+  if(ids.job&&/\b(deposit|recharge|top ?up|negative balance|pay)\b/i.test(t)){score+=2;severe++;}
+  if(ids.pump&&ids.urgent)score+=1;
+  if(ids["double"]&&ids.celeb)severe++;
+  if(linkSevere&&(ids.account||ids.connect||ids.support||ids.urgent||ids.seed))score+=2;
+  if(ch==="token"&&ids.pump)score+=1;
+  hits.sort(function(a,b){return b.w-a.w;});
+  var level,label,sum;
+  if(severe>=2||score>=8){level=4;label="Very likely a scam";sum="This matches several of the strongest crypto-scam patterns. Don't connect, sign, send, or share anything. If you think there's a real account or project behind it, go to it yourself through the official app or a bookmarked site.";}
+  else if(severe===1||score>=5){level=3;label="Strong warning signs";sum="At least one serious red flag. Treat this as a scam unless you can confirm it independently, without using any link, handle, or contact from the message.";}
+  else if(score>=2){level=2;label="Some warning signs: verify before you act";sum="Nothing here proves it's a scam, but there are signs worth taking seriously. Slow down, and verify through official channels you find yourself.";}
+  else {level=1;label="No common red flags found";sum="That does <strong>not</strong> mean it's safe. This checker only knows common patterns. Never share your seed phrase, and read every wallet pop-up before you sign.";}
+  lastLabel=label;lastHits=hits;
+  var html='<div class="verdict v'+level+'" data-level="'+level+'"><strong>'+label+'.</strong> '+sum+'</div>';
+  var tl=Object.keys(types).filter(function(k){return k!=="generic";});
+  if(tl.length)html+='<p class="small"><strong>Looks like:</strong></p><div class="types">'+tl.map(function(k){return '<span class="tag maybe">'+esc(T[k])+'</span>';}).join("")+'</div>';
+  if(hits.length){
+    html+='<h3>Red flags found ('+hits.length+')</h3><ul class="flags">'+hits.map(function(h){
+      return '<li><span class="flag '+(h.sev?"bad":"warn")+'">'+esc(h.title)+'</span>'+(h.ex.length?' <span class="small">matched: '+h.ex.map(function(x){return "\u201c"+esc(x)+"\u201d";}).join(", ")+'</span>':' <span class="small">(from the checklist)</span>')+'<br>'+esc(h.why)+(h.src?' <span class="small">(Source: <a href="'+h.src[1]+'" rel="noopener">'+h.src[0]+'</a>)</span>':'')+'</li>';}).join("")+'</ul>';
+  }
+  if(urlRows.length){
+    html+='<h3>Links checked ('+urlRows.length+')</h3><div class="urlbox">'+urlRows.map(function(r){
+      var fl=r.flags.length?'<ul class="flags">'+r.flags.map(function(f){return '<li><span class="flag '+(f[1]?"bad":(f[0]?"warn":"okf"))+'">'+esc(f[2])+'</span><br>'+esc(f[3])+'</li>';}).join("")+'</ul>':'<p class="small">No lookalike or bait signs found in this address. That alone doesn\'t make it safe.</p>';
+      return '<div class="card"><strong>Domain:</strong> <code>'+esc(r.u.host)+'</code>'+fl+'</div>';}).join("")+'</div><p class="small">Link checks are done on the text only. Nothing was opened or looked up.</p>';
+  }
+  if(t.trim()&&ranges.length)html+='<h3>Where the flags are</h3><div class="quote">'+highlight(t,ranges)+'</div>';
+  html+='<h3>What to do now</h3><ul>'+actions(types,ids,level).map(function(a){return "<li>"+a+"</li>";}).join("")+'</ul>';
+  html+='<div class="row"><button type="button" class="secondary" id="copySummary">Copy a summary</button></div><p class="small">Heuristic pattern check only. It can\'t verify who sent this, read the blockchain, or inspect a contract. Not a guarantee either way.</p>';
+  out.innerHTML=html;out.hidden=false;
+  $("copySummary").addEventListener("click",function(){copyText("Crypto scam check ("+label+"):\n"+hits.map(function(h){return "- "+h.title;}).join("\n")+(urlRows.length?"\nLinks: "+urlRows.map(function(r){return r.u.host+(r.official?" (official)":"");}).join(", "):"")+"\n\nDon't connect, sign, send, or share a seed phrase.\n(Checked with the free Crypto Scam Checker by Zelda Rose. Nothing was uploaded.)");});
+  $("tip").hidden=false;
+}
+function actions(types,ids,level){
+  var a=[];
+  if(types.seed)a.push("<strong>Never type or share your seed phrase.</strong> If you already did, create a brand-new wallet with a new phrase and move what's left right away (see <a href=\"#now\">What to do now</a>).");
+  if(types.drain||types.approve||types.link)a.push("Don't connect your wallet or sign anything from this message. If you already signed, revoke approvals: <strong>revoke.cash</strong> for Ethereum and EVM chains, and your wallet's own tools on Solana (Solflare's delegation list, or Phantom's revoke guidance). Type these names in yourself.");
+  if(types.support)a.push("Close the chat. Get help only through the official app or website you open yourself. Real support won't DM you first.");
+  if(types.recovery)a.push("Don't pay any \"recovery\" fee. Report the original loss at ic3.gov and ReportFraud.ftc.gov instead.");
+  if(types.pig||types.exch)a.push("Stop depositing. Don't pay withdrawal fees or \"taxes\". Save screenshots, addresses, and transaction IDs, and report to ic3.gov.");
+  if(types.token)a.push("Don't buy more, and don't trust \"locked\" or \"renounced\" claims you can't check yourself in a block explorer.");
+  if(types["double"]||types.celeb)a.push("Nobody sends double back. Report the account or livestream on the platform.");
+  if(types.poison)a.push("Check the whole address character by character, or use your wallet's address book. Never copy an address from your transaction history.");
+  if(types.job)a.push("Stop. Real jobs don't make you deposit money or pay in USDT to unlock tasks.");
+  if(level>=3)a.push("Report it: the platform's report button, ic3.gov, and ReportFraud.ftc.gov.");
+  if(!a.length)a.push("Still verify independently, and read every wallet pop-up before you approve it.");
+  a.push("If you've lost money: it's not your fault. If you're in emotional crisis, call or text 988 (US).");
+  return a;
+}
+function highlight(t,ranges){
+  ranges.sort(function(a,b){return a[0]-b[0];});
+  var merged=[];ranges.forEach(function(r){var l=merged[merged.length-1];if(l&&r[0]<=l[1])l[1]=Math.max(l[1],r[1]);else merged.push([r[0],r[1]]);});
+  var out="",pos=0;merged.forEach(function(r){out+=esc(t.slice(pos,r[0]))+"<mark>"+esc(t.slice(r[0],r[1]))+"</mark>";pos=r[1];});
+  return out+esc(t.slice(pos));
+}
+var SAMPLES=[
+ ["x","Hi, I'm from the MetaMask support team. We saw your post about a stuck transaction. Please open a ticket at https://metamask-support-desk.top and validate your wallet with your 12-word recovery phrase so we can resolve the issue."],
+ ["discord","\ud83c\udf89 The $JUP airdrop round 2 is LIVE! You are eligible for an allocation. Connect your wallet to claim before it ends in 2 hours: https://jup-ag.claims/airdrop"],
+ ["dating","Sorry, wrong number! But you seem nice. My uncle is an analyst and taught me a trading platform that makes 3% daily. We could grow it together. The app asks a 20% tax before you can withdraw, totally normal."],
+ ["token","$MOONCAT is the next 100x gem! Presale is live, get in early before it pumps. Mint authority is active (will renounce later), liquidity is not locked yet. Ape in now!"],
+ ["telegram","Lost crypto to a scam? Our ethical hackers can recover your stolen funds in 48 hours. Small upfront fee for blockchain forensics. Message us on WhatsApp."]
+];
+var si=0;
+$("analyze").addEventListener("click",analyze);
+$("analyze2").addEventListener("click",function(){analyze();$("check").scrollIntoView();});
+$("sample").addEventListener("click",function(){var s=SAMPLES[si++%SAMPLES.length];$("channel").value=s[0];$("msg").value=s[1];analyze();});
+$("clear").addEventListener("click",function(){$("msg").value="";Object.keys(EXTRA).forEach(function(k){$(k).checked=false;});$("out").hidden=true;});
+
+
+/* ---------- Tip copy ---------- */
+document.querySelectorAll("[data-copy]").forEach(function(b){b.addEventListener("click",function(){copyText($(b.getAttribute("data-copy")).textContent.trim());});});
+
+})();
+</script>
+</body>
+</html>

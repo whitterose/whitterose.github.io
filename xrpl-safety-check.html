@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>XRPL Safety Check: addresses, tags, and transactions</title>
+<meta name="description" content="Free, offline XRP Ledger safety check: validate r- and X-addresses with checksums, catch missing destination tags and address poisoning, and get a plain-language explanation of a transaction before you sign, with red flags for SetRegularKey, SignerListSet, and other account-takeover tricks.">
+<meta name="author" content="Zelda Rose">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<style>
+:root{--ink:#1d2330;--muted:#5b6475;--bg:#f7f5f2;--card:#fff;--line:#e3dfd8;--ok:#1f7a4d;--warn:#a15c00;--bad:#b0263b;--radius:14px;--accent:#23527c;--accent2:#173a5a;--focus:#b9d3ea}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font:17px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg)}
+a{color:var(--accent2)}
+header.hero{background:linear-gradient(135deg,#0d1726,#1d3b5e 60%,#3f73a3);color:#fff;padding:48px 20px 40px}
+.wrap{max-width:960px;margin:0 auto;padding:0 20px}
+.hero h1{font-size:clamp(28px,5vw,44px);line-height:1.15;margin:0 0 12px}
+.hero p{font-size:19px;max-width:720px;margin:0 0 18px;opacity:.95}
+.badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.badge{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:4px 12px;font-size:14px}
+.byline{font-size:14px;opacity:.85;margin-top:16px}
+.byline a{color:#fff}
+nav.toc{position:sticky;top:0;z-index:5;background:#fff;border-bottom:1px solid var(--line)}
+nav.toc .wrap{display:flex;gap:4px;overflow-x:auto;padding:8px 20px}
+nav.toc a{white-space:nowrap;text-decoration:none;color:var(--ink);padding:6px 12px;border-radius:8px;font-size:15px}
+nav.toc a:hover,nav.toc a:focus{background:#f1ece6}
+section{padding:36px 0;border-bottom:1px solid var(--line)}
+h2{font-size:28px;margin:0 0 8px}
+h3{font-size:20px;margin:22px 0 8px}
+.lead{color:var(--muted);margin-top:0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px;margin:16px 0;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+.grid{display:grid;gap:14px}
+@media(min-width:720px){.grid.two{grid-template-columns:1fr 1fr}.grid.three{grid-template-columns:1fr 1fr 1fr}}
+label{display:block;font-weight:600;font-size:15px;margin:10px 0 4px}
+input[type=text],input[type=date],input[type=number],input[type=email],input[type=tel],textarea,select{width:100%;font:inherit;font-size:16px;padding:10px 12px;border:1px solid #cfc8bd;border-radius:10px;background:#fff;color:var(--ink)}
+textarea{min-height:120px;resize:vertical}
+input:focus,textarea:focus,select:focus,button:focus,a:focus{outline:3px solid var(--focus);outline-offset:2px}
+.q{border-top:1px dashed var(--line);padding:12px 0}
+.q:first-child{border-top:0}
+.q .opts{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.q .opts label{font-weight:500;margin:0;display:flex;align-items:center;gap:6px;border:1px solid #cfc8bd;border-radius:999px;padding:6px 14px;cursor:pointer;background:#fff}
+.q .opts input{accent-color:var(--accent)}
+.checks label{font-weight:500;display:flex;align-items:flex-start;gap:8px;margin:6px 0;cursor:pointer}
+.checks input{accent-color:var(--accent);margin-top:5px}
+button,.btn{font:inherit;font-size:16px;font-weight:600;border:0;border-radius:10px;padding:10px 18px;background:var(--accent);color:#fff;cursor:pointer;text-decoration:none;display:inline-block}
+button.secondary,.btn.secondary{background:#efe9e2;color:var(--ink)}
+button:hover{filter:brightness(1.07)}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:12px}
+.plan ol{padding-left:22px}
+.plan li{margin:10px 0}
+.tag{display:inline-block;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:2px 8px;border-radius:6px;margin-right:6px;vertical-align:2px}
+.tag.urgent{background:#fde2e6;color:var(--bad)}
+.tag.money{background:#e1f3ea;color:var(--ok)}
+.tag.info{background:#eee8ff;color:#4b3aa6}
+.tag.maybe{background:#fff1d6;color:var(--warn)}
+table{width:100%;border-collapse:collapse;font-size:15px}
+th,td{border-bottom:1px solid var(--line);padding:8px 6px;text-align:left;vertical-align:top}
+th{background:#faf8f5}
+td.num{text-align:right;white-space:nowrap}
+.flag{display:inline-block;font-size:12px;font-weight:700;border-radius:6px;padding:1px 7px;margin:2px 4px 2px 0}
+.flag.bad{background:#fde2e6;color:var(--bad)}
+.flag.warn{background:#fff1d6;color:var(--warn)}
+.letter{white-space:pre-wrap;font-family:Georgia,"Times New Roman",serif;font-size:16px;line-height:1.55;background:#fffdf9;border:1px solid var(--line);border-radius:10px;padding:22px;min-height:200px}
+.small{font-size:14px;color:var(--muted)}
+.note{background:#fff8e6;border:1px solid #f1d9a0;border-radius:10px;padding:12px 14px;font-size:15px}
+.ok{color:var(--ok)}
+details{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:10px 0}
+details summary{cursor:pointer;font-weight:600}
+.script{background:#f4f8ff;border-left:4px solid #6b8bd6;padding:10px 14px;border-radius:6px;margin:8px 0;font-style:italic}
+.tip{background:linear-gradient(180deg,#fff,#fbf7f2)}
+.addr{display:grid;grid-template-columns:auto 1fr auto;gap:8px 12px;align-items:center;margin:10px 0}
+.addr code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:14px;background:#f3efe9;border-radius:8px;padding:8px 10px;word-break:break-all;user-select:all}
+.coin{font-weight:700;min-width:44px}
+.copybtn{padding:6px 12px;font-size:14px}
+footer{padding:30px 0 50px;color:var(--muted);font-size:14px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#1d2330;color:#fff;padding:10px 16px;border-radius:10px;font-size:15px;opacity:0;transition:opacity .2s;pointer-events:none}
+#toast.show{opacity:1}
+@media print{
+  header.hero,nav.toc,section:not(.print-me),footer,.no-print,#toast{display:none!important}
+  body{background:#fff}
+  .print-me{border:0;padding:0}
+  .letter{border:0;padding:0;background:#fff;font-size:12pt}
+}
+
+.tall{min-height:170px}
+.mono,code.big{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.verdict{border-radius:12px;padding:14px 16px;margin:0 0 12px;font-size:18px}
+.verdict.v4{background:#fde2e6;border:1px solid #f3b3bf}
+.verdict.v3{background:#ffe9d6;border:1px solid #f5c79b}
+.verdict.v2{background:#fff6dc;border:1px solid #f1d9a0}
+.verdict.v1{background:#eef6f1;border:1px solid #bfe0cc}
+.flags li{margin:10px 0}
+.flag.okf{background:#e1f3ea;color:var(--ok)}
+.diff{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:15px;word-break:break-all;background:#faf8f5;border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.diff .x{background:#fde2e6;color:var(--bad);font-weight:700}
+dl.kv{display:grid;grid-template-columns:max-content 1fr;gap:4px 14px;margin:8px 0}
+dl.kv dt{font-weight:600}
+dl.kv dd{margin:0;word-break:break-all}
+section.tip.subtle{border-bottom:0;padding:18px 0;opacity:.92}
+section.tip.subtle h2{font-size:18px}
+section.tip.subtle .lead{font-size:15px}
+section.tip.subtle .card{padding:14px}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <h1>XRPL Safety Check: verify an address, a destination tag, or a transaction before you sign</h1>
+    <p>Check an XRP Ledger address (classic r-address or X-address) offline, catch missing destination tags and lookalike addresses, and get a plain-language explanation of a transaction you're being asked to sign, with red flags for the ones that can hand over your account.</p>
+    <div class="badges">
+      <span class="badge">100% free</span>
+      <span class="badge">Runs offline, no ledger lookups</span>
+      <span class="badge">Never asks for your secret</span>
+      <span class="badge">Open source</span>
+    </div>
+    <div class="byline">Made by <strong>Zelda Rose</strong> · Last reviewed October 2026</div>
+  </div>
+</header>
+
+<nav class="toc" aria-label="Sections">
+  <div class="wrap">
+    <a href="#addr">1. Check an address</a>
+    <a href="#tx">2. Explain a transaction</a>
+    <a href="#scams">3. XRPL scams to know</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<section id="addr">
+  <h2>1. Check an address and destination tag</h2>
+  <p class="lead">Paste the address you're about to send to. <strong>Never paste your secret key, family seed (it starts with "s"), or Xaman secret numbers here, or anywhere else.</strong></p>
+  <div class="card">
+    <label for="a_to">Address you're about to send to</label>
+    <input type="text" id="a_to" autocomplete="off" spellcheck="false" placeholder="r… or X…">
+    <label for="a_tag">Destination tag / memo (if you have one)</label>
+    <input type="text" id="a_tag" inputmode="numeric" autocomplete="off" placeholder="e.g. 12345678">
+    <label for="a_ref">Optional: the address from a source you trust (the exchange's deposit page, a saved contact)</label>
+    <input type="text" id="a_ref" autocomplete="off" spellcheck="false" placeholder="Paste it to compare character by character">
+    <div class="checks">
+      <label><input type="checkbox" id="a_exch"> This is a deposit address at an exchange or other custodial service</label>
+      <label><input type="checkbox" id="a_hist"> I copied it from my transaction history or from a message</label>
+    </div>
+    <div class="row"><button type="button" id="checkAddr">Check address</button><button type="button" class="secondary" id="sampleAddr">Try an example</button></div>
+  </div>
+  <div class="card" id="addrOut" hidden aria-live="polite"></div>
+</section>
+
+<section id="tx">
+  <h2>2. Explain a transaction before you sign it</h2>
+  <p class="lead">Many wallets and apps can show the transaction JSON (look for "details", "raw", or "JSON"). Paste it here to see what it really does. This page reads it only. It can't sign or submit anything.</p>
+  <div class="card">
+    <label for="txj">Transaction JSON</label>
+    <textarea id="txj" class="tall mono" spellcheck="false" placeholder='{"TransactionType":"Payment", "Account":"r…", "Destination":"r…", "Amount":"1000000"}'></textarea>
+    <div class="row"><button type="button" id="explain">Explain it</button><button type="button" class="secondary" id="sampleTx">Try an example</button><button type="button" class="secondary" id="clearTx">Clear</button></div>
+  </div>
+  <div class="card" id="txOut" hidden aria-live="polite"></div>
+</section>
+
+<section id="scams">
+  <h2>3. XRPL scams to know</h2>
+  <div class="grid two">
+    <details><summary>"Sign this to claim your airdrop" (account takeover)</summary><p>The most damaging XRPL scams don't need your seed. They ask you to sign a <code>SetRegularKey</code>, <code>SignerListSet</code>, or <code>AccountSet</code> that disables your master key. After that, the scammer controls your account. Paste any sign request into section 2 first.</p></details>
+    <details><summary>Missing destination tag</summary><p>Exchanges often use one address for many customers and tell deposits apart by the destination tag. Send without the tag (or with the wrong one) and your deposit may be delayed or lost. Real exchanges show the tag on the same deposit page.</p></details>
+    <details><summary>Address poisoning and lookalike addresses</summary><p>Scammers send tiny payments from addresses that start and end like one you use, hoping you'll copy theirs from your history. Compare the whole address, or use your wallet's saved contacts.</p></details>
+    <details><summary>Junk tokens and trust line bait</summary><p>Spam tokens and "claim" offers push you to set a trust line to an unknown issuer, often with a website in the token name or memo. Trust lines also tie up part of your XRP reserve. Only add trust lines to issuers you've checked yourself.</p></details>
+    <details><summary>"Activation" and "unlock" fees</summary><p>A new XRPL account needs a small reserve, set by validator vote and shown on xrpl.org. Anyone charging an extra "activation", "unlock", or "verification" fee to release your XRP is scamming you.</p></details>
+    <details><summary>Fake Xaman and wallet support</summary><p>No real support team will DM you first, ask for your family seed or secret numbers, or ask you to sign something to "fix" your wallet.</p></details>
+    <details><summary>Partial payments (for merchants)</summary><p>A payment with the partial-payment flag can deliver far less than its <code>Amount</code> field shows. If you accept XRPL payments, always check <code>delivered_amount</code> in the result, not <code>Amount</code>.</p></details>
+    <details><summary>Free NFT "offers"</summary><p>A sell offer for your NFT at 0 XRP, or a strange brokered offer, can give your NFT away. Read the amount and the destination before you accept or create NFT offers.</p></details>
+  </div>
+  <div class="note"><strong>Honest limits:</strong> this page checks address format and checksums and reads transaction fields offline. It can't see the ledger, so it can't tell you who owns an address, whether an account exists or has funds, or whether an issuer is honest. A valid address can still belong to a scammer. Treat the result as a second opinion, not a guarantee. More general crypto red flags: <a href="/crypto-scam-checker.html">Crypto Scam Checker</a>.</div>
+</section>
+
+
+<section id="tip" class="tip subtle" hidden>
+  <h2>Optional: support this free tool</h2>
+  <p class="lead">This tool is free and open source. If it saved you from a bad send and you'd like to chip in, here are tip addresses. Tips are one-way gifts. Zelda Rose will never DM you, and this page never asks you to connect or sign anything.</p>
+  <div class="card">
+    <div class="addr">
+      <span class="coin">SOL</span><code id="addr-sol">FBL1ez549NQscEm2Ly67TBxesknPcHfmRddnyiBF1kiA</code><button type="button" class="secondary copybtn" data-copy="addr-sol">Copy</button>
+      <span class="coin">ETH</span><code id="addr-eth">0xb46A6182Bf50EfC4012603803dEFe1CADd4Da4De</code><button type="button" class="secondary copybtn" data-copy="addr-eth">Copy</button>
+      <span class="coin">XRP</span><code id="addr-xrp">rw2ciyaNshpHe7bCHo4bRWq6pqqynnWKQg</code><button type="button" class="secondary copybtn" data-copy="addr-xrp">Copy</button>
+      <span class="coin">XRP tag</span><code id="addr-xrptag">1476447851</code><button type="button" class="secondary copybtn" data-copy="addr-xrptag">Copy</button>
+    </div>
+    <p class="note"><strong>XRP: you must include the destination tag/memo <code>1476447851</code>.</strong> If you send XRP without it, the tip may be lost. ETH address: Ethereum mainnet only. Always check the address in your wallet before you send.</p>
+    <p class="small">Can't tip? Sharing this page with someone new to XRP helps just as much. Tips are gifts, not payment for advice.</p>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+<p>XRPL Safety Check, by Zelda Rose. No cookies, no analytics, no network requests, no wallet connection. Everything runs in your browser. You can save this page to use it offline. <a href="/crypto-scam-checker.html">Crypto Scam Checker</a> · <a href="/">More free tools</a>.</p>
+    <p>Not affiliated with Ripple, XRPL Commons, the XRP Ledger Foundation, Xaman, or any exchange. Transaction fields follow the public XRPL documentation at xrpl.org. General information only, not financial advice. Last reviewed: October 2026.</p>
+  </div>
+</footer>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+"use strict";
+
+var $ = function(id){return document.getElementById(id);};
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];});}
+function toast(msg){var t=$("toast");t.textContent=msg;t.classList.add("show");clearTimeout(toast._t);toast._t=setTimeout(function(){t.classList.remove("show");},1800);}
+function copyText(text){
+  if(navigator.clipboard && window.isSecureContext){navigator.clipboard.writeText(text).then(function(){toast("Copied");},function(){fallbackCopy(text);});}
+  else fallbackCopy(text);
+}
+function fallbackCopy(text){var ta=document.createElement("textarea");ta.value=text;ta.style.position="fixed";ta.style.opacity="0";document.body.appendChild(ta);ta.select();try{document.execCommand("copy");toast("Copied");}catch(e){toast("Select and copy manually");}document.body.removeChild(ta);}
+function download(name,text){var b=new Blob([text],{type:"text/plain"});var a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},500);}
+
+
+/* ---------- SHA-256 (small, dependency-free) ---------- */
+function sha256(bytes){
+  var K=[0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2];
+  var H=[0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19];
+  var l=bytes.length,withPad=((l+9+63)>>6)<<6,m=new Uint8Array(withPad);m.set(bytes);m[l]=0x80;
+  var bits=l*8;m[withPad-4]=(bits>>>24)&255;m[withPad-3]=(bits>>>16)&255;m[withPad-2]=(bits>>>8)&255;m[withPad-1]=bits&255;
+  var w=new Array(64);
+  function r(x,n){return (x>>>n)|(x<<(32-n));}
+  for(var i=0;i<withPad;i+=64){
+    for(var t=0;t<16;t++)w[t]=(m[i+4*t]<<24)|(m[i+4*t+1]<<16)|(m[i+4*t+2]<<8)|m[i+4*t+3];
+    for(t=16;t<64;t++){var s0=r(w[t-15],7)^r(w[t-15],18)^(w[t-15]>>>3),s1=r(w[t-2],17)^r(w[t-2],19)^(w[t-2]>>>10);w[t]=(w[t-16]+s0+w[t-7]+s1)|0;}
+    var a=H[0],b=H[1],c=H[2],d=H[3],e=H[4],f=H[5],g=H[6],h=H[7];
+    for(t=0;t<64;t++){var S1=r(e,6)^r(e,11)^r(e,25),ch=(e&f)^(~e&g),t1=(h+S1+ch+K[t]+w[t])|0,S0=r(a,2)^r(a,13)^r(a,22),mj=(a&b)^(a&c)^(b&c),t2=(S0+mj)|0;h=g;g=f;f=e;e=(d+t1)|0;d=c;c=b;b=a;a=(t1+t2)|0;}
+    H[0]=(H[0]+a)|0;H[1]=(H[1]+b)|0;H[2]=(H[2]+c)|0;H[3]=(H[3]+d)|0;H[4]=(H[4]+e)|0;H[5]=(H[5]+f)|0;H[6]=(H[6]+g)|0;H[7]=(H[7]+h)|0;
+  }
+  var out=new Uint8Array(32);for(i=0;i<8;i++){out[4*i]=(H[i]>>>24)&255;out[4*i+1]=(H[i]>>>16)&255;out[4*i+2]=(H[i]>>>8)&255;out[4*i+3]=H[i]&255;}return out;
+}
+/* ---------- XRPL base58check ---------- */
+var ALPHA="rpshnaf39wBUDNEGHJKLM4PQRST7VWXYZ2bcdeCg65jkm8oFqi1tuvAxyz";
+function b58decode(s){
+  var bytes=[0];for(var i=0;i<s.length;i++){var v=ALPHA.indexOf(s[i]);if(v<0)return null;var carry=v;
+    for(var j=0;j<bytes.length;j++){carry+=bytes[j]*58;bytes[j]=carry&255;carry>>=8;}while(carry){bytes.push(carry&255);carry>>=8;}}
+  for(i=0;i<s.length&&s[i]===ALPHA[0];i++)bytes.push(0);
+  return new Uint8Array(bytes.reverse());
+}
+function b58encode(b){
+  var digits=[0];for(var i=0;i<b.length;i++){var carry=b[i];for(var j=0;j<digits.length;j++){carry+=digits[j]<<8;digits[j]=carry%58;carry=(carry/58)|0;}while(carry){digits.push(carry%58);carry=(carry/58)|0;}}
+  var s="";for(i=0;i<b.length&&b[i]===0;i++)s+=ALPHA[0];for(i=digits.length-1;i>=0;i--)s+=ALPHA[digits[i]];
+  if(b.length&&digits.length===1&&digits[0]===0)s=s.slice(0,-1);return s;
+}
+function checkOK(raw){if(!raw||raw.length<5)return false;var p=raw.slice(0,raw.length-4),c=sha256(sha256(p));for(var i=0;i<4;i++)if(c[i]!==raw[raw.length-4+i])return false;return true;}
+function withCheck(p){var c=sha256(sha256(p)),o=new Uint8Array(p.length+4);o.set(p);o.set(c.slice(0,4),p.length);return o;}
+function classicFromId(id){var p=new Uint8Array(21);p[0]=0;p.set(id,1);return b58encode(withCheck(p));}
+function parseAddress(s){
+  s=(s||"").trim();
+  if(!s)return {kind:"empty"};
+  if(/^s[1-9A-HJ-NP-Za-km-z]{24,34}$/.test(s)&&s.length>=25)return {kind:"secret"};
+  if(/^(\d{6}\s*){8}$/.test(s.replace(/[^\d\s]/g,"")) && s.replace(/\D/g,"").length===48)return {kind:"secret"};
+  if(/^[rX T]/.test(s)){
+    var raw=b58decode(s);if(!raw)return {kind:"bad",why:"It contains characters that can't appear in an XRPL address (XRPL addresses never use 0, O, I, or l)."};
+    if(s[0]==="r"){
+      if(raw.length!==25||raw[0]!==0)return {kind:"bad",why:"It's the wrong length for a classic XRPL address."};
+      if(!checkOK(raw))return {kind:"bad",why:"The built-in checksum doesn't match. At least one character is wrong or was changed."};
+      return {kind:"classic",classic:s,id:raw.slice(1,21),tag:null};
+    }
+    if(s[0]==="X"||s[0]==="T"){
+      if(raw.length!==35||!checkOK(raw))return {kind:"bad",why:"This looks like an X-address, but its checksum or length is wrong."};
+      var test=(raw[0]===0x04&&raw[1]===0x93),main=(raw[0]===0x05&&raw[1]===0x44);
+      if(!test&&!main)return {kind:"bad",why:"This X-address has an unknown network prefix."};
+      var id=raw.slice(2,22),flag=raw[22],tag=null;
+      if(flag===1){tag=raw[23]+raw[24]*256+raw[25]*65536+raw[26]*16777216;}
+      else if(flag!==0)return {kind:"bad",why:"This X-address has an invalid tag flag."};
+      return {kind:"x",classic:classicFromId(id),id:id,tag:tag,testnet:test};
+    }
+  }
+  if(/^0x[0-9a-fA-F]{40}$/.test(s))return {kind:"bad",why:"That's an Ethereum-style (0x…) address, not an XRPL address. Sending XRP there isn't possible, and a site that says otherwise is suspicious."};
+  return {kind:"bad",why:"XRPL addresses start with \"r\" (classic) or \"X\" (X-address)."};
+}
+var SPECIAL={"rrrrrrrrrrrrrrrrrrrrrhoLvTp":"ACCOUNT_ZERO, a special address no one controls. Funds sent here are lost.","rrrrrrrrrrrrrrrrrrrrBZbvji":"ACCOUNT_ONE, a special placeholder address no one controls. Funds sent here are lost.","rrrrrrrrrrrrrrrrrNAMEtxvNvQ":"a known blackhole address. Funds sent here are lost.","rrrrrrrrrrrrrrrrrrrn5RM1rHd":"a known special (NaN) address no one controls. Funds sent here are lost."};
+function verdictHtml(level,label,sum){return '<div class="verdict v'+level+'" data-level="'+level+'"><strong>'+esc(label)+'.</strong> '+sum+'</div>';}
+function flagList(f){return f.length?'<ul class="flags">'+f.map(function(x){return '<li><span class="flag '+(x[0]==="bad"?"bad":(x[0]==="warn"?"warn":"okf"))+'">'+esc(x[1])+'</span><br>'+x[2]+'</li>';}).join("")+'</ul>':"";}
+function diffHtml(a,b){var o="";for(var i=0;i<Math.max(a.length,b.length);i++){var c=a[i]||"·";o+=(a[i]===b[i])?esc(c):'<span class="x">'+esc(c)+'</span>';}return o;}
+function checkAddr(){
+  var to=$("a_to").value.trim(),tagS=$("a_tag").value.trim(),ref=$("a_ref").value.trim(),out=$("addrOut"),f=[],level=1;
+  var p=parseAddress(to);
+  if(p.kind==="secret"||parseAddress(ref).kind==="secret"||/^s[1-9A-HJ-NP-Za-km-z]{24,34}$/.test(tagS)){
+    $("a_to").value="";$("a_ref").value="";
+    out.innerHTML=verdictHtml(4,"Stop: that looks like a secret key","What you pasted looks like an XRPL family seed or Xaman secret numbers, not an address. Nothing was sent anywhere and the field has been cleared. <strong>If anyone asked you to paste or type this, they're trying to steal your account.</strong> If you already shared it, create a new wallet on a device you trust and move your funds right away.");out.hidden=false;$("tip").hidden=false;return;}
+  if(p.kind==="empty"){out.hidden=false;out.innerHTML="<p>Paste an address first.</p>";return;}
+  var html="";
+  if(p.kind==="bad"){level=4;f.push(["bad","Not a valid XRPL address",esc(p.why)+" Don't send to it. Copy the address again from the original source."]);}
+  else{
+    f.push(["ok","Valid "+(p.kind==="x"?"X-address":"classic address")+" (checksum OK)","The format and built-in checksum are correct, so it wasn't mistyped. That doesn't tell you who owns it."]);
+    html+='<dl class="kv"><dt>Classic address</dt><dd><code>'+esc(p.classic)+'</code></dd>'+(p.kind==="x"?'<dt>Tag inside X-address</dt><dd>'+(p.tag===null?"none":p.tag)+'</dd><dt>Network</dt><dd>'+(p.testnet?"Testnet":"Mainnet")+'</dd>':'')+'</dl>';
+    if(p.kind==="x"&&p.testnet){level=Math.max(level,3);f.push(["warn","Testnet X-address","This X-address is for the test network. Testnet XRP has no value. Don't use it for a real payment."]);}
+    if(SPECIAL[p.classic]){level=4;f.push(["bad","Special address that no one controls","This is "+esc(SPECIAL[p.classic])]);}
+    var tag=null;
+    if(tagS){if(!/^\d{1,10}$/.test(tagS)||+tagS>4294967295){level=Math.max(level,3);f.push(["bad","Destination tag isn't valid","A destination tag is a whole number from 0 to 4,294,967,295, with no letters or spaces. Check it again on the deposit page."]);}else tag=+tagS;}
+    if(p.kind==="x"&&p.tag!==null&&tag!==null&&tag!==p.tag){level=Math.max(level,3);f.push(["bad","Tag mismatch","The X-address already contains tag "+p.tag+", but you entered "+tag+". Use the one from the official deposit page."]);}
+    var effTag=(p.kind==="x"&&p.tag!==null)?p.tag:tag;
+    if($("a_exch").checked&&effTag===null){level=Math.max(level,3);f.push(["bad","Missing destination tag for an exchange deposit","Exchanges usually need the tag to know the deposit is yours. Without it, your XRP can be delayed or lost. Find the tag (sometimes called memo) on the exchange's deposit page."]);}
+    else if(effTag!==null)f.push(["ok","Destination tag: "+effTag,"Double-check it matches the deposit page exactly."]);
+    else f.push(["info","No destination tag","Fine for most personal wallets. If you're sending to an exchange or a service, check whether it needs a tag."]);
+    if(ref){var q=parseAddress(ref);
+      if(q.kind==="bad"){level=Math.max(level,2);f.push(["warn","The comparison address isn't valid",esc(q.why)]);}
+      else if(q.kind==="classic"||q.kind==="x"){
+        if(q.classic===p.classic)f.push(["ok","Matches your trusted address","Every character matches the address you got from a trusted source."]);
+        else{var same=p.classic.slice(0,4)===q.classic.slice(0,4)||p.classic.slice(-4)===q.classic.slice(-4);level=4;
+          f.push(["bad",same?"Lookalike address: possible address poisoning":"Different from your trusted address",(same?"It starts or ends the same way as your trusted address, but the middle is different. That's how address-poisoning scams work. ":"These are two different accounts. ")+"Don't send. Differences are highlighted below."]);
+          html+='<p class="small">About to send to (differences highlighted):</p><div class="diff">'+diffHtml(p.classic,q.classic)+'</div><p class="small">Trusted address:</p><div class="diff">'+esc(q.classic)+'</div>';}
+      }}
+    if($("a_hist").checked){level=Math.max(level,2);f.push(["warn","Copied from history or a message","Address-poisoning scams plant lookalike addresses in your history. Paste the address from a trusted source above to compare, or use your wallet's saved contacts."]);}
+  }
+  var lab={1:["Looks OK","Format, checksum, and tag checks passed. Still make sure the address came from a source you trust."],2:["Check before you send","There's something you should verify first."],3:["Problem found","Fix the issue below before you send."],4:["Don't send","There's a serious problem with this address."]}[level];
+  out.innerHTML=verdictHtml(level,lab[0],lab[1])+flagList(f)+html+'<p class="small">Checked offline. No ledger lookup was made.</p>';out.hidden=false;$("tip").hidden=false;
+}
+/* ---------- Transaction explainer ---------- */
+var TF_PARTIAL=0x00020000,ASF={1:"Require destination tag",2:"Require auth (issuer)",3:"Disallow incoming XRP",4:"Disable master key",5:"Account TxnID",6:"No Freeze (permanent)",7:"Global Freeze",8:"Default Ripple",9:"Deposit Auth",10:"Authorized NFToken minter",12:"Disallow incoming NFT offers",13:"Disallow incoming checks",14:"Disallow incoming payment channels",15:"Disallow incoming trust lines",16:"Allow trust line clawback"};
+function amt(a){
+  if(a===undefined||a===null)return "(none)";
+  if(typeof a==="string"||typeof a==="number"){var d=Number(a);if(!isFinite(d))return esc(String(a));return (d/1e6).toLocaleString("en-US",{maximumFractionDigits:6})+" XRP";}
+  if(typeof a==="object"){var cur=String(a.currency||"?");if(/^[0-9A-F]{40}$/i.test(cur)){var t=hexText(cur.replace(/(00)+$/,""));if(t&&/^[\x20-\x7e]+$/.test(t))cur=t+" (custom code)";}
+    if(cur==="XRP"&&!a.issuer)return esc(a.value)+" XRP";return esc(a.value)+" "+esc(cur)+(a.issuer?" issued by "+esc(a.issuer):"");}
+  return esc(JSON.stringify(a));
+}
+function hexText(h){try{if(!/^([0-9a-f]{2})+$/i.test(h))return null;var s="";for(var i=0;i<h.length;i+=2)s+=String.fromCharCode(parseInt(h.substr(i,2),16));try{return decodeURIComponent(escape(s));}catch(e){return s;}}catch(e){return null;}}
+function explain(){
+  var raw=$("txj").value.trim(),out=$("txOut");if(!raw){out.hidden=false;out.innerHTML="<p>Paste a transaction first.</p>";return;}
+  if(/(^|[^A-Za-z0-9])s[1-9A-HJ-NP-Za-km-z]{27,31}([^A-Za-z0-9]|$)/.test(raw)||/"(secret|seed|master_seed|private_?key)"\s*:/i.test(raw)){$("txj").value="";out.innerHTML=verdictHtml(4,"Stop: this contains a secret","What you pasted seems to include a secret key or seed. It has been cleared. Never share it or paste it into websites. If someone asked for it, it's a scam.");out.hidden=false;$("tip").hidden=false;return;}
+  var tx;try{tx=JSON.parse(raw);}catch(e){out.hidden=false;out.innerHTML=verdictHtml(2,"Couldn't read that as JSON","Paste the full transaction JSON, starting with { and ending with }.");return;}
+  if(tx&&tx.tx_json)tx=tx.tx_json;else if(tx&&tx.txJson)tx=tx.txJson;else if(tx&&tx.transaction)tx=tx.transaction;else if(tx&&tx.result&&tx.result.tx_json)tx=tx.result.tx_json;
+  var T=String(tx.TransactionType||""),f=[],level=1,what="",flags=Number(tx.Flags||0);
+  function bad(t,w){f.push(["bad",t,w]);level=4;} function warn(t,w){f.push(["warn",t,w]);level=Math.max(level,2);} function ok(t,w){f.push(["ok",t,w]);}
+  var who=tx.Account?"<code>"+esc(tx.Account)+"</code>":"the signing account";
+  switch(T){
+   case "Payment":
+     what="Sends "+amt(tx.Amount)+" from "+who+" to <code>"+esc(tx.Destination||"?")+"</code>"+(tx.DestinationTag!==undefined?" with destination tag "+esc(tx.DestinationTag):"")+".";
+     if(flags&TF_PARTIAL)warn("Partial payment flag","The amount actually delivered can be much smaller than the Amount shown. If you're being paid, check delivered_amount in the result. If you're paying, this is unusual for a normal transfer.");
+     if(tx.SendMax!==undefined)warn("SendMax set: up to "+amt(tx.SendMax)+" can leave your account","This allows a currency conversion. Make sure you're OK spending up to that much.");
+     if(typeof tx.Amount==="string"&&Number(tx.Amount)>=1e9)warn("Large XRP amount","This sends "+amt(tx.Amount)+". Be sure you meant to.");
+     if(SPECIAL[tx.Destination])bad("Destination is a blackhole address","Funds sent there are lost.");
+     if(tx.Destination&&parseAddress(tx.Destination).kind==="bad")bad("Destination isn't a valid address","Don't sign.");
+     break;
+   case "SetRegularKey":
+     if(tx.RegularKey){what="Gives the key <code>"+esc(tx.RegularKey)+"</code> full power to sign transactions for "+who+".";bad("Hands control of your account to another key","A regular key can do almost anything your main key can, including sending all your XRP and tokens. Scammers disguise this as an airdrop claim or a 'verification'. Only sign if you created that key yourself.");}
+     else{what="Removes the regular key from "+who+".";ok("Removes a regular key","This takes away a secondary key's power. That's usually a safety step.");}
+     break;
+   case "SignerListSet":
+     if(Number(tx.SignerQuorum)===0){what="Deletes the multi-signing list of "+who+".";warn("Removes multi-signing","Only do this if you set up multi-signing yourself and mean to remove it.");}
+     else{var s=(tx.SignerEntries||[]).map(function(e){var x=e.SignerEntry||e;return "<code>"+esc(x.Account)+"</code> (weight "+esc(x.SignerWeight)+")";});what="Lets these accounts sign for "+who+" together (quorum "+esc(tx.SignerQuorum)+"): "+s.join(", ")+".";bad("Adds other accounts that can control yours","A signer list lets those accounts move your funds. Scammers use this to take over accounts. Only sign if you set this up on purpose with people you trust.");}
+     break;
+   case "AccountSet":
+     what="Changes settings on "+who+".";
+     if(Number(tx.SetFlag)===4)bad("Disables your master key","After this, only a regular key or signer list can sign for the account. Combined with a scammer's key, you lose control for good. Never sign this from a stranger's request.");
+     else if(tx.SetFlag!==undefined)warn("Turns on: "+(ASF[tx.SetFlag]||"flag "+esc(tx.SetFlag)),"Make sure you meant to change this setting.");
+     if(tx.ClearFlag!==undefined)warn("Turns off: "+(ASF[tx.ClearFlag]||"flag "+esc(tx.ClearFlag)),"Make sure you meant to change this setting.");
+     if(tx.Domain){var dmn=hexText(tx.Domain);f.push(["info","Sets domain: "+esc(dmn||tx.Domain),"Shown publicly on your account."]);}
+     break;
+   case "AccountDelete":
+     what="Deletes "+who+" and sends the remaining XRP to <code>"+esc(tx.Destination||"?")+"</code>.";
+     bad("Deletes your account and sends the remaining XRP away","This is permanent. Only sign if you're closing your own account and the destination is yours.");
+     break;
+   case "TrustSet":
+     var la=tx.LimitAmount||{};what="Sets a trust line so "+who+" can hold up to "+esc(la.value)+" "+esc(la.currency)+" issued by <code>"+esc(la.issuer||"?")+"</code>.";
+     if(String(la.value)==="0")ok("Removes or zeroes a trust line","Setting the limit to 0 is how you remove a trust line (once the balance is 0).");
+     else warn("Trusts a token issuer","Tokens are only as good as their issuer. Spam tokens and 'claim' offers push trust lines to unknown issuers. Each trust line also ties up part of your XRP reserve. Check the issuer yourself first.");
+     break;
+   case "OfferCreate":
+     what="Places a trade offer: gives "+amt(tx.TakerGets)+" to receive "+amt(tx.TakerPays)+".";
+     warn("Trade on the DEX","Check both amounts carefully. Scam sites may set a terrible price so you get almost nothing back, or trade your XRP for a worthless token.");
+     break;
+   case "NFTokenCreateOffer":
+     var sell=(flags&1)===1;what=(sell?"Offers to sell":"Offers to buy")+" NFT <code>"+esc(tx.NFTokenID||"?")+"</code> for "+amt(tx.Amount)+(tx.Destination?" (only <code>"+esc(tx.Destination)+"</code> can accept)":"")+".";
+     if(sell&&(tx.Amount==="0"||Number(tx.Amount)===0))bad("Sells your NFT for nothing","A sell offer for 0 lets the other party take your NFT for free. Only do this to transfer an NFT to your own wallet.");
+     else warn("NFT offer","Check the price and who can accept it.");
+     break;
+   case "NFTokenAcceptOffer":
+     what="Accepts an NFT offer"+(tx.NFTokenBrokerFee?" with a broker fee of "+amt(tx.NFTokenBrokerFee):"")+".";warn("Accepting an NFT offer","Make sure you know what the offer is (price, buy or sell). Scam offers can look like gifts.");
+     break;
+   case "CheckCreate":
+     what="Creates a check that lets <code>"+esc(tx.Destination||"?")+"</code> pull up to "+amt(tx.SendMax)+" from "+who+".";warn("Lets someone pull funds later","The recipient can cash this check up to the amount shown. Only create checks for people you trust.");
+     break;
+   case "PaymentChannelCreate": what="Locks "+amt(tx.Amount)+" in a payment channel to <code>"+esc(tx.Destination||"?")+"</code>.";warn("Locks funds in a payment channel","The recipient can claim from it with signed claims. Unusual for everyday users.");break;
+   case "EscrowCreate": what="Locks "+amt(tx.Amount)+" in escrow for <code>"+esc(tx.Destination||"?")+"</code>.";warn("Locks funds in escrow","Check the release conditions and dates. Escrow can't be undone early.");break;
+   case "DepositPreauth": what="Pre-authorizes an account to send you payments.";ok("Low risk setting","Only matters if you use Deposit Authorization.");break;
+   case "TicketCreate": what="Reserves sequence numbers (tickets) for later transactions.";warn("Creates tickets","Tickets let transactions be signed now and submitted later, out of order. Unusual unless you use them on purpose.");break;
+   case "AMMDeposit": case "AMMWithdraw": case "AMMCreate": case "AMMVote": case "AMMBid": what=esc(T)+": an automated market maker (liquidity pool) action.";warn("Liquidity pool action","Pools carry price risk. Check the amounts and the tokens involved.");break;
+   case "Clawback": what="Claws back tokens (issuer action).";warn("Issuer clawback","Only token issuers send this.");break;
+   case "": out.hidden=false;out.innerHTML=verdictHtml(2,"No TransactionType found","This doesn't look like an XRPL transaction. Paste the JSON your wallet shows for the request.");return;
+   default: what="A "+esc(T)+" transaction.";warn("Less common transaction type","This page doesn't explain this type in detail. Don't sign anything you don't understand.");
+  }
+  if(tx.Fee!==undefined&&Number(tx.Fee)>=1e6)warn("Very high fee: "+amt(tx.Fee),"Normal XRPL fees are a tiny fraction of 1 XRP. A huge fee is either a mistake or a trick.");
+  if(tx.Memos&&tx.Memos.length){var mm=tx.Memos.map(function(m){var x=m.Memo||m;return hexText(x.MemoData||"")||"";}).filter(Boolean);if(mm.length){f.push(["info","Memo text","\u201c"+esc(mm.join(" | ").slice(0,300))+"\u201d"]);if(/(https?:|www\.|\.com|\.io|claim|airdrop|reward|bonus|free)/i.test(mm.join(" ")))warn("Memo contains a link or a 'claim' pitch","Spam and scam payments often carry a website or 'claim your reward' text in the memo. Don't visit it.");}}
+  var lab={1:["Low risk on its face","Nothing alarming in the fields we can read. Still confirm it's the action you meant."],2:["Read carefully before signing","This transaction does something you should double-check."],4:["Don't sign unless you're 100% sure","This transaction can give away control of your account or your assets."]}[level===3?2:level];
+  out.innerHTML=verdictHtml(level,lab[0],lab[1])+'<h3>What it does</h3><p>'+what+'</p>'+(f.length?'<h3>Notes and red flags</h3>'+flagList(f):'')+'<p class="small">Read offline from the JSON you pasted. This page can\'t see the ledger and doesn\'t sign or submit anything.</p>';
+  out.hidden=false;$("tip").hidden=false;
+}
+var TXS=[
+ '{"TransactionType":"SetRegularKey","Account":"rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh","RegularKey":"rGWrZyQqhTp9Xu7G5Pkayo7bXjH4k4QYpf","Fee":"12","Memos":[{"Memo":{"MemoData":"436C61696D20796F7572205852502061697264726F70206174207872702D636C61696D2E78797A"}}]}',
+ '{"TransactionType":"Payment","Account":"rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh","Destination":"rw2ciyaNshpHe7bCHo4bRWq6pqqynnWKQg","DestinationTag":1476447851,"Amount":"5000000","Fee":"12"}',
+ '{"TransactionType":"AccountSet","Account":"rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh","SetFlag":4,"Fee":"12"}'
+],ti=0;
+var ADDRS=[["X7zmKiqEhMznSXgj9cirEnD5sWo3iZPusz7msGRHa5ptkzL","","",true],["rw2ciyaNshpHe7bCHo4bRWq6pqqynnWKQg","","",true],["rw2cXyaNshpHe7bCHo4bRWq6pqqynnWKQg","","",false],["rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh","","rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh",false]],ai=0;
+$("checkAddr").addEventListener("click",checkAddr);
+$("sampleAddr").addEventListener("click",function(){var s=ADDRS[ai++%ADDRS.length];$("a_to").value=s[0];$("a_tag").value=s[1];$("a_ref").value=s[2];$("a_exch").checked=s[3];$("a_hist").checked=false;checkAddr();});
+$("explain").addEventListener("click",explain);
+$("sampleTx").addEventListener("click",function(){$("txj").value=JSON.stringify(JSON.parse(TXS[ti++%TXS.length]),null,2);explain();});
+$("clearTx").addEventListener("click",function(){$("txj").value="";$("txOut").hidden=true;});
+
+
+/* ---------- Tip copy ---------- */
+document.querySelectorAll("[data-copy]").forEach(function(b){b.addEventListener("click",function(){copyText($(b.getAttribute("data-copy")).textContent.trim());});});
+
+})();
+</script>
+</body>
+</html>

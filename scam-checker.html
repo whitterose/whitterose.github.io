@@ -171,7 +171,7 @@ mark{background:#ffe08a;padding:0 2px;border-radius:3px}
     <div class="card"><h3>Wire transfer (Western Union, MoneyGram)</h3><p>Contact the wire transfer company immediately. Tell them a scammer tricked you, and ask them to reverse the transfer and refund your money.</p></div>
     <div class="card"><h3>Zelle, bank transfer, or a payment app</h3><p>Report it to your bank or the app (Venmo, Cash App, PayPal…) immediately, and ask them to reverse the payment.</p></div>
     <div class="card"><h3>Credit or debit card</h3><p>Call the number on the back of your card. Ask them to reverse the charge. Federal law gives card users some protection against unauthorized charges.</p></div>
-    <div class="card"><h3>Cryptocurrency or a crypto ATM</h3><p>Contact the exchange or ATM operator immediately and ask them to reverse the transaction. Then report it at ReportFraud.ftc.gov and to the FBI at ic3.gov. Crypto payments are usually hard to get back (<a href="https://consumer.ftc.gov/articles/what-know-about-cryptocurrency-and-scams" rel="noopener">FTC</a>).</p></div>
+    <div class="card"><h3>Cryptocurrency or a crypto ATM</h3><p>Contact the exchange or ATM operator immediately and ask them to reverse the transaction. Then report it at ReportFraud.ftc.gov and to the FBI at ic3.gov. Crypto payments are usually hard to get back (<a href="https://consumer.ftc.gov/articles/what-know-about-cryptocurrency-and-scams" rel="noopener">FTC</a>). Got a crypto DM, airdrop link, or token pitch? Check it with the <a href="/crypto-scam-checker.html">Crypto Scam Checker</a>.</p></div>
     <div class="card"><h3>Mailed cash</h3><p>Call the U.S. Postal Inspection Service at <strong>1-877-876-2455</strong> right away. For a fee, they may be able to intercept a package that hasn't been delivered yet.</p></div>
     <div class="card"><h3>Gave your Social Security number</h3><p>Go to <a href="https://www.identitytheft.gov/" rel="noopener">IdentityTheft.gov</a> to report it and get a personal recovery plan. Social Security also suggests placing a fraud alert with the credit bureaus (<a href="https://www.ssa.gov/scam/" rel="noopener">SSA</a>).</p></div>
     <div class="card"><h3>Gave a password or a code</h3><p>Change that password right away (and anywhere else you used it) and turn on two-step verification. If you're locked out, use the company's official account recovery page.</p></div>
@@ -273,7 +273,7 @@ mark{background:#ffe08a;padding:0 2px;border-radius:3px}
 
 <footer>
   <div class="wrap">
-<p>Scam Checker, by Zelda Rose. This page uses no cookies and no analytics, and it never uploads anything. Checks run by simple rules in your browser. You can save this page to use it offline. <a href="/">More free tools</a>.</p>
+<p>Scam Checker, by Zelda Rose. This page uses no cookies and no analytics, and it never uploads anything. Checks run by simple rules in your browser. You can save this page to use it offline. <a href="/crypto-scam-checker.html">Crypto Scam Checker</a> · <a href="/">More free tools</a>.</p>
     <p>Not affiliated with the FTC, FBI, IRS, SSA, FCC, AARP, or any company named here. Warning signs are paraphrased from the linked official sources. General information only, not legal advice. Last reviewed: October 2026.</p>
   </div>
 </footer>
@@ -372,6 +372,7 @@ function analyze(){
   }
   if(t.trim()&&ranges.length){html+='<h3>Where the flags are</h3><div class="quote">'+highlight(t,ranges)+'</div>';}
   html+='<h3>What to do now</h3><ul><li>'+esc(CHANNEL_TIPS[ch])+'</li><li>Don\'t pay, and don\'t share codes, passwords, or account numbers.</li><li>Talk to someone you trust before doing anything. The FTC says talking about it can help you realize it\'s a scam.</li><li>Report it: <a href="https://reportfraud.ftc.gov/" rel="noopener">ReportFraud.ftc.gov</a>. Already paid or shared something? See <a href="#now">step 2</a>.</li></ul>';
+  if(has("crypto")||has("invest"))html+='<p class="small">Involves crypto, a wallet, or a token? For drainers, fake airdrops, seed-phrase requests, and lookalike links, try the <a href="/crypto-scam-checker.html">Crypto Scam Checker</a>.</p>';
   html+='<div class="row"><button type="button" class="secondary" id="copySummary">Copy a summary to send to family</button></div><p class="small">Pattern check only. It can\'t verify who sent this.</p>';
   out.innerHTML=html;out.hidden=false;
   $("copySummary").addEventListener("click",function(){
